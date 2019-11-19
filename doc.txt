@@ -1,0 +1,48 @@
+Hier die Liste für Arbeitsteilung:
+einzelne Funktionen und Tests werden genau beschrieben und wer dafür zuständig ist
+
+COORD2INDEX (Tim, work in progress)
+  input: 
+    coord: coordinates of a point, int array of size D
+    N: length of all axis, unsigned int
+    D: number of dimensions, unsigned int
+  output:
+    i: raveled index depending on coordinates, unsigned int
+	Test: ? wip
+
+INDEX2COORD (Tim, wip)
+  input:
+    index: index of array, unsigned int
+    N: length of all axis, unsigned int
+    D: number of dimensions, unsigned int
+  output:
+    coord: coordinates of a point, int array of size D
+	Test: ? wip
+		
+NNEIGHBOUR (Lennart?, wip)
+	input:
+		index: of a point i, unsigned int
+		a: axis along which neighbour is computed
+		p: direction in which neighbour is computed
+	output:
+		i: index of nearest neighbour on specified axis and direction
+	Test: ? wip
+	
+LAPLACIAN (?, wip)
+	input:
+		psi: vector of discretized wavefunction, array (float/double?) of size N**D
+	output:
+		lpsi: vector with laplacian of wave function, array (float/double?) of size N**D
+	Test: ? wip
+	
+KINETIC (?, wip)
+	input:
+	output:
+	Test: ? wip
+	
+HARMONIC (?, wip)
+	input:
+	output:
+	Test: ? wip
+
+
