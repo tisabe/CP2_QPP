@@ -1,44 +1,38 @@
-/* Lots of work to be done. Not running yet. */
+/* Calculate a next neighbour of a reference point given by an index. Specify axis and direction.
+Valid values:
+    index           0, ..., N**D-1
+    axis            0, ..., D
+    dir             -1, +1
+    N               as specified in the main program
+    D               as specified in the main program, typically 1, 2 or 3                       */
 
 
-
+/* ########## Still to be tested. ########### */
 
 
 
 #include <stdio.h>
+#include <stdlib.h>
 /* #include "index2coord.h" */
 /* #include "coord2index.h" */
 
-void addArrays(int *out, int *first, int *second){
-    for(int i=0; i<3; i++){
-        out[i] = first[i] + second[i];
-    }
-}
-
-unsigned int nneighbour(unsigned int neighbour_index, unsigned int index, unsigned int dim, int dir, unsigned int N, unsigned int D)
+unsigned int nneighbour(unsigned int index, unsigned int axis, int dir, unsigned int N, unsigned int D)
 {
-    /* Initialise integer neighbour */
-    int neighbour;
+    /* Initialise pointer for next neighbour coords */
 
-    int dir_array[D] = {0};                                     // Create an array of zeros of the number of dimensions
-    dir_array[dim] = dir;                                       // Change the entry of the value specified by dim into dir (-1 or +1)
+    int *nneighbour_coords;
+    nneighbour_coords = malloc(D*sizeof(int));
 
+    //Get coords of reference point. In-/Decrement by 1 in axis-direction
+    nneighbour_coords = int(index2coord(index));
+    nneighbour_coords[axis] += dir;
 
-    //Check for boundary conditions here
+    //Check for boundary conditions
+    if(nneighbour_coords[axis] >= N)
+        nneighbour_coords[axis] = 0;
+    if(nneighbour_coords[axis] <= -1)
+        nneighbour_coords[axis] = N-1;
 
-    /* Convert to coord, add dir_array and then convert back to index. */
-    neighbour = index2coord(result,addArrays(coord2index(index),dir_array));
-    if(dim==0){
-        neighbour = coord2index(index2coord(index) + [dir,0,0])
-    }
-    if(dim==1){
-        neighbour = coord2index(index2coord(index) + [0,dir,0])
-    }
-    if(dim==2){
-        neighbour = coord2index(index2coord(index) + [0,0,dir])
-    }else{
-        println("Limited to 3 dimensions!")
-    }
-
-    return neighbour_index;
+    // Return index of next neighbour
+    return index2coord(nneighbour_coords);
 }
