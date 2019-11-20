@@ -3,36 +3,36 @@ einzelne Funktionen und Tests werden genau beschrieben und wer dafür zuständig
 
 COORD2INDEX (Tim, work in progress)
   input: 
-    coord: coordinates of a point, int array of size D
-    N: length of all axis, unsigned int
-    D: number of dimensions, unsigned int
+    coord: coordinates of a point						int array of size D
+    N: length of all axis							unsigned int
+    D: number of dimensions							unsigned int
   output:
-    i: raveled index depending on coordinates, unsigned int
+    i: raveled index depending on coordinates					unsigned int
 	Test: ? wip
 
 INDEX2COORD (Tim, wip)
   input:
-    index: index of array, unsigned int
-    N: length of all axis, unsigned int
-    D: number of dimensions, unsigned int
+    index: index of array							unsigned int
+    N: length of all axis							unsigned int
+    D: number of dimensions							unsigned int
   output:
-    coord: coordinates of a point, int array of size D
+    coord: coordinates of a point						int array of size D
 	Test: ? wip
 		
-NNEIGHBOUR (Lennart?, wip)
+NNEIGHBOUR (Lennart, wip)
 	input:
-		index: of a point i, unsigned int
-		a: axis along which neighbour is computed
-		p: direction in which neighbour is computed
+		index: of a point i						unsigned int
+		a: axis along which neighbour is computed			0, 1 or 2
+		p: direction in which neighbour is computed			-1 or +1
 	output:
-		i: index of nearest neighbour on specified axis and direction
+		i: index of nearest neighbour on specified axis and direction	unsigned int
 	Test: ? wip
 	
 LAPLACIAN (?, wip)
 	input:
-		psi: vector of discretized wavefunction, array (float/double?) of size N**D
+		psi: vector of discretized wavefunction				double array of size N**D
 	output:
-		lpsi: vector with laplacian of wave function, array (float/double?) of size N**D
+		lpsi: vector with laplacian of wave function			double array of size N**D
 	Test: ? wip
 	
 KINETIC (?, wip)
