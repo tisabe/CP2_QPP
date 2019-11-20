@@ -22,8 +22,8 @@ INDEX2COORD (Tim, wip)
 NNEIGHBOUR (Lennart, wip)
 	input:
 		index: of a point i						unsigned int
-		a: axis along which neighbour is computed			0, 1 or 2
-		p: direction in which neighbour is computed			-1 or +1
+		a: axis along which neighbour is computed			unsigned int: 0, 1 or 2
+		p: direction in which neighbour is computed			int: -1 or +1
 	output:
 		i: index of nearest neighbour on specified axis and direction	unsigned int
 	Test: ? wip
