@@ -24,6 +24,8 @@ NNEIGHBOUR (Lennart, wip)
 		index: of a point i						unsigned int
 		a: axis along which neighbour is computed			unsigned int: 0, 1 or 2
 		p: direction in which neighbour is computed			int: -1 or +1
+		N: length of all axes						unsigned int
+		D: number of dimensions						unsigned int
 	output:
 		i: index of nearest neighbour on specified axis and direction	unsigned int
 	Test: ? wip
