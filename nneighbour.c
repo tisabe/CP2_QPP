@@ -16,23 +16,26 @@ Valid values:
 /* #include "index2coord.h" */
 /* #include "coord2index.h" */
 
-unsigned int nneighbour(unsigned int index, unsigned int axis, int dir, unsigned int N, unsigned int D)
+long int nneighbour(long int index, unsigned int axis, int dir, long int N, unsigned int D)
 {
     /* Initialise pointer for next neighbour coords */
-
-    int *nneighbour_coords;
-    nneighbour_coords = malloc(D*sizeof(int));
+    long int nneighbour_index;
+    long int *nneighbour_coords;
+    nneighbour_coords = malloc(D*sizeof(long));
 
     //Get coords of reference point. In-/Decrement by 1 in axis-direction
-    nneighbour_coords = int(index2coord(index));
+    index2coord(nneighbour_coords,index,N,D);
     nneighbour_coords[axis] += dir;
 
     //Check for boundary conditions
-    if(nneighbour_coords[axis] >= N)
+    if(nneighbour_coords[axis] > N-1)
         nneighbour_coords[axis] = 0;
-    if(nneighbour_coords[axis] <= -1)
+    if(nneighbour_coords[axis] < 0)
         nneighbour_coords[axis] = N-1;
 
+    nneighbour_index = index2coord(nneighbour_coords);
+
+    free(nneighbour_coords);
     // Return index of next neighbour
-    return index2coord(nneighbour_coords);
+    return nneighbour_index;
 }
