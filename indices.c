@@ -2,8 +2,8 @@
 
 #include <stdio.h>
 
-unsigned int coord2index(int coord[D], unsigned int N, unsigned int D){
-  unsigned int index = 0;
+long int coord2index(long int *coord, long int N, unsigned int D){
+  long int index = 0;
 
   for (i=0; i<D; i++){
     index += coord[i]*ipow(N,i)
@@ -12,22 +12,21 @@ unsigned int coord2index(int coord[D], unsigned int N, unsigned int D){
   return index;
 }
 
-int * index2coord(int index, unsigned int N, unsigned int D){
+void index2coord(long int *coord, long int index, long int N, unsigned int D){
   /*coordinate vector needs to be returned as pointer in C*/
-  static int coord[D];
-  int b = 0;
+  //static int coord[D];
+  long int b = 0;
 
   for (i=0; i<D; i++) {
     b = ipow(N, D-1-i);
-    coord[D-1-j] = index/b;
+    coord[D-1-i] = index/b;
     index %= b;
   }
-
-  return coord;
 }
 
-int ipow(int base, int exp){
+long int ipow(long int base, unsigned int exp){
 /*integer power function so math does not need to be included*/
+/*peer reviewed by frohlofl*/
     int result = 1;
 
     for (i=0; i<exp; i++){
