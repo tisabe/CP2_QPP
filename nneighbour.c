@@ -15,6 +15,7 @@ Valid values:
 #include <stdlib.h>
 /* #include "index2coord.h" */
 /* #include "coord2index.h" */
+#include "indices.h"
 
 long int nneighbour(long int index, unsigned int axis, int dir, long int N, unsigned int D)
 {
@@ -33,7 +34,7 @@ long int nneighbour(long int index, unsigned int axis, int dir, long int N, unsi
     if(nneighbour_coords[axis] < 0)
         nneighbour_coords[axis] = N-1;
 
-    nneighbour_index = index2coord(nneighbour_coords);
+    nneighbour_index = coord2index(nneighbour_coords, N, D);
 
     free(nneighbour_coords);
     // Return index of next neighbour

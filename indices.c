@@ -2,11 +2,23 @@
 
 #include <stdio.h>
 
+long int ipow(long int base, unsigned int exp){
+/*integer power function so math does not need to be included*/
+/*peer reviewed by frohlofl*/
+    int result = 1;
+
+    for (int i=0; i<exp; i++){
+      result *= base;
+    }
+
+    return result;
+}
+
 long int coord2index(long int *coord, long int N, unsigned int D){
   long int index = 0;
 
   for (int i=0; i<D; i++){
-    index += coord[i]*ipow(N,i)
+    index += coord[i]*ipow(N,i);
   }
 
   return index;
@@ -24,14 +36,4 @@ void index2coord(long int *coord, long int index, long int N, unsigned int D){
   }
 }
 
-long int ipow(long int base, unsigned int exp){
-/*integer power function so math does not need to be included*/
-/*peer reviewed by frohlofl*/
-    int result = 1;
 
-    for (int i=0; i<exp; i++){
-      result *= base;
-    }
-
-    return result;
-}
