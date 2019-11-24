@@ -29,7 +29,7 @@ NNEIGHBOUR (Lennart, wip)
 		D: number of dimensions							unsigned int
 	output:
 		i: index of nearest neighbour on specified axis and direction	long int
-	Test: Tim wip
+	Test: Tim (läuft, parameter könnten noch geändert werden)
 	
 LAPLACIAN (?, wip)
 	input:
