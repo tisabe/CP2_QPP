@@ -4,38 +4,40 @@ einzelne Funktionen und Tests werden genau beschrieben und wer dafür zuständig
 COORD2INDEX (Tim, work in progress)
 	input: 
 		coord: coordinates of a point					long int array of size D
- 		N: length of all axis							long int
-		D: number of dimensions							unsigned int
+ 		N: length of all axis						long int
+		D: number of dimensions						unsigned int
 	output:
-		i: raveled index depending on coordinates		long int
+		i: raveled index depending on coordinates			long int
 	Test: ? wip
 
 INDEX2COORD (Tim, wip)
 	input:
-		*coord: array in which to store coordinates		long int array of size D
-	  	index: index of array							long int
-		N: length of all axis							long int
-		D: number of dimensions							unsigned int
+		*coord: array in which to store coordinates			long int array of size D
+	  	index: index of array						long int
+		N: length of all axis						long int
+		D: number of dimensions						unsigned int
 	output:
 		void
 	Test: ? wip
 		
-NNEIGHBOUR (Lennart, wip)
+NNEIGHBOUR (Lennart, tested)
 	input:
-		index: of a point i								long int
-		a: axis along which neighbour is computed		unsigned int: 0, 1 or 2
-		p: direction in which neighbour is computed		int: -1 or +1
-		N: length of each axis							long int
-		D: number of dimensions							unsigned int
+		index: of a point i						long int
+		a: axis along which neighbour is computed			unsigned int: 0, 1 or 2
+		p: direction in which neighbour is computed			int: -1 or +1
+		N: length of each axis						long int
+		D: number of dimensions						unsigned int
 	output:
 		i: index of nearest neighbour on specified axis and direction	long int
 	Test: Tim (läuft, parameter könnten noch geändert werden)
 	
-LAPLACIAN (?, wip)
+LAPLACIAN (Lennart, wip)
 	input:
-		psi: vector of discretized wavefunction				double array of size N**D
+		*in: vector of discretized wavefunction				complex double array of size N**D
+		N: length of each axis						long int
+		D: number of dimensions						unsigned int
 	output:
-		lpsi: vector with laplacian of wave function			double array of size N**D
+		*out: vector with laplacian of wave function			complex double array of size N**D
 	Test: ? wip
 	
 KINETIC (?, wip)
