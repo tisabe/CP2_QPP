@@ -30,7 +30,7 @@ void check_index2coord(){
         for(int i=0; i<ipow(N,D); i++){
             index2coord(coords_cur,i,N,D);
             for(int j=0; j<D; j++){
-                if(!((coords_cur[j] >= coords_old[j]) || (coords_cur[j] == 0))){
+                if(!((coords_cur[j] == coords_old[j]+1) || (coords_cur[j] == coords_old[j]) || (coords_cur[j] == 0))){
                     not_passed = 1;
                 }
                 coords_old[j] = coords_cur[j];
