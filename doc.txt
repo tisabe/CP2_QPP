@@ -1,16 +1,16 @@
 Hier die Liste für Arbeitsteilung:
 einzelne Funktionen und Tests werden genau beschrieben und wer dafür zuständig ist
 
-COORD2INDEX (Tim, work in progress)
-	input: 
+COORD2INDEX (Tim, working, needs documentation)
+	input:
 		coord: coordinates of a point					long int array of size D
  		N: length of all axis						long int
 		D: number of dimensions						unsigned int
 	output:
 		i: raveled index depending on coordinates			long int
-	Test: ? wip
+	Test: Lennart
 
-INDEX2COORD (Tim, wip)
+INDEX2COORD (Tim, working, needs documentation)
 	input:
 		*coord: array in which to store coordinates			long int array of size D
 	  	index: index of array						long int
@@ -18,8 +18,8 @@ INDEX2COORD (Tim, wip)
 		D: number of dimensions						unsigned int
 	output:
 		void
-	Test: ? wip
-		
+	Test: Lennart
+
 NNEIGHBOUR (Lennart, tested)
 	input:
 		index: of a point i						long int
@@ -30,7 +30,7 @@ NNEIGHBOUR (Lennart, tested)
 	output:
 		i: index of nearest neighbour on specified axis and direction	long int
 	Test: Tim (läuft, parameter könnten noch geändert werden)
-	
+
 LAPLACIAN (Lennart, wip)
 	input:
 		*in: vector of discretized wavefunction				complex double array of size N**D
@@ -39,15 +39,13 @@ LAPLACIAN (Lennart, wip)
 	output:
 		*out: vector with laplacian of wave function			complex double array of size N**D
 	Test: ? wip
-	
+
 KINETIC (?, wip)
 	input:
 	output:
 	Test: ? wip
-	
+
 HARMONIC (?, wip)
 	input:
 	output:
 	Test: ? wip
-
-
