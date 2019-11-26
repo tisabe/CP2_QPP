@@ -5,12 +5,12 @@
 
 void test_inverse_nn() {
 	printf("Testing inversion of next neighbour function\n");
-	
+
 	unsigned int arrD[4] = {1,2,3,4};
-	long int arrN[2] = {5,10};
+	long int arrN[2] = {5,11};
 	long int maxIndex = 0;
 	bool passed = true;
-	
+
 	for (int i=0; i<4; i++) {							// loop over dimensions
 		printf("Testing D=%d ", arrD[i]);
 		for (int j=0; j<2; j++) {						// loop over coordinates
@@ -25,7 +25,7 @@ void test_inverse_nn() {
 						printf("\n Error at index %d, nni: %d, inni: %d ", ind, nni, inni);
 					}
 				}
-				
+
 			}
 		}
 		printf("\n");
@@ -56,4 +56,3 @@ int main() {
 	test_inverse_nn();
 	return 0;
 }
-
