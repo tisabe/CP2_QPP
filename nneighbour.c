@@ -27,10 +27,10 @@ long int nneighbour(long int index, unsigned int axis, int dir, long int N, unsi
     nneighbour_coords[axis] += dir;
 
     //Check for boundary conditions
-    if(nneighbour_coords[axis] > N-1)
-        nneighbour_coords[axis] = 0;
-    if(nneighbour_coords[axis] < 0)
-        nneighbour_coords[axis] = N-1;
+    if(nneighbour_coords[axis] > (N-1)/2)               //Edits because of change of coordinate origin
+        nneighbour_coords[axis] = -(N-1)/2;
+    if(nneighbour_coords[axis] < -(N-1)/2)
+        nneighbour_coords[axis] = (N-1)/2;
 
     nneighbour_index = coord2index(nneighbour_coords, N, D);
 

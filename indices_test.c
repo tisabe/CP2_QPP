@@ -50,9 +50,9 @@ void check_index2coord(){
         free(sum);
     }
     if(not_passed == 0){
-        printf("All incrementing and sum tests passed!");
+        printf("All incrementing and sum tests passed!\n");
     }else{
-        printf("Incrementing test and/ or sum test not passed!");
+        printf("Incrementing test and/ or sum test not passed!\n");
     }
 }
 
