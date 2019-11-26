@@ -41,7 +41,7 @@ int main() {
 	printf("Testing the nneighbour function\n");
 	printf("i:, \t coord: \t nni: \t nnii: \n");
 
-	long int N = 10;
+	long int N = 11;
 	unsigned int D = 2;
 	long int nni = 0;
 	long int nnii = 0;
