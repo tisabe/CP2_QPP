@@ -57,7 +57,7 @@ KINETIC (Birkan, wip)
 		*out: vector with laplacian of wave function			complex double array of size N**D
 	Test: ? wip
 
-HARMONIC (?, wip)
-	input:
-	output:
+HARMONIC (Mahnimaster,vip)
+	input: index, omega, N, D
+	output: potential
 	Test: ? wip

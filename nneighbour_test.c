@@ -38,6 +38,7 @@ void test_inverse_nn() {
 }
 
 int main() {
+
 	printf("Testing the nneighbour function\n");
 	printf("i:, \t coord: \t nni: \t nnii: \n");
 
