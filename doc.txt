@@ -58,6 +58,6 @@ KINETIC (Birkan, wip)
 	Test: ? wip
 
 HARMONIC (Mahnimaster,vip)
-	input:
-	output:
+	input: index, omega, N, D
+	output: potential
 	Test: ? wip
