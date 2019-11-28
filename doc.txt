@@ -45,7 +45,7 @@ KINETIC (?, wip)
 	output:
 	Test: ? wip
 
-HARMONIC (?, wip)
+HARMONIC (Mahnimaster,vip)
 	input:
 	output:
 	Test: ? wip
