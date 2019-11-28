@@ -2,8 +2,9 @@
 required in the QPP problem*/
 
 #include <complex.h>
+#include <stdlib.h>
 
-long int ipow(long int base, unsigned int exp){
+long int ipow(long int base, unsigned int exp) {
 /*integer power function so math does not need to be included*/
 /*peer reviewed by frohlofl*/
     int result = 1;
@@ -13,57 +14,106 @@ long int ipow(long int base, unsigned int exp){
     return result;
 }
 
-double complex dot_product(double complex *v, double complex *w, long int N, unsigned int D) {
+double complex dot_product(double complex *v, double complex *w, long int L) {
 /*returns the complex dot product of two vectors v, w*/
   double complex sprod;
   sprod=0.0;
-  long int maxi = ipow(N,D);
-
-  for(long int i=0; i<maxi; i++) {
+  for(long int i=0; i<L; i++) {
     sprod+=(~(v[i]))*w[i];
   }
   return sprod;
 }
 
-void scalar_vec(double complex *out, double complex *vec, double complex *s, long int N, unsigned int D){
+void scalar_vec(double complex *out, double complex *vec, double complex s, long int L) {
 /*returns the product of a scalar s and a vector vec*/
-  long int maxi = ipow(N,D);
-  for(long int i=0; i<maxi; i++) {
+  for(long int i=0; i<L; i++) {
     out[i] = s*vec[i];
   }
 }
 
-void add_vec(double complex *out, double complex *w double complex *v, long int N, unsigned int D) {
+void add_vec(double complex *out, double complex *w, double complex *v, long int L) {
 /*returns the sum of two complex vectors v, w*/
-  long int maxi = ipow(N,D);
-
-  for(long int i=0; i<maxi; i++) {
+  for(long int i=0; i<L; i++) {
     out[i] = v[i]+w[i];
   }
 }
 
-void sub_vec(double complex *out, double complex *w double complex *v, long int N, unsigned int D) {
+void sub_vec(double complex *out, double complex *v, double complex *w, long int L) {
 /*returns the difference of two complex vectors v, w*/
-  long int maxi = ipow(N,D);
-
-  for(long int i=0; i<maxi; i++) {
+  for(long int i=0; i<L; i++) {
     out[i] = v[i]-w[i];
   }
 }
 
-void assign_vec(double complex *out, double complex *in, long int N, unsigned int D) {
+void assign_vec(double complex *out, double complex *in, long int L) {
 /*copy the values of in to values of out*/
-  long int maxi = ipow(N,D);
-
-  for(long int i=0; i<maxi; i++) {
+  for(long int i=0; i<L; i++) {
     out[i] = in[i];
   }
 }
 
-void cg(double complex *out, void (*f)(double complex *, double complex *), double complex *in, int max_iter, double tol, long int N, unsigned int D) {
+void set_zero(double complex *in, long int L) {
+/*set all values of in to zero*/
+  for(long int i=0; i<L; i++) {
+    in[i] = 0.0;
+  }
+}
+
+double abs_vec(double complex *in, long int L) {
+  return (cabs(dot_product(in, in, L)));
+}
+
+void cg(double complex *out, void (*f)(double complex */*out*/, double complex */*in*/, long int/*L*/), double complex *in, int max_iter, double tol, long int L) {
 /*this will perform the conjugate gradient algorithm to find x for y=f(x),
 where f is a positive, "matrix-like" function. y is passed as in,
 f as a function pointer *f and x is saved in out. The maximum number of
 iterations is passed as max_iter and the maximum tolerance as tol*/
-  long int maxi = ipow(N,D);
+  double complex * x = malloc(L * sizeof(double complex));
+  double complex * x_next = malloc(L * sizeof(double complex));
+  double complex * r =  malloc(L * sizeof(double complex));
+  double complex * r_next = malloc(L * sizeof(double complex));
+  double complex * z = malloc(L * sizeof(double complex));
+  double complex * d = malloc(L * sizeof(double complex));
+  double complex * temp = malloc(L * sizeof(double complex));
+  double complex alpha = 0.0;
+  double complex beta = 0.0;
+  int k = 0; // current iteration
+
+  /*initialize values of arrays*/
+  set_zero(z, L);
+  set_zero(x, L);
+  set_zero(x_next, L);
+  set_zero(r_next, L);
+  (*f)(z, x, L);
+  sub_vec(r, in, z, L);
+  assign_vec(d, r, L);
+
+  while((k < max_iter) && (abs_vec(r, L)>tol)) {
+    (*f)(z, d, L);
+    alpha = dot_product(r_next, r_next, L)/dot_product(r, r, L);
+    scalar_vec(temp, d, alpha, L);
+    add_vec(x_next, x, temp, L);
+    scalar_vec(temp, z, alpha, L);
+    sub_vec(r_next, r, temp, L);
+    beta = dot_product(r_next, r_next, L)/dot_product(r, r, L);
+    scalar_vec(temp, d, beta, L);
+    add_vec(d, r_next, temp, L);
+    // update old values r and x
+    assign_vec(x, x_next, L);
+    assign_vec(r, r_next, L);
+
+  }
+
+  assign_vec(out, x, L);
+
+  free(x);
+  free(x_next);
+  free(r);
+  free(r_next);
+  free(z);
+  free(d);
+}
+
+int main() {
+  return 0;
 }
