@@ -8,7 +8,7 @@ COORD2INDEX (Tim, working, needs documentation)
 		D: number of dimensions						unsigned int
 	output:
 		i: raveled index depending on coordinates			long int
-	Test: Lennart
+	Tested by: Lennart - successful
 
 INDEX2COORD (Tim, working, needs documentation)
 	input:
@@ -18,7 +18,7 @@ INDEX2COORD (Tim, working, needs documentation)
 		D: number of dimensions						unsigned int
 	output:
 		void
-	Test: Lennart
+	Tested by: Lennart - successful
 
 NNEIGHBOUR (Lennart, tested)
 	input:
