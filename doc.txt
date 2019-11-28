@@ -39,10 +39,22 @@ LAPLACIAN (Lennart, wip)
 	output:
 		*out: vector with laplacian of wave function			complex double array of size N**D
 	Test: ? wip
-
-KINETIC (?, wip)
+	
+PHI (Birkan, wip)
 	input:
+		N: length of all axis						long int
+		D: number of dimensions						unsigned int
+		type: number corresponding to one possible configuration of PHI int
 	output:
+		*out: vector with wave function					complex double array of size N**D
+
+KINETIC (Birkan, wip)
+	input: 
+		N: length of all axis						long int
+		D: number of dimensions						unsigned int
+		*in: vector of discretized wavefunction				complex double array of size N**D
+	output:
+		*out: vector with laplacian of wave function			complex double array of size N**D
 	Test: ? wip
 
 HARMONIC (Mahnimaster,vip)
