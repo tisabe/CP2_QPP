@@ -23,7 +23,7 @@ long int setN(){
 void check_index2coord_inc_sum(long int N){
     int not_passed = 0;
 
-    printf("\n\n*******Testing if coordinates increment and if sum is 0*******\n");
+    printf("\n\n*******Testing if coordinates increment and if sum over each axis is 0*******\n");
 
     for(unsigned int D=1; D<=3; D++){
         printf("\nTesting %u dimension(s)...",D);
@@ -101,7 +101,7 @@ void check_inverse(long int N){
     free(coordinates);
   }
   if(not_passed == 0){
-    printf("\nInversion test passed!\n");
+    printf("\nAll inversion tests passed!\n");
   }else{
     printf("\nInversion test not passed!\n");
   }
