@@ -33,11 +33,12 @@ NNEIGHBOUR (Lennart, tested)
 
 LAPLACIAN (Lennart, wip)
 	input:
+		*out: vector with laplacian of wave function			complex double array of size N**D
 		*in: vector of discretized wavefunction				complex double array of size N**D
 		N: length of each axis						long int
 		D: number of dimensions						unsigned int
 	output:
-		*out: vector with laplacian of wave function			complex double array of size N**D
+		void
 	Test: ? wip
 	
 PHI (Birkan, wip)
@@ -57,7 +58,20 @@ KINETIC (Birkan, wip)
 		*out: vector with laplacian of wave function			complex double array of size N**D
 	Test: ? wip
 
-HARMONIC (Mahnimaster,vip)
+HARMONIC (Mahni, wip)
 	input: index, omega, N, D
 	output: potential
 	Test: ? wip
+
+euler_method (Lennart, to be tested)
+	input:
+		*out: psi after (total_time/tauhat) time steps			double complex array of size L
+		*in: input vector psi						double complex array of size L
+		N: length of each axis						long int
+		D: number of dimensions						unsigned int
+		L: N**D								long int
+		tauhat: time step (dimensionless), tauhat = eps*tau/hbar	double
+		total_time: total time that the simulation should run for	double
+	output:
+		void
+	Test:	???
