@@ -75,3 +75,34 @@ euler_method (Lennart, to be tested)
 	output:
 		void
 	Test:	???
+
+cg (Conjugate Gradient in vmath, Tim, to be tested)
+	input:
+		*out: x to solve Ax=b						double complex of size L
+		(*f): function A to call					function pointer
+			in: double complex *(out), double complex *(in), long int (L)	
+		*in: b in Ax=b							double complex of size L
+		max_iter: maximum number of iterations to perform		int
+		tol: tolerance to which the solution should be solved		double
+		L: N**D								long int
+	output:
+		void
+	Test: ???
+
+vmath (Tim, to be tested)
+	many different functions
+	Test: Mahni
+
+
+
+
+
+
+
+
+
+
+
+
+
+
