@@ -1,10 +1,8 @@
 /*totally unfinished and untested*/
 
 #include <stdio.h>
-
-long int ipow(long int base, unsigned int exp){
-/*integer power function so math does not need to be included*/
-/*peer reviewed by frohlofl*/
+#include "vmath.h"
+/*
     int result = 1;
 
     for (int i=0; i<exp; i++){
@@ -12,7 +10,7 @@ long int ipow(long int base, unsigned int exp){
     }
 
     return result;
-}
+}*/
 
 long int coord2index(long int *coord, long int N, unsigned int D){
   long int index = 0;

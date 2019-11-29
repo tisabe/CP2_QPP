@@ -113,7 +113,3 @@ iterations is passed as max_iter and the maximum tolerance as tol*/
   free(z);
   free(d);
 }
-
-int main() {
-  return 0;
-}

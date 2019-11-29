@@ -39,7 +39,7 @@ LAPLACIAN (Lennart, wip)
 		D: number of dimensions						unsigned int
 	output:
 		void
-	Test: ? wip
+	Test: Tim wip
 	
 PHI (Birkan, wip)
 	input:
