@@ -1,7 +1,7 @@
 #include <complex.h>
 #include <stdlib.h>
 #include <stdio.h>
-##include <math.h>
+#include <math.h>
 #include "indeces.h"
 #include "vmath.h"
 
