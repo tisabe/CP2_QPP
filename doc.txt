@@ -30,6 +30,15 @@ NNEIGHBOUR (Lennart, tested)
 	output:
 		i: index of nearest neighbour on specified axis and direction	long int
 	Test: Tim (läuft, parameter könnten noch geändert werden)
+	
+nneighbour_init (Lennart, tested)
+	input:
+		*out : flat array with all next neighbours            long int array of size 2*D*N
+		N: length of each axis						long int
+		D: number of dimensions						unsigned int
+	output:
+		void
+	Test: ??
 
 LAPLACIAN (Lennart, wip)
 	input:

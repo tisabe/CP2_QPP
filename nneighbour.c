@@ -14,6 +14,7 @@ Valid values:
 #include <stdio.h>
 #include <stdlib.h>
 #include "indices.h"
+#include "vmath.h"
 
 long int nneighbour(long int index, unsigned int axis, int dir, long int N, unsigned int D)
 {
@@ -37,4 +38,15 @@ long int nneighbour(long int index, unsigned int axis, int dir, long int N, unsi
     free(nneighbour_coords);
     // Return index of next neighbour
     return nneighbour_index;
+}
+
+//long int *out array has to be of length 2*D*N (i.e. long int *out = malloc(2*D*N*sizeof(long int)) )
+
+void nneighbour_init(long int *out, long int N, unsigned int D){
+  for(int i=0; i<ipow(N,D); i++){
+    for(int j=0; j<D; j++){
+      out[i+2*j] = nneighbour(i,j,-1,N,D);
+      out[i+2*j+1] = nneighbour(i,j,1,N,D);
+    }
+  }
 }
