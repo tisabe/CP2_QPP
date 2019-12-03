@@ -7,7 +7,7 @@
 
 void phi(double complex *out, long int N, long int D, long int L, int type){
 	long int *phi_coords;
-  phi_coords = malloc(D*sizeof(long));
+  phi_coords = malloc(D*sizeof(long int));
 
 	if (type==0){
 		/* initialise wave function with ones */

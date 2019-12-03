@@ -5,7 +5,7 @@
 /*calculates the kinetic part of the hamiltonian given the parameter m*/
 void kinetic(double complex *out, double complex *in, long int N, unsigned int D, long int L, double m){
   /*first the laplacian is calculated*/
-  phi_laplacian= malloc(L*sizeof(double complex));
+  double complex *phi_laplacian= malloc(L*sizeof(double complex));
   laplacian(phi_laplacian,in,N,D)
 
   /*calculate the kinetic term for in */
