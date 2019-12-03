@@ -67,7 +67,21 @@ void cg(double complex *out, void (*f)(double complex */*out*/, double complex *
 /*this will perform the conjugate gradient algorithm to find x for y=f(x),
 where f is a positive, "matrix-like" function. y is passed as in,
 f as a function pointer *f and x is saved in out. The maximum number of
-iterations is passed as max_iter and the maximum tolerance as tol*/
+iterations is passed as max_iter and the maximum tolerance as tol
+
+parameters:   input:
+                out: location where to save the result of the cg
+                (*f): function which to perform on input vectors
+                  out(f): location where to save output of functions
+                  in(f): input vector of function f
+                  L(f): length of input vector
+                  
+
+
+
+
+
+*/
   double complex * x = malloc(L * sizeof(double complex));
   double complex * x_next = malloc(L * sizeof(double complex));
   double complex * r =  malloc(L * sizeof(double complex));
@@ -90,7 +104,7 @@ iterations is passed as max_iter and the maximum tolerance as tol*/
 
   while((k < max_iter) && (abs_vec(r, L)>tol)) {
     (*f)(z, d, L);
-    alpha = dot_product(r_next, r_next, L)/dot_product(r, r, L);
+    alpha = dot_product(r_next, r_next, L)/dot_product(r, z, L);
     scalar_vec(temp, d, alpha, L);
     add_vec(x_next, x, temp, L);
     scalar_vec(temp, z, alpha, L);
@@ -101,7 +115,7 @@ iterations is passed as max_iter and the maximum tolerance as tol*/
     // update old values r and x
     assign_vec(x, x_next, L);
     assign_vec(r, r_next, L);
-
+    k++;
   }
 
   assign_vec(out, x, L);
@@ -112,4 +126,5 @@ iterations is passed as max_iter and the maximum tolerance as tol*/
   free(r_next);
   free(z);
   free(d);
+  free(temp);
 }
