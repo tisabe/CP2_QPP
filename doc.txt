@@ -88,6 +88,7 @@ cg (Conjugate Gradient in vmath, Tim, to be tested)
 	output:
 		void
 	Test: ???
+	// Comments: free(temp) missing, check first iteration in while loop - should be dot_product(r,z,L)??
 
 vmath (Tim, to be tested)
 	many different functions
