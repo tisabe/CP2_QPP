@@ -13,7 +13,6 @@ Valid values:
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "indices.h"
 #include "vmath.h"
 
 long int nneighbour(long int index, unsigned int axis, int dir, long int N, unsigned int D)

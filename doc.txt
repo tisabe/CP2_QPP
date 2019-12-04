@@ -68,10 +68,17 @@ KINETIC (Birkan, wip)
 	Test: ? wip
 
 HARMONIC (Mahni, wip)
-	input: index, omega, N, D
-	output: potential
+	input: index, omega, N, D						long int, int, int, int
+	output: potential							double
 	Test: ? wip
-
+BOX (Mahni, wip)
+	input: index, height, N, D						long int, int, int, int
+	output: potential of a box						double
+	Test: ? wip
+POTENTIALWELL (Mahni,w wip)
+	input:  height, N, D							int, int, int
+	output: potential of a box in an array with the size of N**D		double
+	Test: ? wip
 euler_method (Lennart, to be tested)
 	input:
 		*out: psi after (total_time/tauhat) time steps			double complex array of size L
