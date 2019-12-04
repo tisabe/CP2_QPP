@@ -70,12 +70,15 @@ f as a function pointer *f and x is saved in out. The maximum number of
 iterations is passed as max_iter and the maximum tolerance as tol
 
 parameters:   input:
-                out: location where to save the result of the cg
-                (*f): function which to perform on input vectors
-                  out(f): location where to save output of functions
-                  in(f): input vector of function f
-                  L(f): length of input vector
-                  
+                out: location where to save the result x of the cg for y=f(x), double complex *
+                (*f): function which to perform on input vectors, needs to be symmetric and positive-definite (in matrix representation)
+                  out(f): location where to save output of functions, double complex *
+                  in(f): input vector of function f, double complex *
+                  L(f): length of input vector, long int
+                in: input vector y for the cg, double complex *
+                tol: tolerance to which the result should be exact, double
+                max_iter: maximum number of iterations to perform the cg, int
+                L: length of input and output arrays, long int
 
 
 
