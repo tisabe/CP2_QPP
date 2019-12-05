@@ -84,17 +84,21 @@ void check_exp() {
 	double complex *ref = malloc(L*sizeof(double complex)); // reference array with analytical result
 	double complex *omega = malloc(D*sizeof(double complex)); // omega vector
 	long int *coord = malloc(D*sizeof(long int)); // coordinate array
+	double complex *coord_c = malloc(D*sizeof(double complex)); // array to cast coord into double complex
 	double complex temp_sum = 0.0;
 	double err;
 
 	// initialze omega with random values from 0 to 2*pi
-	for(long int i=0; i<D; i++) {
+	for(unsigned int i=0; i<D; i++) {
 		omega[i] = (rand()%N)*2*M_PI/N;
 	}
 	// calculate exponentials depending on coordinates and omega
 	for(long int i=0; i<L; i++) {
 		index2coord(coord, i, N, D);
-		arr[i] = cexp(I*dot_product((double complex) *coord, omega, D));
+		for(unsigned int d=0; d<D; d++) {
+			coord_c[d] = (double complex) coord[d]; // cast coordinates to double complex and save in coor_c
+		}
+		arr[i] = cexp(I*dot_product(coord_c, omega, D));
 	}
 	//calculate the laplacian with implemented function
 	laplacian(res, arr, N, D);
@@ -115,6 +119,7 @@ void check_exp() {
 	free(ref);
 	free(omega);
 	free(coord);
+	free(coord_c);
 }
 
 int main(){
