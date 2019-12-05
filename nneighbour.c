@@ -14,6 +14,7 @@ Valid values:
 #include <stdio.h>
 #include <stdlib.h>
 #include "vmath.h"
+#include "indices.h" // added by Tim
 
 long int nneighbour(long int index, unsigned int axis, int dir, long int N, unsigned int D)
 {
