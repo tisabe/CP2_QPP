@@ -21,7 +21,7 @@ void check_constant() {
 	arr = malloc(L*sizeof(double complex));
 	res = malloc(L*sizeof(double complex));
 	printf("arr and res allocated\n");
-	long int *neighbours = malloc(2*D*N*sizeof(long int));
+	long int *neighbours = malloc(2*L*sizeof(long int));
 	nneighbour_init(neighbours, N, D);
 	printf("Memory alloc complete\n");
 	for(long int i=0; i<L; i++) {
@@ -45,7 +45,7 @@ void check_sine() {
 	arr = malloc(L*sizeof(double complex)); // input array
 	res = malloc(L*sizeof(double complex)); // output array of laplacian
 	ref = malloc(L*sizeof(double complex)); // reference array with analytical result
-	long int *neighbours = malloc(2*D*N*sizeof(long int));
+	long int *neighbours = malloc(2*L*sizeof(long int));
 	nneighbour_init(neighbours, N, D);
 	//printf("mem allocation complete");
 	long int *coord;
@@ -83,6 +83,9 @@ void check_sine() {
 }
 
 void check_exp() {
+	/* We want to calculate the discretized laplacian analytically for a function f(\vec{omega})=e^{vec{n}\dot\vec{omega}}.
+	The expected result is Laplacian(f)(\vec{n})=2*e^{vec{n}\dot\vec{omega}*\sum^{D-1}_{i=0}cos(\omega_i)-1. 
+	The absolute difference between function result and analytical result is printed as a measure if the laplacian is computed as intended.*/
 	printf("Checking analytical solution of exponential function e^(inw)...\n");
 	long int N = 101;
 	unsigned int D = 3;
@@ -95,7 +98,7 @@ void check_exp() {
 	double complex *coord_c = malloc(D*sizeof(double complex)); // array to cast coord into double complex
 	double complex temp_sum = 0.0;
 	double err;
-	long int *neighbours = malloc(2*D*N*sizeof(long int));
+	long int *neighbours = malloc(2*L*sizeof(long int));
 	nneighbour_init(neighbours, N, D);
 
 	// initialze omega with random values from 0 to 2*pi
@@ -116,9 +119,9 @@ void check_exp() {
 	for(long int i=0; i<L; i++) {
 		temp_sum = 0;
 		for(unsigned int d=0; d<D; d++) {
-			temp_sum += sin(omega[d]) - 1;
+			temp_sum += cos(omega[d]) - 1;
 		}
-		ref[i] = arr[i]*temp_sum;
+		ref[i] = 2*arr[i]*temp_sum;
 	}
 	sub_vec(res, ref, res, L);
 	err = abs_vec(res, L);
