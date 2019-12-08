@@ -6,6 +6,7 @@
 #include "vmath.h"
 #include "laplacian.h"
 #include "indices.h"
+#include "nneighbour.h"
 
 
 void check_constant() {
@@ -19,10 +20,15 @@ void check_constant() {
 	double err;
 	arr = malloc(L*sizeof(double complex));
 	res = malloc(L*sizeof(double complex));
+	printf("arr and res allocated\n");
+	long int *neighbours = malloc(2*D*N*sizeof(long int));
+	nneighbour_init(neighbours, N, D);
+	printf("Memory alloc complete\n");
 	for(long int i=0; i<L; i++) {
 		arr[i] = 10.0;
 	}
-	laplacian(res, arr, N, D);
+	laplacian(res, neighbours, arr, N, D);
+	printf("Laplacian computed\n");
 	err = abs_vec(res, L);
 	printf("Absolute magnitude of Laplacian of flat array: %.2e\n", err);
 	free(arr);
@@ -39,6 +45,8 @@ void check_sine() {
 	arr = malloc(L*sizeof(double complex)); // input array
 	res = malloc(L*sizeof(double complex)); // output array of laplacian
 	ref = malloc(L*sizeof(double complex)); // reference array with analytical result
+	long int *neighbours = malloc(2*D*N*sizeof(long int));
+	nneighbour_init(neighbours, N, D);
 	//printf("mem allocation complete");
 	long int *coord;
 	coord = malloc(D*sizeof(long int)); // coordinate array
@@ -63,7 +71,7 @@ void check_sine() {
 		}
 	}
 
-	laplacian(res, arr, N, D);
+	laplacian(res, neighbours, arr, N, D);
 	sub_vec(res, ref, res, L);
 	err = abs_vec(res, L);
 	printf("Absolute error magnitude of Laplacian of sine sum array: %.2e\n", err);
@@ -87,6 +95,8 @@ void check_exp() {
 	double complex *coord_c = malloc(D*sizeof(double complex)); // array to cast coord into double complex
 	double complex temp_sum = 0.0;
 	double err;
+	long int *neighbours = malloc(2*D*N*sizeof(long int));
+	nneighbour_init(neighbours, N, D);
 
 	// initialze omega with random values from 0 to 2*pi
 	for(unsigned int i=0; i<D; i++) {
@@ -101,7 +111,7 @@ void check_exp() {
 		arr[i] = cexp(I*dot_product(coord_c, omega, D));
 	}
 	//calculate the laplacian with implemented function
-	laplacian(res, arr, N, D);
+	laplacian(res, neighbours, arr, N, D);
 	// calculate the analytical laplacian
 	for(long int i=0; i<L; i++) {
 		temp_sum = 0;
