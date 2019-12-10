@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "kinetic.h"
-#include "potential.h"
+#include "potentials.h"
 
 void hamiltonian(double complex *out, double complex *in, long int N, unsigned int D, long int L, double m, double epsilon, int ext_potential_type){
   /*Calculate the kinetic part*/
@@ -18,6 +18,6 @@ void hamiltonian(double complex *out, double complex *in, long int N, unsigned i
     out[i] = phi_kinetic[i]+phi_harmonic[i];
   }
 
-  free phi_kinetic
-  free phi_potential
+  free(phi_kinetic);
+  free(phi_potential);
 }

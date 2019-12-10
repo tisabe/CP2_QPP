@@ -21,7 +21,7 @@ void euler_method(double complex *out, double complex *in, long int N, unsigned 
     }
 
     // For loop that is being executed until the simulation length specified in total_length (to be given in 1/E_H approx 2.4 * 10^{-17} s) is reached
-    for(int t=0; (t * tau) < total_time; t++){
+    for(int t=0; (t * tauhat) < total_time; t++){
         // Calculate H(psi)
         hamiltonian(ham_out,out,N,D,L);
         // psi^{q+1} = psi^q - i tau H(psi^q)
