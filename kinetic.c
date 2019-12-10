@@ -9,7 +9,7 @@ void kinetic(double complex *out, long int *neighbours, double complex *in, long
   laplacian(phi_laplacian, neighbours, in, N, D);
 
   /*calculate the kinetic term for in */
-  for(int i=0; i<L; i++){
+  for (int i=0; i<L; i++) {
     out[i] = -1/(2*m)*phi_laplacian[i];
   }
 
