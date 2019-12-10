@@ -9,7 +9,7 @@ void phi(double complex *out, long int N, long int D, long int L, int type){
 	long int *phi_coords;
   phi_coords = malloc(D*sizeof(long int));
 
-	if (type==0){
+	if(type==0){
 		/* initialise wave function with ones */
 		for(i=0;i<L:i++){
 			out[i]=1
@@ -23,7 +23,7 @@ void phi(double complex *out, long int N, long int D, long int L, int type){
 		}
 	}
 
-	if (type==1){
+	if(type==1){
 		/* wave function as square of coordinates with fixed imaginary parts*/
 		for(i=0;i<L;i++){
 			index2coord(phi_coords,i,N,D);
@@ -33,7 +33,7 @@ void phi(double complex *out, long int N, long int D, long int L, int type){
 		}
 	}
 
-	if (type==2){
+	if(type==2){
 		/* wave function as 1/abs(phi_coords) with fixed imaginary parts*/
 		for(i=0;i<L;i++){
 			index2coord(phi_coords,i,N,D);
