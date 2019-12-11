@@ -5,3 +5,7 @@ indices_test: indices_test.c indices.c
 laplacian_test: laplacian_test.c vmath.c laplacian.c indices.c nneighbour.c
 	gcc laplacian_test.c vmath.c laplacian.c indices.c nneighbour.c -o laplacian_test.exe -O2 -std=c99
 	./laplacian_test.exe
+
+mainfile: main.c euler_method.c vmath.c hermite_polynomial.c indices.c hamiltonian.c
+	gcc -lm main.c euler_method.c vmath.c hermite_polynomial.c indices.c hamiltonian.c -o main.exe
+	./main.exe
