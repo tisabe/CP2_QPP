@@ -13,7 +13,7 @@ static void f_eta(double complex *out_eta, double complex *in_eta, long int L, d
 static void f_psi(double complex *out_psi, double complex *in_psi, long int L, double tau) {
   hamiltonian(out_psi, in_psi, );
   hamiltonian(out_psi, out_psi, );
-  scalar_vec(out_psi, out_psi, (-1)*1Im*tau/2, L);
+  scalar_vec(out_psi, out_psi, (-1)*1I*tau/2, L);
   add_vec(out_psi, out_psi, in_psi, L);
 }
 
