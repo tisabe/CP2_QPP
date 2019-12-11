@@ -29,7 +29,7 @@ double boxpotential0(long int index, int height, long int N, unsigned int D) {
     for (int i=0; i<D; i++) {
         if(fabs(coordinates[i])<N/4){
             boxy=boxy;
-        else
+        }else{
             boxy=height;
             break;
             }
@@ -50,7 +50,7 @@ double potentialwell(int height, long int N, unsigned int D) {
     for (int i=0; i<D; i++) {
         if(i>N/4+N * int (i/N) && i< 3/4*N+N * int (i/N)){
             boxy[i]=0;
-        else
+        }else{
             boxy[i]=height;
             }
     return boxy;
