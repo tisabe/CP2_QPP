@@ -63,6 +63,14 @@ double abs_vec(double complex *in, long int L) {
   return (cabs(dot_product(in, in, L)));
 }
 
+long int fact(int n){
+    long int res = 1;
+    for(int i=1; i<=n; i++){
+        res *= i;
+    }
+    return res;
+}
+
 void cg(double complex *out, void (*f)(double complex */*out*/, double complex */*in*/, long int/*L*/), double complex *in, int max_iter, double tol, long int L) {
 /*this will perform the conjugate gradient algorithm to find x for y=f(x),
 where f is a positive, "matrix-like" function. y is passed as in,
