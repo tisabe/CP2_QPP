@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <complex.h>
 #include "laplacian.h"
 
 /*calculates the kinetic part of the hamiltonian given the parameter m*/

@@ -1,4 +1,5 @@
-#include  "vmath.h"
+#include "vmath.h"
+#include "indices.h"
 #include <complex.h>
 #include <stdlib.h>
 #include <math.h>
@@ -61,4 +62,3 @@ void well(double *wellpotential, int height, long int N, unsigned int D){
       wellpotential[i]=potentialwell( i, height, N, D);
   }
 }
-

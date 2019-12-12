@@ -12,6 +12,7 @@ void laplacian(double complex *out, double complex *in, long int N, unsigned int
 
     //Check if parameters for neighbours array have changed. If yes, calculate the array again
     if((neighbours == NULL) || (prev_N != N) || (prev_D != D)){
+        free(neighbours);
         L = ipow(N,D);
         neighbours = malloc(2*D*L*sizeof(long int));
         nneighbour_init(neighbours,N,D);

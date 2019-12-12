@@ -30,7 +30,7 @@ void wikipedia_test(){
   in[0] = 1;
   in[1] = 2;
 
-  cg(out,matrix_generator(out_func, in_func, L), in, max_iter, tol, N, D);
+  cg(out,matrix_generator, in, max_iter, tol, N, D);
 
   printf("[%i, %i]\n",out[0],out[1]);
 
