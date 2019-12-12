@@ -14,19 +14,17 @@ void check_constant() {
 	long int N = 1001;
 	unsigned int D = 1;
 	long int L = ipow(N, D);
-	printf("Length of array: %d\n", L);
 	double complex *arr;
 	double complex *res;
 	double err;
 	arr = malloc(L*sizeof(double complex));
 	res = malloc(L*sizeof(double complex));
-	printf("arr and res allocated\n");
-	printf("Memory alloc complete\n");
+	printf("Size of double: %d\n", sizeof(double));
+
 	for(long int i=0; i<L; i++) {
 		arr[i] = 10.0;
 	}
-	laplacian(res, arr, N, D, L);
-	printf("Laplacian computed\n");
+	laplacian(res, arr, N, D);
 	err = abs_vec(res, L);
 	printf("Absolute magnitude of Laplacian of flat array: %.2e\n", err);
 	free(arr);
@@ -67,7 +65,7 @@ void check_sine() {
 		}
 	}
 
-	laplacian(res, arr, N, D, L);
+	laplacian(res, arr, N, D);
 	sub_vec(res, ref, res, L);
 	err = abs_vec(res, L);
 	printf("Absolute error magnitude of Laplacian of sine sum array: %.2e\n", err);
@@ -107,7 +105,7 @@ void check_exp() {
 		arr[i] = cexp(I*dot_product(coord_c, omega, D));
 	}
 	//calculate the laplacian with implemented function
-	laplacian(res, arr, N, D, L);
+	laplacian(res, arr, N, D);
 	// calculate the analytical laplacian
 	for(long int i=0; i<L; i++) {
 		temp_sum = 0;

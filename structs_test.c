@@ -1,22 +1,31 @@
 #include <stdio.h>
-#include <complex.h>
+#include <stdlib.h>
 
-#include "vmath.c"
 #include "structs.h"
+#include "vmath.h"
 
-/*This is just a little test to see if the structs file works as intended*/
+/*This is just a little test to see if the structs file works as intended
+and as a demonstration how to use it.*/
 
-int main(int argc, char const *argv[]) {
+void func(parameters f_params) {
+  printf("Testing parameters passed to function...\n");
+  f_params.pot[1]++;
+  printf("params.pot[0] = %.2e\n", f_params.pot[1]);
+}
+
+int main() {
   printf("Testing parameters struct...\n");
   unsigned int D = 3;
   long int N = 100;
-  struct parameters params;
+  parameters params;
   params.N = N;
   printf("params.N = %d\n", N);
   params.D = D;
   printf("params.D = %d\n", D);
-  params.pot = malloc(ipow(N,D)*sizeof(double complex));
-  params.pot[0] = (double complex) 10.0;
+  //params.pot = malloc(ipow(N,D)*sizeof(double complex));
+  params.pot = malloc(ipow(N,D)*sizeof(double));
+  params.pot[0] = 10.0;
   printf("params.pot[0] = %.2e\n", params.pot[0]);
+  func(params);
   return 0;
 }
