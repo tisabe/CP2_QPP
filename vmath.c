@@ -127,7 +127,6 @@ parameters:   input:
     assign_vec(x, x_next, L);
     assign_vec(r, r_next, L);
     k++;
-    printf("[%lf+%lf i]\n", creal(x[0]), cimag(x[1])); //Remove after debugging
   }
 
   assign_vec(out, x, L);
