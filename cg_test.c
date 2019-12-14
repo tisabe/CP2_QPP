@@ -4,13 +4,12 @@
 
 #include "vmath.h"
 
-void cg(double complex *out, void (*f)(double complex *, double complex *, long int L), double complex *in, int max_iter, double tol, long int N, unsigned int D);
 
 void matrix_generator(double complex *out, double complex *in, long int L){
-  out[0] = 4;
-  out[1] = 1;
-  out[2] = 1;
-  out[3] = 3;
+  out[0] = 4.0 + 0*I;
+  out[1] = 1.0 + 0*I;
+  out[2] = 1.0 + 0*I;
+  out[3] = 3.0 + 0*I;
 }
 
 void wikipedia_test(){
@@ -23,21 +22,21 @@ void wikipedia_test(){
   long int L = ipow(N,D);
 
   double complex *out = malloc(L*sizeof(double complex));
-  double complex *in = malloc(L*sizeof(double complex));
-  double complex *out_func = malloc(L*sizeof(double complex));
-  double complex *in_func = malloc(L*sizeof(double complex));
+  double complex *in = malloc(N*sizeof(double complex));
+  //double complex *out_func = malloc(L*sizeof(double complex));
+  //double complex *in_func = malloc(N*sizeof(double complex));
 
-  in[0] = 1;
-  in[1] = 2;
+  in[0] = 1 + 0*I;
+  in[1] = 2 + 0*I;
 
-  cg(out,matrix_generator, in, max_iter, tol, N, D);
+  cg(out, matrix_generator, in, max_iter, tol, L);
 
-  printf("[%i, %i]\n",out[0],out[1]);
+  printf("[%lf+%lf i, %lf+%lf i]\n",creal(out[0]),cimag(out[0]),creal(out[1]),cimag(out[1]));
 
   free(out);
   free(in);
-  free(out_func);
-  free(in_func);
+  //free(out_func);
+  //free(in_func);
 }
 
 int main(){
