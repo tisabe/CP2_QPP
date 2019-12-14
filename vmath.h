@@ -9,4 +9,4 @@ void assign_vec(double complex *out, double complex *in, long int L);
 void set_zero(double complex *in, long int L);
 double abs_vec(double complex *in, long int L);
 long int fact(int n);
-void cg(double complex *out, void (*f)(double complex *, double complex *, long int L), double complex *in, int max_iter, double tol, long int N, unsigned int D);
+void cg(double complex *out, void (*f)(double complex *, double complex *, long int L), double complex *in, int max_iter, double tol, long int L);
