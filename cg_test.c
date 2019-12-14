@@ -6,10 +6,8 @@
 
 
 void matrix_generator(double complex *out, double complex *in, long int L){
-  out[0] = 4.0 + 0*I;
-  out[1] = 1.0 + 0*I;
-  out[2] = 1.0 + 0*I;
-  out[3] = 3.0 + 0*I;
+  out[0] = 4.0*in[0] + 1.0*in[1];
+  out[1] = 1.0*in[0] + 3.0*in[1];
 }
 
 void wikipedia_test(){
