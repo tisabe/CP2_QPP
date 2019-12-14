@@ -3,6 +3,7 @@ required in the QPP problem*/
 
 #include <complex.h>
 #include <stdlib.h>
+#include "structs.h"
 
 long int ipow(long int base, unsigned int exp) {
 /*integer power function so math does not need to be included*/
@@ -28,6 +29,13 @@ void scalar_vec(double complex *out, double complex *vec, double complex s, long
 /*returns the product of a scalar s and a vector vec*/
   for(long int i=0; i<L; i++) {
     out[i] = s*vec[i];
+  }
+}
+
+void mul_element(double complex *out, double complex *w, double complex *v, long int L) {
+/*returns the elementwise multiplication of two complex vectors v, w*/
+  for(long int i=0; i<L; i++) {
+    out[i] = v[i]*w[i];
   }
 }
 
@@ -71,7 +79,7 @@ long int fact(int n){
     return res;
 }
 
-void cg(double complex *out, void (*f)(double complex */*out*/, double complex */*in*/, long int/*L*/), double complex *in, int max_iter, double tol, long int L) {
+void cg(double complex *out, void (*f)(double complex */*out*/, double complex */*in*/, parameters /*params*/), double complex *in, parameters params) {
 /*this will perform the conjugate gradient algorithm to find x for y=f(x),
 where f is a positive, "matrix-like" function. y is passed as in,
 f as a function pointer *f and x is saved in out. The maximum number of
@@ -84,15 +92,9 @@ parameters:   input:
                   in(f): input vector of function f, double complex *
                   L(f): length of input vector, long int
                 in: input vector y for the cg, double complex *
-                tol: tolerance to which the result should be exact, double
-                max_iter: maximum number of iterations to perform the cg, int
-                L: length of input and output arrays, long int
-
-
-
-
-
+                params: input parameters, struct parameters
 */
+  long int L = params.L;
   double complex * x = malloc(L * sizeof(double complex));
   double complex * x_next = malloc(L * sizeof(double complex));
   double complex * r =  malloc(L * sizeof(double complex));
@@ -109,12 +111,12 @@ parameters:   input:
   set_zero(x, L);
   set_zero(x_next, L);
   set_zero(r_next, L);
-  (*f)(z, x, L);
+  (*f)(z, x, params);
   sub_vec(r, in, z, L);
   assign_vec(d, r, L);
 
-  while((k < max_iter) && (abs_vec(r, L)>tol)) {
-    (*f)(z, d, L);
+  while((k < params.max_iter) && (abs_vec(r, L)>params.tol)) {
+    (*f)(z, d, params);
     alpha = dot_product(r_next, r_next, L)/dot_product(r, z, L);
     scalar_vec(temp, d, alpha, L);
     add_vec(x_next, x, temp, L);
