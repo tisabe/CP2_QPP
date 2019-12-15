@@ -4,6 +4,7 @@ required in the QPP problem*/
 #include <complex.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 #include "structs.h"
 
 long int ipow(long int base, unsigned int exp) {
@@ -69,7 +70,7 @@ void set_zero(double complex *in, long int L) {
 }
 
 double abs_vec(double complex *in, long int L) {
-  return (cabs(dot_product(in, in, L)));
+  return sqrt(creal(dot_product(in, in, L)));
 }
 
 long int fact(int n){
