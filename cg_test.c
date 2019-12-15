@@ -8,14 +8,14 @@
 #include "structs.h"
 #include "vmath.h"
 
+/* This test creates a matrix filled with random complex numbers with cabs(z) <= 1/sqrt(2).
+This matrix is then hermitian transposed and added to itself to make it a hermitian matrix with all entries cabs(z) <= 1.
+Adding a diagonal matrix of N*eye(N) forces the matrix to be positive definite due to properties of strictly diagonally dominant matrices.*/
 
+//Function to return random doubles between 0.0 and 1.0
 double random_double(){
     return (double)rand()/RAND_MAX;
 }
-
-/* This test creates a matrix filled with random complex numbers with cabs(z) <= 1/sqrt(2).
-This matrix is then hermitian transposed and added to itself to make it a hermitian matrix with all entries cabs(z) <= 1.
-Adding a diagonal matrix of N*eye(N) forces the matrix to be positive definite.*/
 
 void random_matrix(double complex *out, double complex *in, parameters params){
     static double complex *matrix = NULL;
@@ -38,9 +38,9 @@ void random_matrix(double complex *out, double complex *in, parameters params){
 
         printf("Matrix generated\n");
 
-        //Add the hermitian transposed of the random matrix to itself to make it hermitian
-        // Proof: H = M + M^dagger
-        //        H^dagger = (M + M^dagger)^dagger = M^dagger + (M^dagger)^dagger = M^dagger + M = H
+        /* Add the hermitian transposed of the random matrix to itself to make it hermitian
+        Proof: H = M + M^dagger
+               H^dagger = (M + M^dagger)^dagger = M^dagger + (M^dagger)^dagger = M^dagger + M = H */
         hermtransp_quadr_matrix(transp, matrix, params.N);
 
         printf("Matrix transposed\n");
@@ -49,14 +49,14 @@ void random_matrix(double complex *out, double complex *in, parameters params){
 
         printf("Matrices added\n");
 
-        //Add the N*eye(N) to make the matrix positive definite.
-        //A diagonally dominant matrix with all diagonal entries > 0  are strictly positive definite
-        //Diagonally dominant Matrix: |a_{ii}| > \sum_{j!=i} |a_{ij}| \forall i
+        /* Add the N*eye(N) to make the matrix positive definite.
+        A diagonally dominant matrix with all diagonal entries > 0  are strictly positive definite.
+        A diagonally dominant matrix is defined by: |a_{ii}| > \sum_{j!=i} |a_{ij}| \forall i */
         for(int i=0; i<params.N; i++){
             matrix[i*params.N+i] += params.N;
         }
 
-        printf("Eye added\n\nCG starting\n");
+        printf("N * Unit matrix added\n\nCG starting\n");
 
         free(transp);
         Nprev = params.N;
@@ -69,8 +69,11 @@ void random_matrix(double complex *out, double complex *in, parameters params){
 void random_matrix_test(){
   //Set simulation parameters
   parameters params;
-  params.N = 10000;                     //Set length of one side of the matrix here
-  params.D = 1;
+
+  //Set array size to run the test with
+  printf("Please specify the length of the array to run the test with (memory scales with N**2). N = ");
+  scanf("%li",&params.N);               //Choose array length
+  params.D = 1;                         //Set number of dimensions to 1. Only meaningful for interpretation of the flat output array as a matrix.
   params.max_iter = 100;                //Set the maximum number of iterations of the cg algorithm
   params.tol = DBL_EPSILON;             //Set the tolerance level to quit the cg algorithm. Best possible: DBL_PRECISION (macro from float.h)
   params.L = ipow(params.N,params.D);
@@ -95,13 +98,12 @@ void random_matrix_test(){
 
   //Calculate the maximum relative error of the solution with respect to the analytical solution.
   //max_error = max( ((Ax)_i-b_i)/b_i )
-  printf("\nMaximum Relative Error max(((Ax)_i-b_i)/b_i) = \n");
   for(int i=0; i<params.N; i++){
     if(cabs(check_res[i]/start_vec[i]-1) > max_error){
         max_error = cabs(check_res[i]/start_vec[i]-1);
     }
   }
-  printf("%e\n",max_error);
+  printf("\nMaximum Relative Error: max(((Ax)_i-b_i)/b_i) = %e\n",max_error);
 
   free(result_cg);
   free(start_vec);
@@ -109,13 +111,12 @@ void random_matrix_test(){
 }
 
 int main(){
+  //Set seed for the random number generator
   srand(time(NULL));
-  double time_spent = 0.0;
-  clock_t begin = clock();
-  //wikipedia_test_exp();
+
+  printf("\n*******Testing the CG algorithm with a randomly generated input*******\n\n");
+  //Start testing CG with a random hermitian strictly positive definite matrix A and a random complex vector b to solve Ax=b for x
   random_matrix_test();
-  clock_t end = clock();
-  time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
-  printf("Time elpased is %f seconds\n\n\n", time_spent);
+
   return 0;
 }
