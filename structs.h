@@ -9,5 +9,9 @@ typedef struct parameters_tag {
   double tau; // length of time step
   double mhat; // natural parameter m^ = m*epsilon*a^2/hbar^2
   double tol; // numerical tolerance for solvers (atm. for to cg method)
-  double max_iter; // maximum number of iterations to perform (atm. for to cg method)
+  long int max_iter; // maximum number of iterations to perform (atm. for to cg method)
+  double total_time; //Time that the simulation should run for
+  double epsilon; //Energy scale
+  double parameter; //Omega in a harmonic potential
+  int ext_potential_type; //External potential type
 } parameters /*name to reference struct*/;
