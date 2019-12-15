@@ -72,20 +72,20 @@ void box(double *boxpotential, int height, long int N, unsigned int D){
 
 
 
-double potentialwell(int height, long int N, unsigned int D) {
+long int potentialwell(int height, long int N, unsigned int D) {
     long int * boxy= malloc(ipow(N, D) * sizeof(long int));
     for (int i=0; i<D; i++) {
-        if(i>N/4+N * int (i/N) && i< 3/4*N+N * int (i/N)){
+        if(i>N/4+N * (int) (i/N) && i< 3/4*N+N * (int) (i/N)){
             boxy[i]=0;
         }else{
             boxy[i]=height;
             }
-    return boxy;
-  }
+    }
+  return *boxy;
 }
 void well(double *wellpotential, int height, long int N, unsigned int D){
   for (int i=0; i<ipow(N, D); i++) {
-      wellpotential[i]=potentialwell( i, height, N, D);
+      wellpotential[i]=potentialwell(height, N, D);
   }
 }
 
@@ -112,7 +112,7 @@ void hamiltonian(double complex *out, double complex *in, long int N, unsigned i
 
 
 
-  /*Calculte the Hamiltonian of in */
+  /*Calculate the Hamiltonian of in */
   for (int i=0; i<L; i++) {
         /*Calculates the hamiltonian of wwave vector in at index i  */
     out[i] = phi_kinetic[i]+1/epsilon*phi_potential[i]*in[i];
@@ -126,6 +126,7 @@ void hamiltonian_exp(double complex *out, double complex *in, parameters params)
   /* rewritten hamiltonian with structs by Tim, untested*/
   /*Calculate the kinetic part*/
   double complex *phi_kinetic= malloc(params.L*sizeof(double complex));
+
   kinetic_exp(phi_kinetic, in, params); // calculate T*phi and store it in phi_kinetic
   mul_element(out, params.pot, in, params.L); // calculate V*phi and store it in out
   add_vec(out, out, phi_kinetic, params.L);
