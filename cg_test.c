@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <float.h>
 #include <time.h>
+#include <math.h>
 
 #include "structs.h"
 #include "vmath.h"
@@ -52,8 +53,7 @@ void wikipedia_test_exp(){
 /*Include some good random number generator here*/
 
 double random_double(){
-    srand(time(NULL));
-    return rand()/RAND_MAX;
+    return (double)rand()/RAND_MAX;
 }
 
 /* This test creates a matrix filled with random complex numbers with cabs(z) <= 1/sqrt(2).
@@ -64,25 +64,42 @@ void random_matrix(double complex *out, double complex *in, parameters params){
     static double complex *matrix = NULL;
     static long int Nprev;
 
-    //Intialise the random matrix once and keep it until the parameter N of the system changes
+    //Initialise the random matrix once and keep it until the parameter N of the system changes
     if((matrix == NULL) || (Nprev != params.N)){
         free(matrix);
         matrix = malloc(params.L*sizeof(double complex));
         double complex *transp = malloc(params.L*sizeof(double complex));
 
         //Generate a random matrix filled with complex numbers of Re(z) in {-.5, .5} and Im(z) in {-.5,.5}.
-        for(int i=0; i<params.L; i++){
-            matrix[i] = (random_double() - 1) + (random_double() - 1) * I;
+        for(long int i=0; i<params.L; i++){
+            matrix[i] = (random_double() - 0.5) + (random_double() - 0.5) * I;
         }
+
+        for(int i=0; i<params.N; i++){
+            matrix[params.N*i+i] = random_double() + 0.0 * I;
+        }
+
+        printf("Matrix generated\n");
 
         //Add the hermitian transposed of the random matrix to itself to make it hermitian
+        // Proof: H = M + M^dagger
+        //        H^dagger = (M + M^dagger)^dagger = M^dagger + (M^dagger)^dagger = M^dagger + M = H
         hermtransp_quadr_matrix(transp, matrix, params.N);
-        add_vec(out, transp, matrix, params.L);
 
-        //Add the N*eye(N) to make the matrix positive definite
+        printf("Matrix transposed\n");
+
+        add_vec(matrix, transp, matrix, params.L);
+
+        printf("Matrices added\n");
+
+        //Add the N*eye(N) to make the matrix positive definite.
+        //A diagonally dominant matrix with all diagonal entries > 0  are strictly positive definite
+        //Diagonally dominant Matrix: |a_{ii}| > \sum_{j!=i} |a_{ij}| \forall i
         for(int i=0; i<params.N; i++){
-            out[i*params.N+i] += params.N;
+            matrix[i*params.N+i] += params.N;
         }
+
+        printf("Eye added\n\nCG starting\n");
 
         free(transp);
         Nprev = params.N;
@@ -95,41 +112,52 @@ void random_matrix(double complex *out, double complex *in, parameters params){
 void random_matrix_test(){
 
   parameters params;
-  params.N = 5;
+  params.N = 10000;
   params.D = 2;
-  params.max_iter = 100;
+  params.max_iter = 10000;
   params.tol = DBL_EPSILON;
   params.L = ipow(params.N,params.D);
 
-  double complex *out = malloc(params.L*sizeof(double complex));
-  double complex *in = malloc(params.N*sizeof(double complex));
+  double complex *result_cg = malloc(params.N*sizeof(double complex));
+  double complex *start_vec = malloc(params.N*sizeof(double complex));
   double complex *check_res = malloc(params.N*sizeof(double complex));
 
+  double max_error = 0.0;
+
   for(int i=0; i<params.N; i++){
-    in[i] = random_double();
+    start_vec[i] = (double complex)(rand()-0.5*RAND_MAX + (rand()-0.5*RAND_MAX) * I);
   }
 
-  cg(out, random_matrix, in, params);
+  cg(result_cg, random_matrix, start_vec, params);
 
-  printf("x = \n");
+  /*printf("\nx = \n");
   for(int i=0; i<params.N; i++){
-    printf("[%lf+%lf i]\n",creal(out[i]),cimag(out[i]));
-  }
+    printf("[%e%+e i]\n",creal(result_cg[i]),cimag(result_cg[i]));
+  }*/
 
-  random_matrix(check_res, out, params);
+  random_matrix(check_res, result_cg, params);
 
-  printf("\n\nA*x-b = \n");
+  printf("\nMax_Error(A*x-b) = \n");
   for(int i=0; i<params.N; i++){
-    printf("%e\n",cabs(check_res[i]-in[i]));
+    if(cabs(check_res[i]-start_vec[i]) > max_error){
+        max_error = cabs(check_res[i]-start_vec[i]);
+    }
   }
+  printf("%e\n",max_error);
 
-  free(out);
-  free(in);
+  free(result_cg);
+  free(start_vec);
   free(check_res);
 }
 
 int main(){
-  wikipedia_test_exp();
-  //random_matrix_test();
+  srand(time(NULL));
+  double time_spent = 0.0;
+  clock_t begin = clock();
+  //wikipedia_test_exp();
+  random_matrix_test();
+  clock_t end = clock();
+  time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
+  printf("Time elpased is %f seconds\n\n\n", time_spent);
   return 0;
 }
