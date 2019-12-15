@@ -67,11 +67,11 @@ void random_matrix(double complex *out, double complex *in, parameters params){
     //Initialise the random matrix once and keep it until the parameter N of the system changes
     if((matrix == NULL) || (Nprev != params.N)){
         free(matrix);
-        matrix = malloc(params.L*sizeof(double complex));
-        double complex *transp = malloc(params.L*sizeof(double complex));
+        matrix = malloc(ipow(params.N,2)*sizeof(double complex));
+        double complex *transp = malloc(ipow(params.N,2)*sizeof(double complex));
 
         //Generate a random matrix filled with complex numbers of Re(z) in {-.5, .5} and Im(z) in {-.5,.5}.
-        for(long int i=0; i<params.L; i++){
+        for(long int i=0; i<ipow(params.N,2); i++){
             matrix[i] = (random_double() - 0.5) + (random_double() - 0.5) * I;
         }
 
@@ -88,7 +88,7 @@ void random_matrix(double complex *out, double complex *in, parameters params){
 
         printf("Matrix transposed\n");
 
-        add_vec(matrix, transp, matrix, params.L);
+        add_vec(matrix, transp, matrix, ipow(params.N,2));
 
         printf("Matrices added\n");
 
@@ -113,7 +113,7 @@ void random_matrix_test(){
 
   parameters params;
   params.N = 10000;
-  params.D = 2;
+  params.D = 1;
   params.max_iter = 10000;
   params.tol = DBL_EPSILON;
   params.L = ipow(params.N,params.D);
