@@ -79,6 +79,23 @@ long int fact(int n){
     return res;
 }
 
+void mat_vec_mul(double complex *out, double complex *mat, double complex *vec, long int N){ //N is the length of the vector
+    set_zero(out, N);
+    for(int i=0; i<N; i++){
+        for(int j=0; j<N; j++){
+            out[i] += mat[N*i+j] * vec[j];
+        }
+    }
+}
+
+void hermtransp_quadr_matrix(double complex *out, double complex *in, long int N){ //N is the length of one size
+    for(int i=0; i<N; i++){
+        for(int j=0; j<N; j++){
+            out[i*N+j] = (~(in[j*N+i]));
+        }
+    }
+}
+
 void cg(double complex *out, void (*f)(double complex */*out*/, double complex */*in*/, parameters /*params*/), double complex *in, parameters params) {
 /*this will perform the conjugate gradient algorithm to find x for y=f(x),
 where f is a positive, "matrix-like" function. y is passed as in,
