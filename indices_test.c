@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "indices.h"
 
-// No real test routines implemented yet. Just looping over all indices and printing their coordinates.
+#include "structs.h"
+#include "indices.h"
+#include "vmath.h"
 
 long int setN(){
   long int N;
