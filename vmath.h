@@ -10,4 +10,6 @@ void assign_vec(double complex *out, double complex *in, long int L);
 void set_zero(double complex *in, long int L);
 double abs_vec(double complex *in, long int L);
 long int fact(int n);
+void mat_vec_mul(double complex *out, double complex *mat, double complex *vec, long int N);
+void hermtransp_quadr_matrix(double complex *out, double complex *in, long int N);
 void cg(double complex *out, void (*f)(double complex *, double complex *, parameters), double complex *in, parameters params);
