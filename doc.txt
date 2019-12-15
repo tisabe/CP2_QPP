@@ -79,6 +79,7 @@ POTENTIALWELL (Mahni,w wip)
 	input:  height, N, D							int, int, int
 	output: potential of a box in an array with the size of N**D		double
 	Test: ? wip
+
 euler_method (Lennart, to be tested)
 	input:
 		*out: psi after (total_time/tauhat) time steps			double complex array of size L
@@ -103,8 +104,7 @@ cg (Conjugate Gradient in vmath, Tim, to be tested)
 		L: N**D								long int
 	output:
 		void
-	Test: ???
-	// Comments: free(temp) missing, check first iteration in while loop - should be dot_product(r,z,L)??
+	Test: Lennart, successfully tested with solving for x with random herm. str. pos. def. matrix A and random vector b in Ax=b
 
 vmath (Tim, to be tested)
 	many different functions
