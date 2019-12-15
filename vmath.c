@@ -5,6 +5,7 @@ required in the QPP problem*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+
 #include "structs.h"
 
 long int ipow(long int base, unsigned int exp) {
@@ -148,6 +149,9 @@ parameters:   input:
     assign_vec(x, x_next, L);
     assign_vec(r, r_next, L);
     k++;
+  }
+  if (k <= params.max_iter) {
+    printf("Maximum number of iterations (%d) reached, aborting calculation at precision (relative error) %e\n", params.max_iter, abs_vec(r,L)/abs_vec(x,L));
   }
 
   assign_vec(out, x, L);
