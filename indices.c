@@ -1,7 +1,9 @@
 /*totally unfinished and untested*/
 
 #include <stdio.h>
+#include "structs.h"
 #include "vmath.h"
+
 /*
     int result = 1;
 
