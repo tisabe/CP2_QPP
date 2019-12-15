@@ -130,11 +130,6 @@ void random_matrix_test(){
 
   cg(result_cg, random_matrix, start_vec, params);
 
-  /*printf("\nx = \n");
-  for(int i=0; i<params.N; i++){
-    printf("[%e%+e i]\n",creal(result_cg[i]),cimag(result_cg[i]));
-  }*/
-
   random_matrix(check_res, result_cg, params);
 
   printf("\nMax_Error(A*x-b) = \n");
