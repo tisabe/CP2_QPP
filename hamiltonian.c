@@ -6,50 +6,9 @@
 #include "indices.h"
 #include "laplacian.h"
 #include "structs.h"
-
-void hamiltonian(double complex *out, double complex *in, long int N, unsigned int D, long int L, double m, double epsilon, int ext_potential_type, double parameter){
-  /*Calculate the kinetic part*/
-  double complex *phi_kinetic= malloc(L*sizeof(double complex));
-  kinetic(phi_kinetic,in,N,D,L,m);
-
-  /*Calculate the harmonic part*/
-  double *phi_potential= malloc(L*sizeof(double));
-
-  if (ext_potential_type==0) {
-	  harmonic(phi_potential,parameter,N,D);
-	  }
-
-  else if (ext_potential_type==1) {
-	  box(phi_potential,parameter,N,D);
-	  }
+#include "vmath.h"
 
 
-  else if (ext_potential_type==2) {
-	  well(phi_potential,parameter,N,D);
-	  }
-
-
-
-  /*Calculte the Hamiltonian of in */
-  for (int i=0; i<L; i++) {
-        /*Calculates the hamiltonian of wwave vector in at index i  */
-    out[i] = phi_kinetic[i]+1/epsilon*phi_potential[i]*in[i];
-  }
-
-  free(phi_kinetic);
-  free(phi_potential);
-}
-
-void hamiltonian_exp(double complex *out, double complex *in, parameters params){
-  /* rewritten hamiltonian with structs by Tim, untested*/
-  /*Calculate the kinetic part*/
-  double complex *phi_kinetic= malloc(params.L*sizeof(double complex));
-  kinetic_exp(phi_kinetic, in, params); // calculate T*phi and store it in phi_kinetic
-  mul_element(out, params.pot, in, params.L); // calculate V*phi and store it in out
-  add_vec(out, out, phi_kinetic, params.L);
-
-  free(phi_kinetic);
-}
 
 /*calculates the kinetic part of the hamiltonian given the parameter m*/
 void kinetic(double complex *out, double complex *in, long int N, unsigned int D, long int L, double m){
@@ -68,7 +27,7 @@ void kinetic(double complex *out, double complex *in, long int N, unsigned int D
 void kinetic_exp(double complex *out, double complex *in, parameters params) {
   /* rewritten hamiltonian with structs by Tim, untested*/
   laplacian(out, in, params.N, params.D); // calculate the D-dimensional laplacian of in and store it in out
-  scalar_vec(out, out, (double complex) -1/(2*params.mhat), params.L); // multiply by the factor -1/(2*mhat)
+  scalar_vec(out, out, (double complex)(-1/(2*params.mhat)), params.L); // multiply by the factor -1/(2*mhat)
 }
 
 double harmonic0(long int index, double omega, long int N, unsigned int D) {
@@ -128,4 +87,48 @@ void well(double *wellpotential, int height, long int N, unsigned int D){
   for (int i=0; i<ipow(N, D); i++) {
       wellpotential[i]=potentialwell( i, height, N, D);
   }
+}
+
+void hamiltonian(double complex *out, double complex *in, long int N, unsigned int D, long int L, double m, double epsilon, int ext_potential_type, double parameter){
+  /*Calculate the kinetic part*/
+  double complex *phi_kinetic= malloc(L*sizeof(double complex));
+  kinetic(phi_kinetic,in,N,D,L,m);
+
+  /*Calculate the harmonic part*/
+  double *phi_potential= malloc(L*sizeof(double));
+
+  if (ext_potential_type==0) {
+	  harmonic(phi_potential,parameter,N,D);
+	  }
+
+  else if (ext_potential_type==1) {
+	  box(phi_potential,parameter,N,D);
+	  }
+
+
+  else if (ext_potential_type==2) {
+	  well(phi_potential,parameter,N,D);
+	  }
+
+
+
+  /*Calculte the Hamiltonian of in */
+  for (int i=0; i<L; i++) {
+        /*Calculates the hamiltonian of wwave vector in at index i  */
+    out[i] = phi_kinetic[i]+1/epsilon*phi_potential[i]*in[i];
+  }
+
+  free(phi_kinetic);
+  free(phi_potential);
+}
+
+void hamiltonian_exp(double complex *out, double complex *in, parameters params){
+  /* rewritten hamiltonian with structs by Tim, untested*/
+  /*Calculate the kinetic part*/
+  double complex *phi_kinetic= malloc(params.L*sizeof(double complex));
+  kinetic_exp(phi_kinetic, in, params); // calculate T*phi and store it in phi_kinetic
+  mul_element(out, params.pot, in, params.L); // calculate V*phi and store it in out
+  add_vec(out, out, phi_kinetic, params.L);
+
+  free(phi_kinetic);
 }
