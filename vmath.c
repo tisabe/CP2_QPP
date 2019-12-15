@@ -135,7 +135,7 @@ parameters:   input:
   sub_vec(r, in, z, L);
   assign_vec(d, r, L);
 
-  while((k < params.max_iter) && (abs_vec(r, L)>params.tol)) {
+  while((k < params.max_iter) && (abs_vec(r, L) > params.tol)) {
     (*f)(z, d, params);
     alpha = dot_product(r_next, r_next, L)/dot_product(r, z, L);
     scalar_vec(temp, d, alpha, L);
@@ -150,8 +150,10 @@ parameters:   input:
     assign_vec(r, r_next, L);
     k++;
   }
-  if (k <= params.max_iter) {
-    printf("Maximum number of iterations (%d) reached, aborting calculation at precision (relative error) %e\n", params.max_iter, abs_vec(r,L)/abs_vec(x,L));
+  if (k >= params.max_iter) {
+    printf("Maximum number of iterations (%d) reached, aborting calculation at precision (relative error) %e\n", k, abs_vec(r,L)/abs_vec(x,L));
+  }else{
+    printf("CG successfully terminated after %i iterations.\n", k);
   }
 
   assign_vec(out, x, L);
