@@ -7,9 +7,9 @@ laplacian_test: laplacian_test.c vmath.c laplacian.c indices.c nneighbour.c
 	./laplacian_test.exe
 	
 cg_test: cg_test.c vmath.c
-	gcc cg_test.c vmath.c -o cg_test.exe -O2
+	gcc -lm cg_test.c vmath.c -o cg_test.exe -O2
 	./cg_test.exe
 
 mainfile: main.c euler_method.c vmath.c hermite_polynomial.c indices.c hamiltonian.c
-	gcc -lm main.c euler_method.c vmath.c hermite_polynomial.c indices.c hamiltonian.c -o main.exe
+	gcc -lm main.c euler_method.c vmath.c hermite_polynomial.c indices.c hamiltonian.c -o main.exe -O2
 	./main.exe
