@@ -3,6 +3,7 @@ required in the QPP problem*/
 
 #include <complex.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "structs.h"
 
 long int ipow(long int base, unsigned int exp) {
@@ -111,7 +112,7 @@ parameters:   input:
                 in: input vector y for the cg, double complex *
                 params: input parameters, struct parameters
 */
-  long int L = params.L;
+  long int L = params.N;
   double complex * x = malloc(L * sizeof(double complex));
   double complex * x_next = malloc(L * sizeof(double complex));
   double complex * r =  malloc(L * sizeof(double complex));
@@ -145,6 +146,7 @@ parameters:   input:
     // update old values r and x
     assign_vec(x, x_next, L);
     assign_vec(r, r_next, L);
+    printf("%i\t",k);
     k++;
   }
 
