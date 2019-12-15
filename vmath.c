@@ -112,7 +112,7 @@ parameters:   input:
                 in: input vector y for the cg, double complex *
                 params: input parameters, struct parameters
 */
-  long int L = params.N;
+  long int L = params.L;
   double complex * x = malloc(L * sizeof(double complex));
   double complex * x_next = malloc(L * sizeof(double complex));
   double complex * r =  malloc(L * sizeof(double complex));
@@ -146,7 +146,6 @@ parameters:   input:
     // update old values r and x
     assign_vec(x, x_next, L);
     assign_vec(r, r_next, L);
-    printf("%i\t",k);
     k++;
   }
 
