@@ -93,22 +93,25 @@ euler_method (Lennart, to be tested)
 		void
 	Test:	???
 
-cg (Conjugate Gradient in vmath, Tim, to be tested)
+cg (Conjugate Gradient in vmath, Tim)
 	input:
 		*out: x to solve Ax=b						double complex of size L
 		(*f): function A to call					function pointer
 			in: double complex *(out), double complex *(in), long int (L)	
 		*in: b in Ax=b							double complex of size L
-		max_iter: maximum number of iterations to perform		int
-		tol: tolerance to which the solution should be solved		double
-		L: N**D								long int
+        params: function parameters             parameters struct
 	output:
 		void
 	Test: Lennart, successfully tested with solving for x with random herm. str. pos. def. matrix A and random vector b in Ax=b
 
 vmath (Tim, to be tested)
 	many different functions
-	Test: Mahni
+	Test: nope
+	
+euler_method (time step with euler integration, Lennart)
+    input:
+    output:
+    Test: Tim? together with other integrators?, wip
 
 
 
