@@ -41,6 +41,19 @@ void phi(double complex *out, parameters params, int type){
 		}
 	}
 
+	if(type==3){
+		/* wave function as gaussian*/
+		for (i=0;i<params.L;i++) {
+			index2coord(phi_coords, i, params.N, params.D);
+			long int *exponent = malloc(params.D*sizeof(long int));
+			sub_vec(exponent, phi_coords, params.phi0, params.L);
+			gaussian_exp=dot_product(exponent, exponent, params.L)*(-1)/(params.sigma*params.sigma*2);
+
+			out[i]=exp(gaussian_exp);
+			free exponent
+		}
+	}
+
 	double normalization_factor=abs_vec(out,params.L);
   for (i=0;i<params.L;i++) {
 		/* normalization of the wave function */

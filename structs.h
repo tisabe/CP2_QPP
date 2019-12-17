@@ -14,4 +14,6 @@ typedef struct parameters_tag {
   double epsilon; //Energy scale
   double parameter; //Omega in a harmonic potential
   int ext_potential_type; //External potential type
+  double sigma; //Sigma in a gaussian distribution
+  long int *phi0; //Center in a gaussian distribution
 } parameters /*name to reference struct*/;
