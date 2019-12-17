@@ -50,7 +50,7 @@ void phi(double complex *out, parameters params, int type){
 			gaussian_exp=dot_product(exponent, exponent, params.L)*(-1)/(params.sigma*params.sigma*2);
 
 			out[i]=exp(gaussian_exp);
-			free exponent
+			free(exponent);
 		}
 	}
 
@@ -60,5 +60,5 @@ void phi(double complex *out, parameters params, int type){
 		out[i]=out[i]/normalization_factor;
 	}
 
-	free phi_coords
+	free(phi_coords);
 }
