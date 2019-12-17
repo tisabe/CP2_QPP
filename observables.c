@@ -1,5 +1,6 @@
 #include <complex.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "structs.h"
 #include "vmath.h"
@@ -13,6 +14,8 @@ are defined. not finished, not tested*/
 double complex obs_norm(double complex *in, parameters params) {
   double complex var_norm = 0.0;
   var_norm = dotproduct(in, in, params.L);
+
+  free(var_norm);
   return var_norm;
 }
 
@@ -21,7 +24,9 @@ double complex obs_E(double complex *in, parameters params) {
   double complex *in_H = malloc(params.L*sizeof(double complex));
   hamiltonian(in_H, in, params);
   var_norm = dot_product(in, in_H, params.L)/obs_norm(in, params);
-  return var_norm;
+
+  free(in_H);
+  return var_norm/params.N;
 }
 
 double complex obs_x(double complex *in, unsigned int d, parameters params) {
@@ -33,7 +38,10 @@ double complex obs_x(double complex *in, unsigned int d, parameters params) {
     in_x[i] = coord[d]*in[i];
   }
   var_x = dot_product(in, in_x, params.L)/obs_norm(in, params);
-  return var_x;
+
+  free(coord);
+  free(in_x);
+  return var_x/params.N;
 }
 
 double complex obs_p(double complex *in, unsigned int d, parameters params) {
@@ -43,5 +51,7 @@ double complex obs_p(double complex *in, unsigned int d, parameters params) {
   for(long int i=0; i<params.L; i++) {
     var_p += 0;
   }
-  return var_p;
+
+  free(psi_k);
+  return var_p/params.N;
 }
