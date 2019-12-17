@@ -5,19 +5,19 @@
 #include "indeces.h"
 #include "vmath.h"
 
-void phi(double complex *out, long int N, long int D, long int L, int type){
+void phi(double complex *out, parameters params, int type){
 	long int *phi_coords;
-  phi_coords = malloc(D*sizeof(long int));
+  phi_coords = malloc(params.D*sizeof(long int));
 
-	if (type==0){ 
+	if (type==0){
 		/* initialise wave function with ones */
-		for (i=0;i<L:i++) { 
+		for (i=0;i<params.L:i++) {
 			out[i]=1
 		}
 		/* wave function as product of cosines */
-		for (i=0;i<L;i++) {
-			index2coord(phi_coords,i,N,D);
-			for (j=0;j<D;j++) {
+		for (i=0;i<params.L;i++) {
+			index2coord(phi_coords, i, params.N, params.D);
+			for (j=0;j<params.D;j++) {
 				out[i]*=cosines(phi_coords[j]);
 			}
 		}
@@ -25,9 +25,9 @@ void phi(double complex *out, long int N, long int D, long int L, int type){
 
 	if (type==1) {
 		/* wave function as square of coordinates with fixed imaginary parts*/
-		for (i=0;i<L;i++) {
-			index2coord(phi_coords,i,N,D);
-			for (j=0;j<D;j++) {
+		for (i=0;i<params.L;i++) {
+			index2coord(phi_coords, i, params.N, params.D);
+			for (j=0;j<params.D;j++) {
 				out[i]+=phi_coords[j]*phi_coords[j]*pow(I,j);
 			}
 		}
@@ -35,14 +35,14 @@ void phi(double complex *out, long int N, long int D, long int L, int type){
 
 	if(type==2){
 		/* wave function as 1/abs(phi_coords) with fixed imaginary parts*/
-		for (i=0;i<L;i++) {
-			index2coord(phi_coords,i,N,D);
-			out[i]+=1/abs_vec(phi_coords,D)*pow(I,j);
+		for (i=0;i<params.L;i++) {
+			index2coord(phi_coords, i, params.N, params.D);
+			out[i]+=1/abs_vec(phi_coords,params.D)*pow(I,j);
 		}
 	}
 
-	double normalization_factor=abs_vec(out,L);
-  for (i=0;i<L;i++) {
+	double normalization_factor=abs_vec(out,params.L);
+  for (i=0;i<params.L;i++) {
 		/* normalization of the wave function */
 		out[i]=out[i]/normalization_factor;
 	}
