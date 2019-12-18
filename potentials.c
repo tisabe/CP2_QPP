@@ -49,7 +49,7 @@ void box(double *boxpotential, int height, long int N, unsigned int D){
 double potentialwell(int height, long int N, unsigned int D) {
     long int * boxy= malloc(ipow(N, D) * sizeof(long int));
     for (int i=0; i<D; i++) {
-        if(i>N/4+N * int (i/N) && i< 3/4*N+N * int (i/N)){
+        if(i>N/4+N * (int) (i/N) && i< 3/4*N+N * (int) (i/N)){
             boxy[i]=0;
         }else{
             boxy[i]=height;
@@ -59,6 +59,6 @@ double potentialwell(int height, long int N, unsigned int D) {
 }
 void well(double *wellpotential, int height, long int N, unsigned int D){
   for (int i=0; i<ipow(N, D); i++) {
-      wellpotential[i]=potentialwell( i, height, N, D);
+      wellpotential[i]=potentialwell(height, N, D);
   }
 }
