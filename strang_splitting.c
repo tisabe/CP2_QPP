@@ -17,7 +17,7 @@
 
 /* ************      To be tested        ************ */
 
-void strang_method(double complex *psi, double complex *in, long int N, unsigned int D, long int L, double tauhat, double mhat, int ext_potential_type, double paramter, double total_time){
+void strang_splitting(double complex *psi, double complex *in, long int N, unsigned int D, long int L, double tauhat, double mhat, int ext_potential_type, double parameter, double total_time){
     
 /*Calculate the different potentials*/
   double *phi_potential= malloc(L*sizeof(double));
@@ -38,10 +38,10 @@ void strang_method(double complex *psi, double complex *in, long int N, unsigned
 double complex *eta= malloc(L*sizeof(double complex));
 double complex *eta_dft= malloc(L*sizeof(double complex));
 double complex *chi_dft= malloc(L*sizeof(double complex));
-double *sin_sum= malloc(1*sizeof(double));
+(double) sin_sum= 0;
 long int *coordinate = malloc(D* sizeof(long int));
 
-double complex *psi= malloc(L*sizeof(double));
+double complex *psi= malloc(L*sizeof(double complex));
 assign_vec(psi,in,L); // use the assign vector function from vmath 
 
 // Das braucht die fft aus gnu aus https://www.gnu.org/software/gsl/doc/html/fft.html#c.gsl_fft_complex_forward
