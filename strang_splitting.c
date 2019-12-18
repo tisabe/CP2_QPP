@@ -62,7 +62,7 @@ for(int t=0; (t * tauhat) < total_time; t++){
 
 	
 	/* calculate eta_dft according to equation (74) */
-	eta_dft=gsl_fft_complex_forward (eta, 1, L, wavetable, workspace);
+	/*eta_dft=*/gsl_fft_complex_forward (eta, 1, L, wavetable, workspace);
 
 	
 	/* calculate chi tilde (chi_dft) according to equation (75) */
@@ -78,7 +78,7 @@ for(int t=0; (t * tauhat) < total_time; t++){
  	 }
 
 	/* calculate chi according to equation (76) */
-	chi=gsl_fft_complex_inverse (chi_dft, 1, L, wavetable, workspace);
+	/*chi=*/gsl_fft_complex_inverse (chi_dft, 1, L, wavetable, workspace);
 	
 
 	for (int i=0; i<L; i++) {
