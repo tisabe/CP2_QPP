@@ -1,8 +1,10 @@
-#include "vmath.h"
-#include "indices.h"
 #include <complex.h>
 #include <stdlib.h>
 #include <math.h>
+
+#include "structs.h"
+#include "vmath.h"
+#include "indices.h"
 
 double harmonic0(long int index, double omega, long int N, unsigned int D) {
     long int * coordinates = malloc(D* sizeof(long int));
@@ -26,7 +28,7 @@ void harmonic(double *harmonicpotential, double omega, long int N, unsigned int 
 double boxpotential0(long int index, int height, long int N, unsigned int D) {
     long int * coordinates = malloc(D* sizeof(long int));
     index2coord(coordinates,index, N, D);
-    long int boxy=0;
+    double boxy=0;
     for (int i=0; i<D; i++) {
         if(fabs(coordinates[i])<N/4){
             boxy=boxy;
@@ -39,26 +41,24 @@ double boxpotential0(long int index, int height, long int N, unsigned int D) {
   }
 }
 void box(double *boxpotential, int height, long int N, unsigned int D){
-    for (int i=0; i<ipow(N, D); i++) {
+    for (long int i=0; i<ipow(N, D); i++) {
         boxpotential[i]=boxpotential0( i, height, N, D);
     }
 }
 
 
 
-double potentialwell(int height, long int N, unsigned int D) {
-    long int * boxy= malloc(ipow(N, D) * sizeof(long int));
-    for (int i=0; i<D; i++) {
-        if(i>N/4+N * (int) (i/N) && i< 3/4*N+N * (int) (i/N)){
-            boxy[i]=0;
-        }else{
-            boxy[i]=height;
-            }
+double potentialwell(long int i, int height, long int N, unsigned int D) {
+    double boxy;
+      if(i>N/4+N * (int) (i/N) && i< 3/4*N+N * (int) (i/N)){
+        boxy=0;
+      }else{
+         boxy=height;
+      }
     return boxy;
-  }
 }
 void well(double *wellpotential, int height, long int N, unsigned int D){
-  for (int i=0; i<ipow(N, D); i++) {
-      wellpotential[i]=potentialwell(height, N, D);
+  for (long int i=0; i<ipow(N, D); i++) {
+      wellpotential[i]=potentialwell(i, height, N, D);
   }
 }

@@ -5,11 +5,12 @@
 #include "structs.h"
 #include "vmath.h"
 #include "potentials.h"
-
+#include "indices.h"
 
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_fft_complex.h>
 
+#define _USE_MATH_DEFINES
 
 /*  Compute the time propagation according to the strang splitting method.
      */
@@ -36,13 +37,11 @@ void strang_splitting(double complex *psi, double complex *in, long int N, unsig
 	  well(phi_potential, parameter, N, D);
 	  }
 
-double complex *eta= malloc(L*sizeof(double complex));
-double complex *eta_dft= malloc(L*sizeof(double complex));
-double complex *chi_dft= malloc(L*sizeof(double complex));
-(double) sin_sum= 0;
+double /*complex*/ *eta= malloc(L*sizeof(double /*complex*/));
+double /*complex*/ *chi_dft= malloc(L*sizeof(double /*complex*/));
+double sin_sum= 0;
 long int *coordinate = malloc(D* sizeof(long int));
 
-double complex *psi= malloc(L*sizeof(double complex));
 assign_vec(psi,in,L); // use the assign vector function from vmath 
 
 // Das braucht die fft aus gnu aus https://www.gnu.org/software/gsl/doc/html/fft.html#c.gsl_fft_complex_forward
@@ -63,44 +62,41 @@ for(int t=0; (t * tauhat) < total_time; t++){
 
 	
 	/* calculate eta_dft according to equation (74) */
-	/*eta_dft=*/gsl_fft_complex_forward (eta, 1, L, wavetable, workspace);
+	gsl_fft_complex_forward (eta, 1, L, wavetable, workspace);
 
 	
 	/* calculate chi tilde (chi_dft) according to equation (75) */
 	for (int i=0; i<L; i++) {
 		for (int j=0; j<D; j++) {  /* calculating the sum in the exponential function */
 			index2coord(coordinate,i, N, D);
-			sin_sum += sin(pi/N*coordinate[j]) * sin(pi/N*coordinate[j]);
+			sin_sum += sin(M_PI/N*coordinate[j]) * sin(M_PI/N*coordinate[j]);
 		
 		}
 
-    	    chi_dft[i]=cexp(- 1I * 2 * tauhat/mhat * sin_sum) * eta_dft[i]; 
+    	    chi_dft[i]=cexp(- 1I * 2 * tauhat/mhat * sin_sum) * eta[i]; 
   	  
  	 }
 
 	/* calculate chi according to equation (76) */
-	/*chi=*/gsl_fft_complex_inverse (chi_dft, 1, L, wavetable, workspace);
+	gsl_fft_complex_inverse (chi_dft, 1, L, wavetable, workspace);
 	
 
 	for (int i=0; i<L; i++) {
-  	      psi[i]=cexp(- 1I/2 * tauhat * phi_potential[i]) * chi[i]; 
+  	      psi[i]=cexp(- 1I/2 * tauhat * phi_potential[i]) * chi_dft[i]; 
   	 
  	 }
-
-return psi;
-
+}
 free(eta);
-free(eta_dft);
 free(chi_dft);
-free(chi);
-free(sin_sum);
 free(coordinate);
 
  gsl_fft_complex_wavetable_free (wavetable);
  gsl_fft_complex_workspace_free (workspace);
-}
+
 }
 
-
+int main(){
+	return 0;
+}
 
 
