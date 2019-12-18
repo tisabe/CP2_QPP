@@ -1,4 +1,5 @@
 #include <complex.h>
+#include "structs.h"
 
 long int ipow(long int base, unsigned int exp);
 double complex dot_product(double complex *v, double complex *w, long int L);

@@ -1,3 +1,6 @@
+#ifndef STRUCTS_H
+#define STRUCTS_H
+
 //typedef struct parameters_tag parameters;
 struct parameters_tag;
 
@@ -17,3 +20,5 @@ typedef struct parameters_tag {
   double sigma; //Sigma in a gaussian distribution
   long int *phi0; //Center in a gaussian distribution
 } parameters /*name to reference struct*/;
+
+#endif
