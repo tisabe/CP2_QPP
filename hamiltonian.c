@@ -3,9 +3,9 @@
 #include <complex.h>
 #include <math.h>
 
+#include "structs.h"
 #include "indices.h"
 #include "laplacian.h"
-#include "structs.h"
 #include "vmath.h"
 
 
@@ -42,9 +42,9 @@ double harmonic0(long int index, parameters params) {
     return potential;
 }
 
-void harmonic(double *harmonicpotential, parameter params){
+void harmonic(double *harmonicpotential, parameters params){
     for (int i=0; i<params.L; i++) {
-        harmonicpotential[i]=harmonic0( i, params.parameter, params.N, params.D);
+        harmonicpotential[i]=harmonic0( i, params);
     }
 }
 
@@ -98,6 +98,8 @@ void hamiltonian(double complex *out, double complex *in, parameters params){
   double *phi_potential= malloc(params.L*sizeof(double));
 
   if (params.pot==NULL){
+    free(params.pot);
+    params.pot = malloc(params.L * sizeof(double));
     if (params.ext_potential_type==0) {
 	     harmonic(params.pot, params);
 	  }
@@ -110,10 +112,10 @@ void hamiltonian(double complex *out, double complex *in, parameters params){
     else if (params.ext_potential_type==2) {
 	     well(params.pot, params);
 	  }
-  scalar_vec(params.pot, params.pot, 1/params.epsilon, params.L)
+    scalar_vec(params.pot, params.pot, 1/params.epsilon, params.L);     //Error here as scalar_vec expects double complex values but params.pot is double
   }
 
-  mul_element(phi_potential, params.pot, in, params.L)
+  mul_element(phi_potential, params.pot, in, params.L);
   add_vec(out, phi_potential, phi_kinetic, params.L);
 
   free(phi_kinetic);
