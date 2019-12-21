@@ -4,7 +4,7 @@
 #include <math.h>
 
 #include "structs.h"
-#include "indices.h"
+#include "geometry.h"
 #include "laplacian.h"
 #include "vmath.h"
 
@@ -95,23 +95,29 @@ void hamiltonian(double complex *out, double complex *in, parameters params){
   kinetic(phi_kinetic,in,params);
 
   /*Calculate the harmonic part*/
-  double *phi_potential= malloc(params.L*sizeof(double));
+  double complex *phi_potential= malloc(params.L*sizeof(double complex));
 
   if (params.pot==NULL){
     free(params.pot);
-    params.pot = malloc(params.L * sizeof(double));
+    params.pot = malloc(params.L * sizeof(double complex));
+    double *temp = malloc(params.L * sizeof(double));
     if (params.ext_potential_type==0) {
-	     harmonic(params.pot, params);
+	     harmonic(temp, params);
 	  }
 
     else if (params.ext_potential_type==1) {
-	     box(params.pot, params);
+	     box(temp, params);
 	  }
 
 
     else if (params.ext_potential_type==2) {
-	     well(params.pot, params);
+	     well(temp, params);
 	  }
+
+    for(long int i=0; i<params.L; i++){
+        params.pot[i] = (double complex) temp[i];
+    }
+    free(temp);
     scalar_vec(params.pot, params.pot, 1/params.epsilon, params.L);     //Error here as scalar_vec expects double complex values but params.pot is double
   }
 
