@@ -3,7 +3,7 @@
 #include <time.h>
 
 #include "structs.h"
-#include "indices.h"
+#include "geometry.h"
 #include "vmath.h"
 
 long int setN(){

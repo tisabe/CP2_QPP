@@ -5,8 +5,7 @@
 
 #include "vmath.h"
 #include "laplacian.h"
-#include "indices.h"
-#include "nneighbour.h"
+#include "geometry.h"
 
 
 void check_constant() {

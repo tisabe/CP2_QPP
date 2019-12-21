@@ -4,7 +4,7 @@
 
 #include "structs.h"
 #include "vmath.h"
-#include "indices.h"
+#include "geometry.h"
 #include "hamiltonian.h"
 #include "fft.h" // hypothetical
 

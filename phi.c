@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include "indeces.h"
+
+#include "structs.h"
+#include "geometry.h"
 #include "vmath.h"
 
 void phi(double complex *out, parameters params, int type){

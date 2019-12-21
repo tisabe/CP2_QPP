@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include "nneighbour.h"
-#include "indices.h" //for ipow, maybe seperate functions later
+
+#include "structs.h"
+#include "geometry.h"
+#include "vmath.h"
 
 void test_inverse_nn() {
 	printf("Testing inversion of next neighbour function\n");

@@ -4,7 +4,7 @@
 
 #include "structs.h"
 #include "vmath.h"
-#include "indices.h"
+#include "geometry.h"
 
 double harmonic0(long int index, double omega, long int N, unsigned int D) {
     long int * coordinates = malloc(D* sizeof(long int));
