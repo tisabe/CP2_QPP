@@ -1,5 +1,5 @@
 indices_test: indices_test.c geometry.c vmath.c
-	gcc indices_test.c geometry.c vmath.c -o indices_test.exe -O2
+	gcc indices_test.c -lm geometry.c vmath.c -o indices_test.exe -O2
 	./indices_test.exe
 
 laplacian_test: laplacian_test.c vmath.c laplacian.c indices.c nneighbour.c
