@@ -8,6 +8,7 @@
 #include "euler_method.h"
 #include "vmath.h"
 #include "geometry.h"
+#include "crank_nicolson.h"
 
 #include "hermite_polynomial.h"
 
@@ -23,8 +24,6 @@ int main(){
     parameters params;
     params.max_iter = 100;
     params.tol = DBL_EPSILON;
-    params.mhat = 1;
-    params.epsilon = 27.4;
 
     int potential_type, poly_type, poly_order, integrator;
     double omega;
@@ -58,13 +57,15 @@ int main(){
     params.D = 1;
     params.N = 1501;
     params.L = ipow(params.N, params.D);
-    integrator = 1;
-    params.tau = 0.05;
-    params.total_time = 100;
+    integrator = 2;
+    params.tau = 0.1;
+    params.total_time = 1;
     potential_type = 1;
-    omega = 1;
+    omega = 0.01;
     poly_type = 1;
     poly_order = 1;
+    params.mhat = 0.1;
+    params.epsilon = 1;
 
     double complex *start_wf = malloc(params.L*sizeof(double complex));
     set_zero(start_wf, params.L);
@@ -74,18 +75,18 @@ int main(){
         /*printf("Which order would you like? (1, 2 or 3) ");
         scanf("%i",poly_order);*/
         if(params.D == 1){
-            double norm_const = 1/sqrt(ipow(2,(unsigned int) poly_order)*fact((int) poly_order))*sqrt(sqrt(omega/M_PI));
+            double norm_const = 1/sqrt(ipow(2,(unsigned int) poly_order)*fact((int) poly_order))*sqrt(sqrt(params.mhat*omega/M_PI));
             double *hermite = malloc((poly_order+1)*sizeof(double));
             file_start_wf = fopen("main_start_wf.txt","w");
 
             for(long int i=0; i<params.L; i++){
                 index2coord(coords, i, params.N, params.D);
                 double *point = malloc(1*sizeof(double));
-                point[0] = sqrt(omega)*coords[0];
+                point[0] = sqrt(params.mhat*omega)*coords[0];
                 hermite = h_polynomial_value(1,poly_order,point);
-                start_wf[i] = norm_const*exp(omega*pow(coords[0],2.)/2.)*hermite[poly_order];
+                start_wf[i] = norm_const*exp(-params.mhat*omega*pow(coords[0],2.)/2.)*hermite[poly_order];
                 free(point);
-                fprintf(file_start_wf, "%lf, %lf\n", creal(start_wf[i]), cimag(start_wf[i]));
+                fprintf(file_start_wf, "%li, %e, %e\n", i, creal(start_wf[i]), cimag(start_wf[i]));
             }
             fclose(file_start_wf);
 
@@ -99,10 +100,8 @@ int main(){
     double complex *output = malloc(params.L*sizeof(double complex));
     if(integrator == 1){
         euler_method(output, start_wf, params);
-
     }else if(integrator == 2){
-        //Call Crank Nicolson
-        printf("This integrator has not been implemented yet. Please choose another one.\n");
+        cn(output, start_wf, params);
     }else if(integrator == 3){
         //Call Strang splitting
         printf("This integrator has not been implemented yet. Please choose another one.\n");
@@ -112,7 +111,7 @@ int main(){
 
     file = fopen("main_output.txt","w");
     for(long int i=0; i<params.L; i++){
-        fprintf(file, "%li, %lf, %lf\n", i, creal(output[i]), cimag(output[i]));
+        fprintf(file, "%li, %e, %e\n", i, creal(output[i]), cimag(output[i]));
     }
     fclose(file);
 
