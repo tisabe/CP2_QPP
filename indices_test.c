@@ -24,7 +24,7 @@ long int setN(){
 void check_index2coord_inc_sum(long int N){
     int not_passed = 0;
 
-    printf("\n\n*******Testing if coordinates increment and if sum over each axis is 0*******\n");
+    printf("\n\n*******Testing if coordinates increment and if checksum is ((N-1)/2+1)*(N-1)/2*N**(D-1)*******\n");
 
     for(unsigned int D=1; D<=3; D++){
         printf("\nTesting %u dimension(s)...",D);
@@ -45,12 +45,12 @@ void check_index2coord_inc_sum(long int N){
                     printf("Error coordinate: %li",coords_cur[j]);
                 }
                 coords_old[j] = coords_cur[j];
-                sum[j] += coords_cur[j];
+                sum[j] += abs(coords_cur[j]);
             }
         }
 
         for(int j=0; j<D; j++){
-            if(sum[j] != 0){
+            if(sum[j] != (((N-1)/2+1) * (N-1)/2 * ipow(N,D-1))){
                 not_passed = 1;
                 printf("Error sum: (%li, %li)\n",sum[j],0);
             }
