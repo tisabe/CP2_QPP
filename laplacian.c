@@ -42,17 +42,13 @@ void laplacian_mp(double complex *out, double complex *in, long int N, unsigned 
         L = ipow(N, D);
         neighbours = malloc(2*D*L*sizeof(long int));
         nneighbour_init(neighbours, N, D);
+        //printf("neighbours calculated\n");
         prev_N = N;
         prev_D = D;
     }
-    printf("number of threads: %d\n", omp_get_num_threads());
     long int i;
     unsigned int d;
-    #pragma omp parallel \
-    shared (in, out, neighbours, D, L) \
-    private (i, d)
-    #pragma omp for reduction (+:out)
-
+    #pragma omp parallel for collapse(2)
     for(i=0; i<L; i++){
         // Loop over all dimensions
         for(d=0; d<D; d++){
