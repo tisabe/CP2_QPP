@@ -28,29 +28,31 @@ void kinetic_exp(double complex *out, double complex *in, parameters params) {
   scalar_vec(out, out, (double complex)(-1/(2*params.mhat)), params.L); // multiply by the factor -1/(2*mhat)
 }
 
-void harmonic(double *harmonicpotential, parameters params, double omega){
-  for (long int i=0; i<params.L; i++) {
-    long int *coordinates = malloc(params.D* sizeof(long int));
-    index2coord(coordinates, i, params.N, params.D);
+void gen_pot_harmonic(parameters *params, double omega){
+  for (long int i=0; i<params->L; i++) { /*(*params.L and params->L are synonyms)*/
+    long int *coordinates = malloc(params->D* sizeof(long int));
+    index2coord(coordinates, i, params->N, params->D);
     double potential = 0;
-    for (int j=0; j<params.D; j++) {
+    for (int j=0; j<params->D; j++) {
       potential += pow(coordinates[j], 2);
     }
     potential=0.5*pow(omega, 2)*potential;
 
-    harmonicpotential[i]=potential;
+    params->pot[i] = (double complex) potential;
+    scalar_vec(params->pot, params->pot, 1/params->epsilon, params->L);
 
     free(coordinates);
   }
+
 }
 
-void box(double *boxpotential, parameters params, double height){
-    for (long int i=0; i<params.L; i++) {
-      long int *coordinates = malloc(params.D* sizeof(long int));
-      index2coord(coordinates, i, params.N, params.D);
+void gen_pot_box(parameters *params, double height){
+    for (long int i=0; i<params->L; i++) {
+      long int *coordinates = malloc(params->D* sizeof(long int));
+      index2coord(coordinates, i, params->N, params->D);
       double boxy=0;
-      for (int j=0; j<params.D; j++) {
-          if(fabs(coordinates[j])<params.N/4){
+      for (int j=0; j<params->D; j++) {
+          if(fabs(coordinates[j])<params->N/4){
               boxy=0;
           }
           else{
@@ -59,19 +61,20 @@ void box(double *boxpotential, parameters params, double height){
           }
       }
 
-      boxpotential[i]=boxy;
+      params->pot[i]=boxy;
+      scalar_vec(params->pot, params->pot, 1/params->epsilon, params->L);
 
       free(coordinates);
     }
 }
 
-void well(double *wellpotential, parameters params, double height){
-  for (long int i=0; i<params.L; i++) {
-    long int *coordinates = malloc(params.D* sizeof(long int));
-    index2coord(coordinates, i, params.N, params.D);
+void gen_pot_well(parameters *params, double height){
+  for (long int i=0; i<params->L; i++) {
+    long int *coordinates = malloc(params->D* sizeof(long int));
+    index2coord(coordinates, i, params->N, params->D);
     double boxy=0;
-    for (int j=0; j<params.D; j++) {
-        if(coordinates[j]>params.N/4+params.N * (int) (coordinates[j]/params.N) && coordinates[j]< 3/4*params.N+params.N * (int) (coordinates[j]/params.N)){
+    for (int j=0; j<params->D; j++) {
+        if(coordinates[j]>params->N/4+params->N * (int) (coordinates[j]/params->N) && coordinates[j]< 3/4*params->N+params->N * (int) (coordinates[j]/params->N)){
             boxy=0;
         }
         else{
@@ -80,54 +83,25 @@ void well(double *wellpotential, parameters params, double height){
         }
     }
 
-    wellpotential[i]=boxy;
+    params->pot[i]
+    scalar_vec(params->pot, params->pot, 1/params->epsilon, params->L);
 
     free(coordinates);
     }
 }
 
-
-void generate_pot(parameters params, double parameter){
-  if (params.pot==NULL){
-    free(params.pot);
-    params.pot = malloc(params.L * sizeof(double complex));
-    double *temp = malloc(params.L * sizeof(double));
-    if (params.ext_potential_type==0) {
-     harmonic(temp, params, parameter);
-    }
-
-    else if (params.ext_potential_type==1) {
-     box(temp, params, parameter);
-    }
-
-    else if (params.ext_potential_type==2) {
-     well(temp, params, parameter);
-    }
-
-  for(long int i=0; i<params.L; i++){
-      params.pot[i] = (double complex) temp[i];
-  }
-
-  free(temp);
-
-  scalar_vec(params.pot, params.pot, 1/params.epsilon, params.L);    
-  }
-}
-
 void hamiltonian(double complex *out, double complex *in, parameters params){
-  /*Calculate the kinetic part*/
+  /*calculate T*phi and store it in phi_kinetic*/
   double complex *phi_kinetic= malloc(params.L*sizeof(double complex));
   kinetic(phi_kinetic,in,params);
 
-  /*Calculate the potential part*/
-  double complex *phi_potential= malloc(params.L*sizeof(double complex));
-  mul_element(phi_potential, params.pot, in, params.L);
+  /*Calculate V*phi and store it in out*/
+  mul_element(out, params.pot, in, params.L);
 
   /*add both parts of the hamiltonian and save it in out */
-  add_vec(out, phi_potential, phi_kinetic, params.L);
+  add_vec(out, out, phi_kinetic, params.L);
 
   free(phi_kinetic);
-  free(phi_potential);
 }
 
 void hamiltonian_exp(double complex *out, double complex *in, parameters params){
