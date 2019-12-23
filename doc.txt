@@ -30,7 +30,7 @@ NNEIGHBOUR (Lennart, tested)
 	output:
 		i: index of nearest neighbour on specified axis and direction	long int
 	Test: Tim (läuft, parameter könnten noch geändert werden)
-	
+
 nneighbour_init (Lennart, tested)
 	input:
 		*out : flat array with all next neighbours            long int array of size 2*D*N
@@ -49,7 +49,7 @@ LAPLACIAN (Lennart, wip)
 	output:
 		void
 	Test: Tim wip
-	
+
 PHI (Birkan, wip)
 	input:
 		N: length of all axis						long int
@@ -59,7 +59,7 @@ PHI (Birkan, wip)
 		*out: vector with wave function					complex double array of size N**D
 
 KINETIC (Birkan, wip)
-	input: 
+	input:
 		N: length of all axis						long int
 		D: number of dimensions						unsigned int
 		*in: vector of discretized wavefunction				complex double array of size N**D
@@ -97,7 +97,7 @@ cg (Conjugate Gradient in vmath, Tim)
 	input:
 		*out: x to solve Ax=b						double complex of size L
 		(*f): function A to call					function pointer
-			in: double complex *(out), double complex *(in), long int (L)	
+			in: double complex *(out), double complex *(in), long int (L)
 		*in: b in Ax=b							double complex of size L
         params: function parameters             parameters struct
 	output:
@@ -107,22 +107,21 @@ cg (Conjugate Gradient in vmath, Tim)
 vmath (Tim, to be tested)
 	many different functions
 	Test: nope
-	
+
 euler_method (time step with euler integration, Lennart)
     input:
     output:
     Test: Tim? together with other integrators?, wip
 
+Vorschläge Tim für Funktionen:
+gen_pot_harmonic (Birkan, tbt)
+	input:
+		*params,			parameters structs (benutze wie in https://stackoverflow.com/questions/4316314/pass-struct-by-reference-in-c/13077250, 1. Antwort,
+									also als pointer, sodass das übergebene struct bearbeitet wird, mit modifikation des potentials mit params->pot[i] = BERECHNUNG)
+		omega, 								double
+		height, (scale) 			double
 
+gen_pot_well (Birkan, tbt)
+	wie die vorherige, mit höhe und breite des potentials als parameter, ebenso
 
-
-
-
-
-
-
-
-
-
-
-
+gen_pot_box (Birkan, tbt)
