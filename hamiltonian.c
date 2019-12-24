@@ -34,16 +34,15 @@ void gen_pot_harmonic(parameters *params, double omega){
     index2coord(coordinates, i, params->N, params->D);
     double potential = 0;
     for (int j=0; j<params->D; j++) {
-      potential += pow(coordinates[j], 2);
+      potential += pow(coordinates[j]*params->a, 2);
     }
     potential=0.5*pow(omega, 2)*potential;
 
     params->pot[i] = (double complex) potential;
-    scalar_vec(params->pot, params->pot, 1/params->epsilon, params->L);
 
     free(coordinates);
   }
-
+  scalar_vec(params->pot, params->pot, 1/params->epsilon, params->L);
 }
 
 void gen_pot_box(parameters *params, double height){
@@ -61,11 +60,11 @@ void gen_pot_box(parameters *params, double height){
           }
       }
 
-      params->pot[i]=boxy;
-      scalar_vec(params->pot, params->pot, 1/params->epsilon, params->L);
+      params->pot[i]=(double complex)boxy;
 
       free(coordinates);
     }
+    scalar_vec(params->pot, params->pot, 1/params->epsilon, params->L);
 }
 
 void gen_pot_well(parameters *params, double height){
@@ -83,11 +82,11 @@ void gen_pot_well(parameters *params, double height){
         }
     }
 
-    params->pot[i]
-    scalar_vec(params->pot, params->pot, 1/params->epsilon, params->L);
+    params->pot[i];
 
     free(coordinates);
     }
+    scalar_vec(params->pot, params->pot, 1/params->epsilon, params->L);
 }
 
 void hamiltonian(double complex *out, double complex *in, parameters params){
