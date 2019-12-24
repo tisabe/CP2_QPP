@@ -1,3 +1,6 @@
+#ifndef VMATH_H
+#define VMATH_H
+
 #include <complex.h>
 
 long int ipow(long int base, unsigned int exp);
@@ -13,3 +16,5 @@ long int fact(int n);
 void mat_vec_mul(double complex *out, double complex *mat, double complex *vec, long int N);
 void hermtransp_quadr_matrix(double complex *out, double complex *in, long int N);
 void cg(double complex *out, void (*f)(double complex *, double complex *, parameters), double complex *in, parameters params);
+
+#endif

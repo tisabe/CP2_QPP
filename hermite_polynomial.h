@@ -1,3 +1,6 @@
+#ifndef HERMITE_POLYNOMIAL_H
+#define HERMITE_POLYNOMIAL_H
+
 double h_integral ( int n );
 double *h_polynomial_coefficients ( int n );
 double *h_polynomial_value ( int m, int n, double x[] );
@@ -37,3 +40,5 @@ double r8vec_dot_product ( int n, double a1[], double a2[] );
 void r8vec_print ( int n, double a[], char *title );
 void r8vec2_print ( int n, double a1[], double a2[], char *title );
 void timestamp ( );
+
+#endif

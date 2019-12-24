@@ -8,22 +8,7 @@
 #include "laplacian.h"
 #include "vmath.h"
 
-
-
-/*calculates the kinetic part of the hamiltonian given the parameter m*/
-void kinetic(double complex *out, double complex *in, parameters params){
-  /*first the laplacian is calculated*/
-  double complex *phi_laplacian= malloc(params.L*sizeof(double complex));
-  laplacian(phi_laplacian, in, params.N, params.D);
-
-  /*calculate the kinetic term for in */
-  scalar_vec(out, phi_laplacian, (double complex)(-1/(2*params.mhat)), params.L); // multiply by the factor -1/(2*mhat)
-
-  free(phi_laplacian);
-}
-
-void kinetic_exp(double complex *out, double complex *in, parameters params) {
-  /* rewritten hamiltonian with structs by Tim, untested*/
+void kinetic(double complex *out, double complex *in, parameters params) {
   laplacian(out, in, params.N, params.D); // calculate the D-dimensional laplacian of in and store it in out
   scalar_vec(out, out, (double complex)(-1/(2*params.mhat)), params.L); // multiply by the factor -1/(2*mhat)
 }
@@ -98,18 +83,6 @@ void hamiltonian(double complex *out, double complex *in, parameters params){
   mul_element(out, params.pot, in, params.L);
 
   /*add both parts of the hamiltonian and save it in out */
-  add_vec(out, out, phi_kinetic, params.L);
-
-  free(phi_kinetic);
-}
-
-void hamiltonian_exp(double complex *out, double complex *in, parameters params){
-  /* rewritten hamiltonian with structs by Tim, untested*/
-  /*Calculate the kinetic part*/
-  double complex *phi_kinetic= malloc(params.L*sizeof(double complex));
-
-  kinetic_exp(phi_kinetic, in, params); // calculate T*phi and store it in phi_kinetic
-  mul_element(out, params.pot, in, params.L); // calculate V*phi and store it in out
   add_vec(out, out, phi_kinetic, params.L);
 
   free(phi_kinetic);
