@@ -20,7 +20,7 @@
 
 /* ************      To be tested        ************ */
 
-void strang_splitting(double complex *out, double complex *in, parameters params) {
+void step_strang(double complex *out, double complex *in, parameters params) {
   long int N = params.N;
   unsigned int D = params.D;
   long int L = params.L;
