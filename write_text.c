@@ -31,4 +31,8 @@ written=fwrite(fdata, sizeof(fdata[0]), sizeof(fdata), f);
 if (written == 0) {
     printf("Error during writing to file !");
 }
+/* Alternative
+for(long int i=0; i < sizeof(fdata); i++){
+	fprintf(f, "fdata[i] \n");
+} */
 fclose(f);
