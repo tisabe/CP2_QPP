@@ -22,12 +22,14 @@ void laplacian(double complex *out, double complex *in, long int N, unsigned int
         prev_D = D;
     }
 
+    set_zero(out, L);
+
     //Loop over all indices
     for(long int i=0; i<L; i++){
         // Loop over all dimensions
         for(int d=0; d<D; d++){
             // Calculate discrete second derivative according to d^2 psi/ dx^2 = (f(x+h)-2*f(x)+f(x-h))/h^2
-            out[i] += (in[neighbours[2*(i*D+d)]]-2*in[i]+in[neighbours[2*(i*D+d)+1]]);
+            out[i] += in[neighbours[2*(i*D+d)]]-2*in[i]+in[neighbours[2*(i*D+d)+1]];
         }
     }
 }
