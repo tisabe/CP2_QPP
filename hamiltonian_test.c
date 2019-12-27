@@ -9,6 +9,7 @@
 #include "vmath.h"
 #include "geometry.h"
 #include "euler_method.h"
+#include "crank_nicolson.h"
 
 #define _USE_MATH_DEFINES
 
@@ -26,7 +27,7 @@ int main(){
     params.tol = DBL_EPSILON;
     params.max_iter = 1000;
 
-    params.tauhat = 0.1;
+    params.tauhat = 1e-4;
     params.epsilon = hbar * omega;
     params.mhat = 5e-4;
     params.khat = params.mhat;
@@ -48,7 +49,7 @@ int main(){
     }
 
     for(long int i=0; i<params.L; i++){
-        start_wf[i-100] = pow(sqrt(params.a),params.D) * sqrt(sqrt(mass_H * omega / (M_PI * hbar))) * exp(-1/2. * mass_H * omega / hbar * x_space[i] * x_space[i]);
+        start_wf[i] = pow(sqrt(params.a),params.D) * sqrt(sqrt(mass_H * omega / (M_PI * hbar))) * exp(-1/2. * mass_H * omega / hbar * x_space[i] * x_space[i]);
     }
 
     parameters *p = &params;
@@ -56,13 +57,13 @@ int main(){
 
     startwf_file = fopen("h_test_input.txt","w");
     for(long int i=0; i<params.L; i++){
-        fprintf(startwf_file, "%e\n", creal(start_wf[i])/*, cimag(start_wf[i])*/);
+        fprintf(startwf_file, "%e\n", creal(start_wf[i]));
     }
     fclose(startwf_file);
 
     output_file = fopen("h_output.txt","w");
 
-    for(long int t=0; (t * params.tauhat) < 0.3; t++){
+    for(long int t=0; (t * params.tauhat) < 1e-2; t++){
         euler_method(out_wf, start_wf, params);
         for(long int i=0; i<params.L; i++){
             fprintf(output_file, "%e\t", cabs(out_wf[i]));
@@ -76,7 +77,6 @@ int main(){
     potential_file = fopen("h_potential.txt","w");
 
     for(long int i=0; i<params.L; i++){
-        printf("%li: %e%+e i\n", i, creal(out_wf[i]), cimag(out_wf[i]));
         fprintf(potential_file, "%e\n", creal(params.pot[i]));
     }
 
