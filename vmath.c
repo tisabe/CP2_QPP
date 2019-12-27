@@ -151,7 +151,7 @@ parameters:   input:
     k++;
   }
   if (k >= params.max_iter) {
-    printf("Maximum number of iterations (%d) reached, aborting calculation at precision (relative error) %e\n", k, abs_vec(r,L)/abs_vec(x,L));
+    printf("Maximum number of iterations (%d) reached, aborting calculation at precision (relative error) %e\n", k, abs_vec(r,L));
   }else{
     printf("CG successfully terminated after %i iterations.\n", k);
   }
