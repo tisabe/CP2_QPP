@@ -10,24 +10,25 @@
 
 void kinetic(double complex *out, double complex *in, parameters params) {
   laplacian(out, in, params.N, params.D); // calculate the D-dimensional laplacian of in and store it in out
-  scalar_vec(out, out, (double complex)(-1/(2*params.mhat)), params.L); // multiply by the factor -1/(2*mhat)
+  scalar_vec(out, out, (double complex)(-1 / (2*params.mhat)), params.L); // multiply by the factor -1/(2*mhat)
 }
 
 void gen_pot_harmonic(parameters *params, double omega){
+  double potential;
+
   for (long int i=0; i<params->L; i++) { /*(*params.L and params->L are synonyms)*/
     long int *coordinates = malloc(params->D* sizeof(long int));
     index2coord(coordinates, i, params->N, params->D);
-    double potential = 0;
+    potential = 0.0;
     for (int j=0; j<params->D; j++) {
-      potential += pow(coordinates[j]*params->a, 2);
+      potential += pow(coordinates[j], 2);
     }
-    potential=0.5*pow(omega, 2)*potential;
+    potential=0.5*params->khat*potential;
 
     params->pot[i] = (double complex) potential;
 
     free(coordinates);
   }
-  scalar_vec(params->pot, params->pot, 1/params->epsilon, params->L);
 }
 
 void gen_pot_box(parameters *params, double height){
