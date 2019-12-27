@@ -13,7 +13,7 @@ void kinetic(double complex *out, double complex *in, parameters params) {
   scalar_vec(out, out, (double complex)(-1 / (2*params.mhat)), params.L); // multiply by the factor -1/(2*mhat)
 }
 
-void gen_pot_harmonic(parameters *params, double omega){
+void gen_pot_harmonic(parameters *params){
   double potential;
 
   for (long int i=0; i<params->L; i++) { /*(*params.L and params->L are synonyms)*/
@@ -23,7 +23,7 @@ void gen_pot_harmonic(parameters *params, double omega){
     for (int j=0; j<params->D; j++) {
       potential += pow(coordinates[j], 2);
     }
-    potential=0.5*params->khat*potential;
+    potential=0.5*(params->khat)*potential;
 
     params->pot[i] = (double complex) potential;
 
@@ -32,10 +32,10 @@ void gen_pot_harmonic(parameters *params, double omega){
 }
 
 void gen_pot_box(parameters *params, double height){
+    double boxy = 0;
     for (long int i=0; i<params->L; i++) {
       long int *coordinates = malloc(params->D* sizeof(long int));
       index2coord(coordinates, i, params->N, params->D);
-      double boxy=0;
       for (int j=0; j<params->D; j++) {
           if(fabs(coordinates[j])<params->N/4){
               boxy=0;
@@ -54,10 +54,10 @@ void gen_pot_box(parameters *params, double height){
 }
 
 void gen_pot_well(parameters *params, double height){
+  double boxy = 0;
   for (long int i=0; i<params->L; i++) {
     long int *coordinates = malloc(params->D* sizeof(long int));
     index2coord(coordinates, i, params->N, params->D);
-    double boxy=0;
     for (int j=0; j<params->D; j++) {
         if(coordinates[j]>params->N/4+params->N * (int) (coordinates[j]/params->N) && coordinates[j]< 3/4*params->N+params->N * (int) (coordinates[j]/params->N)){
             boxy=0;
