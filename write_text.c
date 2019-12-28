@@ -3,36 +3,20 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "structs.h"
-#include "vmath.h"
-#include "potentials.h"
-#include "geometry.h"
 
-#include <gsl/gsl_errno.h>
-#include <gsl/gsl_fft_complex.h>
+// function which writes an array "fdata" into a .txt file named "data"
+	// https://www.cprogramming.com/tutorial/cfileio.html
 
-#define _USE_MATH_DEFINES
-
-#include "strang_splitting.h"
-#include "euler_method.h"
-#include "crank_nicolson.h"
-
-//create the data "fdata" with one of the three methods
-.
-.
-.
-
-// write the created data into a .txt file
-// https://www.cprogramming.com/tutorial/cfileio.html
-
+void data2text(fdata) {
 FILE *f= fopen("data.txt", "w");
 written=fwrite(fdata, sizeof(fdata[0]), sizeof(fdata), f);
 // Test if fopen fails
-if (written == 0) {
+	if (written == 0) {
     printf("Error during writing to file !");
-}
-/* Alternative
-for(long int i=0; i < sizeof(fdata); i++){
-	fprintf(f, "fdata[i] \n");
-} */
+	}
+	/* Alternative
+	for(long int i=0; i < sizeof(fdata); i++){
+		fprintf(f, "fdata[i] \n");
+	} */
 fclose(f);
+}
