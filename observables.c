@@ -6,16 +6,16 @@
 #include "vmath.h"
 #include "geometry.h"
 #include "hamiltonian.h"
-#include "fft.h" // hypothetical
+//#include "fft.h" // hypothetical
 
 /*In this file functions to calculate different observables from a wavefunction
 are defined. not finished, not tested*/
 
 double complex obs_norm(double complex *in, parameters params) {
   double complex var_norm = 0.0;
-  var_norm = dotproduct(in, in, params.L);
 
-  free(var_norm);
+  var_norm = dot_product(in, in, params.L);
+
   return var_norm;
 }
 
@@ -23,10 +23,10 @@ double complex obs_E(double complex *in, parameters params) {
   double complex var_E = 0.0;
   double complex *in_H = malloc(params.L*sizeof(double complex));
   hamiltonian(in_H, in, params);
-  var_norm = dot_product(in, in_H, params.L)/obs_norm(in, params);
+  var_E = dot_product(in, in_H, params.L)/obs_norm(in, params);
 
   free(in_H);
-  return var_norm/params.N;
+  return var_E/params.N;
 }
 
 double complex obs_x(double complex *in, unsigned int d, parameters params) {
@@ -47,7 +47,7 @@ double complex obs_x(double complex *in, unsigned int d, parameters params) {
 double complex obs_p(double complex *in, unsigned int d, parameters params) {
   double complex var_p = 0.0;
   double complex *psi_k = malloc(params.L*sizeof(double complex));
-  fft(psi_k, in, params.N, params.D);
+  //fft(psi_k, in, params.N, params.D);
   for(long int i=0; i<params.L; i++) {
     var_p += 0;
   }
