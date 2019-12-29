@@ -28,7 +28,7 @@ int main(){
     params.tol = DBL_EPSILON;
     params.max_iter = 1000;
 
-    params.tauhat = 1e-7;
+    params.tauhat = 1e-8;
     params.epsilon = hbar * omega;
     params.mhat = 5e-4;
     params.khat = params.mhat;
@@ -63,13 +63,15 @@ int main(){
     fclose(startwf_file);
 
     norm_file = fopen("h_norm_output.txt","w");
+    double norm_obs;
 
-    for(long int t=0; (t * params.tauhat) < 1e1; t++){
-        if(t % 100 == 0){
-            printf("%li\t%e\n", t, cabs(obs_norm(start_wf, params)) - 1);
+    for(long int t=0; (t * params.tauhat) < 1e-1; t++){
+        if(t % 100000 == 0){
+	    norm_obs = cabs(obs_norm(start_wf, params));
+            printf("%li\t%e\n", t, norm_obs - 1);
+	    fprintf(norm_file, "%li\t%e\n", t, norm_obs - 1);
         }
         euler_method(out_wf, start_wf, params);
-        fprintf(norm_file, "%li\t%e\n", t, cabs(obs_norm(start_wf,params)) - 1);
         assign_vec(start_wf, out_wf, params.L);
     }
 
