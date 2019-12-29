@@ -10,6 +10,7 @@
 #include "geometry.h"
 #include "euler_method.h"
 #include "crank_nicolson.h"
+#include "observables.h"
 
 #define _USE_MATH_DEFINES
 
@@ -27,7 +28,7 @@ int main(){
     params.tol = DBL_EPSILON;
     params.max_iter = 1000;
 
-    params.tauhat = 1e-4;
+    params.tauhat = 1e-7;
     params.epsilon = hbar * omega;
     params.mhat = 5e-4;
     params.khat = params.mhat;
@@ -41,7 +42,7 @@ int main(){
 
     FILE *startwf_file;
     FILE *potential_file;
-    FILE *output_file;
+    FILE *norm_file;
 
     for(long int i=0; i<params.L; i++){
         index2coord(coords, i, params.N, params.D);
@@ -61,18 +62,18 @@ int main(){
     }
     fclose(startwf_file);
 
-    output_file = fopen("h_output.txt","w");
+    norm_file = fopen("h_norm_output.txt","w");
 
-    for(long int t=0; (t * params.tauhat) < 1e-2; t++){
-        euler_method(out_wf, start_wf, params);
-        for(long int i=0; i<params.L; i++){
-            fprintf(output_file, "%e\t", cabs(out_wf[i]));
+    for(long int t=0; (t * params.tauhat) < 1e1; t++){
+        if(t % 100 == 0){
+            printf("%li\t%e\n", t, cabs(obs_norm(start_wf, params)) - 1);
         }
-        fprintf(output_file,"\n");
+        euler_method(out_wf, start_wf, params);
+        fprintf(norm_file, "%li\t%e\n", t, cabs(obs_norm(start_wf,params)) - 1);
         assign_vec(start_wf, out_wf, params.L);
     }
 
-    fclose(output_file);
+    fclose(norm_file);
 
     potential_file = fopen("h_potential.txt","w");
 
