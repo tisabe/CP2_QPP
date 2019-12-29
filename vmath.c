@@ -20,8 +20,7 @@ long int ipow(long int base, unsigned int exp) {
 
 double complex dot_product(double complex *v, double complex *w, long int L) {
 /*returns the complex dot product of two vectors v, w*/
-  double complex sprod;
-  sprod=0.0;
+  double complex sprod = 0.0;
   for(long int i=0; i<L; i++) {
     sprod+=(~(v[i]))*w[i];
   }
