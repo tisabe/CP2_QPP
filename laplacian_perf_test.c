@@ -62,7 +62,7 @@ int main() {
   for (long int n = 1001; n < 1000000; n += 100000) {
     time_s = run_serial(n, D);
     time_p = run_parallel(n, D);
-    printf("%d\t %f\t %f \t %f\n", n, time_s, time_p, time_s/time_p);
+    printf("%ld\t %f\t %f \t %f\n", n, time_s, time_p, time_s/time_p);
   }
   return 0;
 }

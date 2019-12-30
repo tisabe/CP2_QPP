@@ -48,7 +48,7 @@ void laplacian_mp(double complex *out, double complex *in, long int N, unsigned 
     }
     long int i;
     unsigned int d;
-    #pragma omp parallel for collapse(2)
+    #pragma omp parallel for reduction(+:out[:L])
     for(i=0; i<L; i++){
         // Loop over all dimensions
         for(d=0; d<D; d++){
