@@ -13,3 +13,7 @@ cg_test: cg_test.c vmath.c
 mainfile: main.c euler_method.c vmath.c hermite_polynomial.c geometry.c hamiltonian.c laplacian.c crank_nicolson.c
 	gcc -lm main.c euler_method.c vmath.c hermite_polynomial.c geometry.c hamiltonian.c laplacian.c crank_nicolson.c -o main.exe -O2
 	./main.exe
+
+hydr_harm: hydr_harm_test.c hamiltonian.c vmath.c geometry.c laplacian.c euler_method.c crank_nicolson.c observables.c
+	gcc hydr_harm_test.c -lm hamiltonian.c vmath.c geometry.c laplacian.c euler_method.c crank_nicolson.c observables.c -o hydr_harm_test.exe -O2
+	./hydr_harm_test.exe

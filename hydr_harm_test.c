@@ -28,7 +28,7 @@ int main(){
     params.tol = DBL_EPSILON;
     params.max_iter = 1000;
 
-    params.tauhat = 1e-8;
+    params.tauhat = 1e-7;
     params.epsilon = hbar * omega;
     params.mhat = 5e-4;
     params.khat = params.mhat;
