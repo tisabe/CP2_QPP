@@ -22,15 +22,15 @@ int main(){
     double mass_H = 1.67e-27; //kg
     double hbar = 1.054571817e-34; //Js
 
-    params.N = 1001;
+    params.N = 5001;
     params.D = 1;
     params.L = ipow(params.N, params.D);
     params.tol = DBL_EPSILON;
-    params.max_iter = 1000;
+    params.max_iter = 5000;
 
-    params.tauhat = 1e-7;
+    params.tauhat = 0.5e-2;
     params.epsilon = hbar * omega;
-    params.mhat = 5e-4;
+    params.mhat = 1e-5;
     params.khat = params.mhat;
     params.a = hbar * sqrt(params.mhat / (mass_H*params.epsilon));
 
@@ -50,8 +50,8 @@ int main(){
         x_space[i] = coords[0] * params.a;
     }
 
-    for(long int i=0; i<params.L; i++){
-        start_wf[i] = pow(sqrt(params.a),params.D) * sqrt(sqrt(mass_H * omega / (M_PI * hbar))) * exp(-1/2. * mass_H * omega / hbar * x_space[i] * x_space[i]);
+    for(long int i=0; i<(params.L); i++){
+        start_wf[i] = pow(sqrt(params.a),params.D) * sqrt(sqrt(mass_H * omega / (M_PI * hbar))) * exp(-1/2. * mass_H * omega / hbar * pow(x_space[i] + 500*params.a, 2));
     }
 
     parameters *p = &params;
@@ -68,7 +68,7 @@ int main(){
     double norm_obs;
 
     for(long int t=0; (t * params.tauhat) < 1e0; t++){
-        if(t % 100000 == 0){
+        if(t % 10 == 0){
             norm_obs = cabs(obs_norm(start_wf, params));
             printf("%li\t%e\n", t, norm_obs - 1);
             fprintf(norm_file, "%li\t%e\n", t, norm_obs - 1);
@@ -77,7 +77,7 @@ int main(){
             }
             fprintf(output_file,"\n");
         }
-        euler_method(out_wf, start_wf, params);
+        step_cn(out_wf, start_wf, params);
         assign_vec(start_wf, out_wf, params.L);
     }
 

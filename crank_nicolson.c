@@ -16,11 +16,15 @@ static void f_eta(double complex *out_eta, double complex *in_eta, parameters pa
 
 static void f_psi(double complex *out_psi, double complex *in_psi, parameters params) {
   double complex *temp = malloc(params.L * sizeof(double complex));
+  double complex *temp2 = malloc(params.L * sizeof(double complex));
   hamiltonian(temp, in_psi, params);
   hamiltonian(out_psi, temp, params);
-  scalar_vec(out_psi, out_psi, (-1)*1I*params.tauhat/2, params.L);
+  scalar_vec(out_psi, out_psi, (-1)*params.tauhat*params.tauhat/4, params.L);
+  scalar_vec(temp2, temp, -1I*params.tauhat, params.L);
   add_vec(out_psi, out_psi, in_psi, params.L);
+  add_vec(out_psi, out_psi, temp2, params.L);
   free(temp);
+  free(temp2);
 }
 
 void step_cn(double complex *out, double complex *in, parameters params) {
