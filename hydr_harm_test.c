@@ -43,6 +43,7 @@ int main(){
     FILE *startwf_file;
     FILE *potential_file;
     FILE *norm_file;
+    FILE *output_file;
 
     for(long int i=0; i<params.L; i++){
         index2coord(coords, i, params.N, params.D);
@@ -56,28 +57,34 @@ int main(){
     parameters *p = &params;
     gen_pot_harmonic(p, omega);
 
-    startwf_file = fopen("h_test_input.txt","w");
+    startwf_file = fopen("hydr_input.txt","w");
     for(long int i=0; i<params.L; i++){
         fprintf(startwf_file, "%e\n", creal(start_wf[i]));
     }
     fclose(startwf_file);
 
-    norm_file = fopen("h_norm_output.txt","w");
+    norm_file = fopen("hydr_norm_output.txt","w");
+    output_file = fopen("hydr_output.txt","w");
     double norm_obs;
 
-    for(long int t=0; (t * params.tauhat) < 1e-1; t++){
+    for(long int t=0; (t * params.tauhat) < 1e0; t++){
         if(t % 100000 == 0){
-	    norm_obs = cabs(obs_norm(start_wf, params));
+            norm_obs = cabs(obs_norm(start_wf, params));
             printf("%li\t%e\n", t, norm_obs - 1);
-	    fprintf(norm_file, "%li\t%e\n", t, norm_obs - 1);
+            fprintf(norm_file, "%li\t%e\n", t, norm_obs - 1);
+            for(long int i=0; i < params.L; i++){
+                fprintf(output_file,"%e\t",cabs(start_wf[i]));
+            }
+            fprintf(output_file,"\n");
         }
         euler_method(out_wf, start_wf, params);
         assign_vec(start_wf, out_wf, params.L);
     }
 
     fclose(norm_file);
+    fclose(output_file);
 
-    potential_file = fopen("h_potential.txt","w");
+    potential_file = fopen("hydr_potential.txt","w");
 
     for(long int i=0; i<params.L; i++){
         fprintf(potential_file, "%e\n", creal(params.pot[i]));
