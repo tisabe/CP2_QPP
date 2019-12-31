@@ -7,8 +7,10 @@
 // function which writes an array "fdata" into a .txt file named "data"
 	// https://www.cprogramming.com/tutorial/cfileio.html
 
-void data2text(fdata) {
-FILE *f= fopen("data.txt", "w");
+void data2text(char *fdata, char *fname) {
+scanf("%s",fname);
+strcat(fname,".txt");
+FILE *f= fopen(fname, "w");
 written=fwrite(fdata, sizeof(fdata[0]), sizeof(fdata), f);
 // Test if fopen fails
 	if (written == 0) {
