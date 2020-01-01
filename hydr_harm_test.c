@@ -22,17 +22,20 @@ int main(){
     double mass_H = 1.67e-27; //kg
     double hbar = 1.054571817e-34; //Js
 
-    params.N = 5001;
+    params.N = 2501;
     params.D = 1;
     params.L = ipow(params.N, params.D);
     params.tol = DBL_EPSILON;
-    params.max_iter = 5000;
+    params.max_iter = params.L;
 
-    params.tauhat = 0.5e-2;
+    params.tauhat = 1e-3;
     params.epsilon = hbar * omega;
-    params.mhat = 1e-5;
+    params.mhat = 1e-4;
     params.khat = params.mhat;
     params.a = hbar * sqrt(params.mhat / (mass_H*params.epsilon));
+
+    double simulation_duration = 1e1;
+    int number_time_steps = 100;
 
     double complex *out_wf = malloc(params.L * sizeof(double complex));
     double complex *start_wf = malloc(params.L * sizeof(double complex));
@@ -67,8 +70,8 @@ int main(){
     output_file = fopen("hydr_output.txt","w");
     double norm_obs;
 
-    for(long int t=0; (t * params.tauhat) < 1e0; t++){
-        if(t % 10 == 0){
+    for(long int t=0; (t * params.tauhat) < simulation_duration; t++){
+        if(t % (long)(simulation_duration/(number_time_steps*params.tauhat)) == 0){
             norm_obs = cabs(obs_norm(start_wf, params));
             printf("%li\t%e\n", t, norm_obs - 1);
             fprintf(norm_file, "%li\t%e\n", t, norm_obs - 1);
