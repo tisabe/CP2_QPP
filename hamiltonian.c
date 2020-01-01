@@ -15,9 +15,9 @@ void kinetic(double complex *out, double complex *in, parameters params) {
 
 void gen_pot_harmonic(parameters *params){
   double potential;
+  long int *coordinates = malloc(params->D* sizeof(long int));
 
   for (long int i=0; i<params->L; i++) { /*(*params.L and params->L are synonyms)*/
-    long int *coordinates = malloc(params->D* sizeof(long int));
     index2coord(coordinates, i, params->N, params->D);
     potential = 0.0;
     for (int j=0; j<params->D; j++) {
@@ -26,9 +26,9 @@ void gen_pot_harmonic(parameters *params){
     potential=0.5*(params->khat)*potential;
 
     params->pot[i] = (double complex) potential;
-
-    free(coordinates);
   }
+
+  free(coordinates);
 }
 
 void gen_pot_box(parameters *params, double height){
