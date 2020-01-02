@@ -67,7 +67,7 @@ void nfft(double complex *out, double complex *in, int N, int D)
          **********************************************************************/
          int index=n%Nj+N*Nj*(n/Nj);
          gsl_complex_packed_array data=(double*)(out+index);
-         gsl_fft_complex_radix2_invserse(data,Nj,N);
+         gsl_fft_complex_radix2_inverse(data,Nj,N);
       }
       
       Nj*=N;
