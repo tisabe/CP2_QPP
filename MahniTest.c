@@ -4,22 +4,26 @@
 #include <float.h>
 #include <math.h>
 
-#include "write_text.h"
+#include "nfft.h"
+#include "vmath.h"
 
 #define _USE_MATH_DEFINES
 
 int main(){
 
-    int L = 5;
-	char *blub;
+int N = 10;
+int D = 2;
+int L = ipow(N, D);
 
     
-    int *x= malloc(L * sizeof(int));
+    double complex *x= malloc(L * sizeof(double complex));
     
     for(int i=0; i<L; i++){
         x[i] = i;
     }
-	FILE *f= fopen("blub.txt", "w");
-	fwrite(x, sizeof(x[0]), sizeof(x), f);
-	fclose(f);
+	nfft(x, x, N, D);
+	nfft_inverse(x, x, N, D);
+for( int i=0; i < L; i++){
+		fprintf("x[i] \n");
+	}
 }
