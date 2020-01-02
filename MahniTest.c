@@ -10,11 +10,11 @@
 
 int main(){
 
-    int L = 5
-	char *blub
+    int L = 5;
+	char *blub;
 
     
-    int *x= malloc(L * sizeof(double complex));
+    int *x= malloc(L * sizeof(int));
     
     for(int i=0; i<L; i++){
         x[i] = i;
