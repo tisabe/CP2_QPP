@@ -4,6 +4,7 @@
 #include <float.h>
 #include <math.h>
 
+#include "structs.h"
 #include "nfft.h"
 #include "vmath.h"
 
@@ -24,6 +25,6 @@ int L = ipow(N, D);
 	nfft(x, x, N, D);
 	nfft_inverse(x, x, N, D);
 for( int i=0; i < L; i++){
-		fprintf("x[i] \n");
+		printf("x[i] \n");
 	}
 }
