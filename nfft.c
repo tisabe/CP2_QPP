@@ -74,6 +74,40 @@ void nfft(double complex *out, double complex *in, int N, int D)
    }
 }
 
+// copy and paste for inverse nfft
+void nfft_inverse(double complex *out, double complex *in, int N, int D)
+{
+   /****************************************************************************
+   VOLUME = N^D
+   ****************************************************************************/
+   int VOLUME=1;
+   for(int j=0;j<D;j++) VOLUME*=N;
+
+   memcpy(out,in,sizeof(double complex)*VOLUME);
+
+   int Nj=1;
+   for(int j=0;j<D;j++)
+   {
+      /*************************************************************************
+      At this point, Nj=N^j
+      *************************************************************************/
+      
+      for(int n=0;n<VOLUME/N;n++)
+      {
+         /**********************************************************************
+         In this loop, the variable "index" runs over all lattice points with
+         fixed x[j]=0 (where x is the coordinate array). Notice that there are
+         VOLUME/N of such points.
+         **********************************************************************/
+         int index=n%Nj+N*Nj*(n/Nj);
+         gsl_complex_packed_array data=(double*)(out+index);
+         gsl_fft_complex_radix2_inverse(data,Nj,N);
+      }
+      
+      Nj*=N;
+   }
+}
+// end of copy and paste
 
 /*******************************************************************************
 It takes the index identifying a lattice point and returns its coordinates.
