@@ -51,19 +51,13 @@ void nfft(double complex *out, double complex *in, int N, int D)
 
    memcpy(out,in,sizeof(double complex)*VOLUME);
 
-   gsl_fft_complex_wavetable * wavetable;
-   gsl_fft_complex_workspace * workspace;
-
-   wavetable = gsl_fft_complex_wavetable_alloc (VOLUME);
-   workspace = gsl_fft_complex_workspace_alloc (VOLUME);
-
    int Nj=1;
    for(int j=0;j<D;j++)
    {
       /*************************************************************************
       At this point, Nj=N^j
       *************************************************************************/
-      
+
       for(int n=0;n<VOLUME/N;n++)
       {
          /**********************************************************************
@@ -73,13 +67,11 @@ void nfft(double complex *out, double complex *in, int N, int D)
          **********************************************************************/
          int index=n%Nj+N*Nj*(n/Nj);
          gsl_complex_packed_array data=(double*)(out+index);
-         gsl_fft_complex_forward(data,Nj,N, wavetable, workspace);
+         gsl_fft_complex_radix2_forward(data,Nj,N);
       }
-      
+
       Nj*=N;
    }
-   gsl_fft_complex_wavetable_free (wavetable);
-   gsl_fft_complex_workspace_free (workspace);
 }
 
 // copy and paste for inverse nfft
@@ -93,19 +85,13 @@ void nfft_inverse(double complex *out, double complex *in, int N, int D)
 
    memcpy(out,in,sizeof(double complex)*VOLUME);
 
-   gsl_fft_complex_wavetable * wavetable;
-   gsl_fft_complex_workspace * workspace;
-
-   wavetable = gsl_fft_complex_wavetable_alloc (VOLUME);
-   workspace = gsl_fft_complex_workspace_alloc (VOLUME);
-
    int Nj=1;
    for(int j=0;j<D;j++)
    {
       /*************************************************************************
       At this point, Nj=N^j
       *************************************************************************/
-      
+
       for(int n=0;n<VOLUME/N;n++)
       {
          /**********************************************************************
@@ -115,13 +101,11 @@ void nfft_inverse(double complex *out, double complex *in, int N, int D)
          **********************************************************************/
          int index=n%Nj+N*Nj*(n/Nj);
          gsl_complex_packed_array data=(double*)(out+index);
-         gsl_fft_complex_inverse(data,Nj,N, wavetable, workspace);
+         gsl_fft_complex_radix2_inverse(data,Nj,N);
       }
-      
+
       Nj*=N;
    }
-   gsl_fft_complex_wavetable_free (wavetable);
-   gsl_fft_complex_workspace_free (workspace);
 }
 // end of copy and paste
 
@@ -131,10 +115,10 @@ It takes the index identifying a lattice point and returns its coordinates.
 int *x          Pointer to the array of coordinates of the lattice point
                 (output). The function assumes that x has been already
                 allocated.
-        
+
 int index       Integer between 0 and N^D-1 which identifies a lattice point
                 uniquely (index).
-        
+
 int N           Number of lattice points in each direction.
 
 int D           Number of dimensions
@@ -161,12 +145,12 @@ static void check_nfft(int N, int D)
 {
    int VOLUME=1;
    for(int k=0;k<D;k++) VOLUME*=N;
-   
+
    double complex *in,*gslout,*selfout;
    in=malloc(sizeof(double complex)*VOLUME*3);
    gslout=in+VOLUME;
    selfout=gslout+VOLUME;
-   
+
    /****************************************************************************
    Generation of random input
    ****************************************************************************/
@@ -174,7 +158,7 @@ static void check_nfft(int N, int D)
    {
       in[ix]= ((1.0*rand())/RAND_MAX-0.5) + I*((1.0*rand())/RAND_MAX-0.5);
    }
-   
+
    /****************************************************************************
    Inefficient and straightforward implementation of n-dimensional DFT (with the
    GSL definition).
@@ -182,7 +166,7 @@ static void check_nfft(int N, int D)
    double complex *z;
    z=malloc(sizeof(double complex)*N);
    for(int p=0;p<N;p++) z[p]=cexp(-I* (2.0*M_PI*p)/N);
-   
+
    int *k,*x,kx;
    k=malloc(sizeof(int)*D*2);
    x=k+D;
@@ -193,10 +177,10 @@ static void check_nfft(int N, int D)
       for(int ix=0;ix<VOLUME;ix++)
       {
          index2coord(x,ix,N,D);
-         
+
          kx=0;
          for(int j=0;j<D;j++) kx+=k[j]*x[j];
-         
+
          selfout[ik]+=in[ix]*z[kx%N];
       }
    }
@@ -205,7 +189,7 @@ static void check_nfft(int N, int D)
    Calculation of the n-dimensional DFT with the GSL library
    ****************************************************************************/
    nfft(gslout,in,N,D);
-   
+
 
    /****************************************************************************
    Comparison of the two implementation
@@ -217,16 +201,16 @@ static void check_nfft(int N, int D)
       d=cabs(gslout[ik]-selfout[ik]);
       if(d>maxerr) maxerr=d;
    }
-   
+
    printf("Comparison for N= %3d , D= %d : err/VOLUME= %e  (should be < 1e-15)\n",N,D,maxerr/VOLUME);
-   
-   
+
+
    free(in);
    free(z);
    free(k);
 }
 
-
+/*
 int main(int argc, char *argv[])
 {
    printf(
@@ -241,7 +225,7 @@ int main(int argc, char *argv[])
    "the DFT. The results of the comparison are printed below, for a selection\n"
    "of values of N and D.\n"
    "\n");
-   
+
    check_nfft(4,1);
    check_nfft(8,1);
    check_nfft(16,1);
@@ -250,8 +234,9 @@ int main(int argc, char *argv[])
    check_nfft(8,3);
    check_nfft(16,3);
    check_nfft(8,4);
-   
+
    printf("\n");
-   
+
    return 0;
 }
+*/
