@@ -31,5 +31,5 @@ for( int i=0; i < L; i++){
 	}
 free(x);
 free(x2);
-free(x3;
+free(x3);
 }
