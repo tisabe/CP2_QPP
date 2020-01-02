@@ -54,8 +54,7 @@ void nfft(double complex *out, double complex *in, int N, int D)
    int VOLUME=1;
    for(int j=0;j<D;j++) VOLUME*=N;
 
-   wavetable = gsl_fft_complex_wavetable_alloc (VOLUME);
-   workspace = gsl_fft_complex_workspace_alloc (VOLUME);
+  
 
    memcpy(out,in,sizeof(double complex)*VOLUME);
    
@@ -76,6 +75,10 @@ void nfft(double complex *out, double complex *in, int N, int D)
          **********************************************************************/
          int index=n%Nj+N*Nj*(n/Nj);
          gsl_complex_packed_array data=(double*)(out+index);
+
+	 wavetable = gsl_fft_complex_wavetable_alloc (sizeof(data)/sizeof(data[0]));
+         workspace = gsl_fft_complex_workspace_alloc (sizeof(data)/sizeof(data[0]));
+
          gsl_fft_complex_forward(data,Nj,N, wavetable, workspace);
       }
 
@@ -98,9 +101,6 @@ void nfft_inverse(double complex *out, double complex *in, int N, int D)
    int VOLUME=1;
    for(int j=0;j<D;j++) VOLUME*=N;
 
-   wavetable = gsl_fft_complex_wavetable_alloc (VOLUME);
-   workspace = gsl_fft_complex_workspace_alloc (VOLUME);
-
    memcpy(out,in,sizeof(double complex)*VOLUME);
 
    int Nj=1;
@@ -119,6 +119,10 @@ void nfft_inverse(double complex *out, double complex *in, int N, int D)
          **********************************************************************/
          int index=n%Nj+N*Nj*(n/Nj);
          gsl_complex_packed_array data=(double*)(out+index);
+
+	 wavetable = gsl_fft_complex_wavetable_alloc (sizeof(data)/sizeof(data[0]));
+         workspace = gsl_fft_complex_workspace_alloc (sizeof(data)/sizeof(data[0]));
+
          gsl_fft_complex_inverse(data,Nj,N, wavetable, workspace);
       }
 
