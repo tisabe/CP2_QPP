@@ -11,12 +11,13 @@
 int main(){
 
     int L = 5
+	char *blub
 
     
-    double complex *x= malloc(L * sizeof(double complex));
+    int *x= malloc(L * sizeof(double complex));
     
-    for(long int i=0; i<L; i++){
+    for(int i=0; i<L; i++){
         x[i] = i;
     }
-	data2text(x, char *blub);
+	data2text(x, blub);
 }
