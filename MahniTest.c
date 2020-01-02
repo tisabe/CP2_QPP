@@ -20,7 +20,7 @@ int L = ipow(N, D);
     double complex *x= malloc(L * sizeof(double complex));
     
     for(int i=0; i<L; i++){
-        x[i] = i;
+        x[i] = 1e1;
     }
 	nfft(x, x, N, D);
 	nfft_inverse(x, x, N, D);
