@@ -210,13 +210,8 @@ static void check_nfft(int N, int D)
    free(k);
 }
 
-<<<<<<< HEAD
-
-/* int main(int argc, char *argv[])
-=======
 /*
 int main(int argc, char *argv[])
->>>>>>> a6b4ff696a934fea1df68846c66244c18e6afa0d
 {
    printf(
    "\n"
@@ -243,9 +238,5 @@ int main(int argc, char *argv[])
    printf("\n");
 
    return 0;
-<<<<<<< HEAD
-}*/
-=======
 }
 */
->>>>>>> a6b4ff696a934fea1df68846c66244c18e6afa0d
