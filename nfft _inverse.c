@@ -14,7 +14,7 @@ gcc -o nfft nfft.c -lgsl -lm -O3
 
 
 /*******************************************************************************
-void nfft(double complex *out, double complex *in, int N, int D)
+void nfft_inverse(double complex *out, double complex *in, int N, int D)
 
 It calculates the multidimensional DFT of "in" using the FFT radix2 GSL
 implementation, and it stores it in the array pointed by "out".
@@ -99,109 +99,3 @@ static void index2coord(int *x, int index, int N, int D)
 }
 
 
-/*******************************************************************************
-It compares the DFT calculated with the "nfft" function and some simple
-self-made implementation.
-
-int N           Number of lattice points in each direction.
-
-int D           Number of dimensions
-*******************************************************************************/
-static void check_nfft(int N, int D)
-{
-   int VOLUME=1;
-   for(int k=0;k<D;k++) VOLUME*=N;
-   
-   double complex *in,*gslout,*selfout;
-   in=malloc(sizeof(double complex)*VOLUME*3);
-   gslout=in+VOLUME;
-   selfout=gslout+VOLUME;
-   
-   /****************************************************************************
-   Generation of random input
-   ****************************************************************************/
-   for(int ix=0;ix<VOLUME;ix++)
-   {
-      in[ix]= ((1.0*rand())/RAND_MAX-0.5) + I*((1.0*rand())/RAND_MAX-0.5);
-   }
-   
-   /****************************************************************************
-   Inefficient and straightforward implementation of n-dimensional DFT (with the
-   GSL definition).
-   ****************************************************************************/
-   double complex *z;
-   z=malloc(sizeof(double complex)*N);
-   for(int p=0;p<N;p++) z[p]=cexp(-I* (2.0*M_PI*p)/N);
-   
-   int *k,*x,kx;
-   k=malloc(sizeof(int)*D*2);
-   x=k+D;
-   for(int ik=0;ik<VOLUME;ik++)
-   {
-      index2coord(k,ik,N,D);
-      selfout[ik]=0.0;
-      for(int ix=0;ix<VOLUME;ix++)
-      {
-         index2coord(x,ix,N,D);
-         
-         kx=0;
-         for(int j=0;j<D;j++) kx+=k[j]*x[j];
-         
-         selfout[ik]+=in[ix]*z[kx%N];
-      }
-   }
-
-   /****************************************************************************
-   Calculation of the n-dimensional DFT with the GSL library
-   ****************************************************************************/
-   nfft(gslout,in,N,D);
-   
-
-   /****************************************************************************
-   Comparison of the two implementation
-   ****************************************************************************/
-   double maxerr,d;
-   maxerr=0.0;
-   for(int ik=0;ik<VOLUME;ik++)
-   {
-      d=cabs(gslout[ik]-selfout[ik]);
-      if(d>maxerr) maxerr=d;
-   }
-   
-   printf("Comparison for N= %3d , D= %d : err/VOLUME= %e  (should be < 1e-15)\n",N,D,maxerr/VOLUME);
-   
-   
-   free(in);
-   free(z);
-   free(k);
-}
-
-
-int main(int argc, char *argv[])
-{
-   printf(
-   "\n"
-   "This program contains the definition of the \"nfft\" function, which\n"
-   "calculates the multidimensional Discrete Fourier Transform using the FFT\n"
-   "implementation of the Gnu Scientific Library (GSL). You can extract this\n"
-   "function and use it in your project.\n"
-   "\n"
-   "As a simple check of the implementation, this program compares the output\n"
-   "of the \"nfft\" function with a simple but inefficient implementation of\n"
-   "the DFT. The results of the comparison are printed below, for a selection\n"
-   "of values of N and D.\n"
-   "\n");
-   
-   check_nfft(4,1);
-   check_nfft(8,1);
-   check_nfft(16,1);
-   check_nfft(8,2);
-   check_nfft(16,2);
-   check_nfft(8,3);
-   check_nfft(16,3);
-   check_nfft(8,4);
-   
-   printf("\n");
-   
-   return 0;
-}
