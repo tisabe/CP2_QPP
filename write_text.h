@@ -6,6 +6,6 @@
 #include <stdio.h>
 #include <math.h>
 
-void data2text(char *fdata, char *fname)
+void data2text(char *fdata, char *fname);
 
 #endif
