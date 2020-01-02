@@ -4,7 +4,7 @@
 #include <math.h>
 
 
-// function which writes an array "fdata" into a .txt file named "data"
+// function which writes an array "fdata" into a .txt file named "fname"
 	// https://www.cprogramming.com/tutorial/cfileio.html
 
 void data2text(char *fdata, char *fname) {
