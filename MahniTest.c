@@ -19,7 +19,7 @@ int main(){
     for(int i=0; i<L; i++){
         x[i] = i;
     }
-	FILE *f= fopen(blub.txt, "w");
+	FILE *f= fopen("blub.txt", "w");
 	fwrite(x, sizeof(x[0]), sizeof(x), f);
 	fclose(f);
 }
