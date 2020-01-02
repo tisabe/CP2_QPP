@@ -50,11 +50,12 @@ void nfft(double complex *out, double complex *in, int N, int D)
    gsl_fft_complex_wavetable * wavetable;
    gsl_fft_complex_workspace * workspace;
 
-   wavetable = gsl_fft_complex_wavetable_alloc (L);
-   workspace = gsl_fft_complex_workspace_alloc (L);
 
    int VOLUME=1;
    for(int j=0;j<D;j++) VOLUME*=N;
+
+   wavetable = gsl_fft_complex_wavetable_alloc (VOLUME);
+   workspace = gsl_fft_complex_workspace_alloc (VOLUME);
 
    memcpy(out,in,sizeof(double complex)*VOLUME);
    
@@ -94,11 +95,11 @@ void nfft_inverse(double complex *out, double complex *in, int N, int D)
    gsl_fft_complex_wavetable * wavetable;
    gsl_fft_complex_workspace * workspace;
 
-   wavetable = gsl_fft_complex_wavetable_alloc (L);
-   workspace = gsl_fft_complex_workspace_alloc (L);
-
    int VOLUME=1;
    for(int j=0;j<D;j++) VOLUME*=N;
+
+   wavetable = gsl_fft_complex_wavetable_alloc (VOLUME);
+   workspace = gsl_fft_complex_workspace_alloc (VOLUME);
 
    memcpy(out,in,sizeof(double complex)*VOLUME);
 
