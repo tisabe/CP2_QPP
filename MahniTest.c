@@ -29,4 +29,7 @@ double complex *x3= malloc(L * sizeof(double complex));
 for( int i=0; i < L; i++){
 		printf("x3[i] \n");
 	}
+free(x);
+free(x2);
+free(x3;
 }
