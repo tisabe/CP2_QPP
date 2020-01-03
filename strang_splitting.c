@@ -59,6 +59,3 @@ void step_strang(double complex *out, double complex *in, parameters params) {
   free(coordinate);
   
 }
-int main(){
-	return 0;
-}
