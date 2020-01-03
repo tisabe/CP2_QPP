@@ -22,7 +22,7 @@ int main(){
     double mass_H = 1.67e-27; //kg
     double hbar = 1.054571817e-34; //Js
 
-    params.N = 2501;
+    params.N = 5001;
     params.D = 1;
     params.L = ipow(params.N, params.D);
     params.tol = DBL_EPSILON;
@@ -89,11 +89,12 @@ int main(){
 
     potential_file = fopen("hydr_potential.txt","w");
 
+    fprintf(potential_file, "a=\t%e\teps=\t%e\n", params.a, params.epsilon);
     for(long int i=0; i<params.L; i++){
         fprintf(potential_file, "%e\n", creal(params.pot[i]));
     }
 
-    printf("a = %e", params.a);
+    printf("Simulation finished!\nPlease find the generated data in the output files\nand use the IPython script to generate an animation");
 
     fclose(potential_file);
 
