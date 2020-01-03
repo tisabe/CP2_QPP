@@ -33,7 +33,7 @@ void step_strang(double complex *out, double complex *in, parameters params) {
 
   /* calculate eta according to equation (75) */
   for (int i=0; i<L; i++) {
-    in[i]=cexp(- 1I/2 * params.tau * params.pot[i]) * in[i];
+    in[i]=cexp(- 1I/2 * params.tauhat * params.pot[i]) * in[i];
   }
 
 	/* calculate eta_dft according to equation (76) */
@@ -45,7 +45,7 @@ void step_strang(double complex *out, double complex *in, parameters params) {
       index2coord(coordinate, i, N, D);
       sin_sum += pow(sin(M_PI/N*coordinate[j]),2);
     }
-    in[i]=cexp(- 1I * 2 * params.tau/params.mhat * sin_sum) * in[i];
+    in[i]=cexp(- 1I * 2 * params.tauhat/params.mhat * sin_sum) * in[i];
   }
 
 	/* calculate chi according to equation (78) */
@@ -53,7 +53,7 @@ void step_strang(double complex *out, double complex *in, parameters params) {
 
   /* calculate psi(q+1) according to equation (79) */
   for (int i=0; i<L; i++) {
-    out[i]=cexp(- 1I/2 * tauhat * params.pot[i]) * chi_dft[i];
+    out[i]=cexp(- 1I/2 * params.tauhat * params.pot[i]) * in[i];
   }
 
   free(coordinate);
