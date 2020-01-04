@@ -6,7 +6,11 @@
 #include "vmath.h"
 #include "geometry.h"
 #include "hamiltonian.h"
-//#include "fft.h" // hypothetical
+#include "nfft.h"
+
+//bin mir nicht sicher, ob die auch hier gebraucht werden für nfft (Mahni)
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_fft_complex.h>
 
 /*In this file functions to calculate different observables from a wavefunction
 are defined. not finished, not tested*/
@@ -45,13 +49,17 @@ double complex obs_x(double complex *in, unsigned int d, parameters params) {
 }
 
 double complex obs_p(double complex *in, unsigned int d, parameters params) {
+  double complex norm= obs_norm(in, params)
   double complex var_p = 0.0;
   double complex *psi_k = malloc(params.L*sizeof(double complex));
-  //fft(psi_k, in, params.N, params.D);
+  long int *coordinate = malloc(D* sizeof(long int));
+  nfft(psi_k, in, params.N, params.D);
+
   for(long int i=0; i<params.L; i++) {
-    var_p += 0;
+    index2coord(coordinate, i, N, D);
+    var_p += (~(psi_k[i])) * cexp(1I * M_PI/N * coordinate[d]) * 2 * sin(M_PI/N*coordinate[d]) * psi_k[i];
   }
 
   free(psi_k);
-  return var_p/params.N;
+  return var_p/norm;
 }
