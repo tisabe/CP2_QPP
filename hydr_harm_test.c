@@ -21,19 +21,19 @@ int main(){
     double mass_H = 1.67e-27; //kg
     double hbar = 1.054571817e-34; //Js
 
-    params.N = 5001;
-    params.D = 1;
+    params.N = 1001;
+    params.D = 2;
     params.L = ipow(params.N, params.D);
     params.tol = DBL_EPSILON;
     params.max_iter = params.L;
 
     params.tauhat = 1e-3;
     params.epsilon = hbar * omega;
-    params.mhat = 1e-4;
+    params.mhat = 5e-4;
     params.khat = params.mhat;
     params.a = hbar * sqrt(params.mhat / (mass_H*params.epsilon));
 
-    double simulation_duration = 1e1;
+    double simulation_duration = 1e-1;
     int number_time_steps = 100;
 
     double complex *out_wf = malloc(params.L * sizeof(double complex));
@@ -53,7 +53,7 @@ int main(){
     }
 
     for(long int i=0; i<(params.L); i++){
-        start_wf[i] = pow(sqrt(params.a),params.D) * sqrt(sqrt(mass_H * omega / (M_PI * hbar))) * exp(-1/2. * mass_H * omega / hbar * pow(x_space[i] + 500*params.a, 2));
+        start_wf[i] = pow(sqrt(params.a),params.D) * sqrt(sqrt(mass_H * omega / (M_PI * hbar))) * exp(-1/2. * mass_H * omega / hbar * pow(x_space[i] + 50*params.a, 2));
     }
 
     parameters *p = &params;
@@ -72,7 +72,7 @@ int main(){
     for(long int t=0; (t * params.tauhat) < simulation_duration; t++){
         if(t % (long)(simulation_duration/(number_time_steps*params.tauhat)) == 0){
             norm_obs = cabs(obs_norm(start_wf, params));
-            printf("%li\t%e\n", t, norm_obs - 1);
+            printf("%e\t%e\n", t*params.tauhat, norm_obs - 1);
             fprintf(norm_file, "%li\t%e\n", t, norm_obs - 1);
             for(long int i=0; i < params.L; i++){
                 fprintf(output_file,"%e\t",cabs(start_wf[i]));
