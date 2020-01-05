@@ -8,8 +8,7 @@
 #include "hamiltonian.h"
 #include "vmath.h"
 #include "geometry.h"
-#include "euler_method.h"
-#include "crank_nicolson.h"
+#include "integrators.h"
 #include "observables.h"
 
 #define _USE_MATH_DEFINES
