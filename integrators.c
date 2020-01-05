@@ -20,7 +20,13 @@ void step_euler(double complex *out, double complex *in, parameters params) {
       Note: Normalisation of the wave function is not conserved!! */
 
     // Allocate memory for a temporary array of length L
-    double complex *ham_out = malloc(params.L*sizeof(double complex));
+    static double complex *ham_out = NULL;
+    static long int lPrev;
+    if((ham_out == NULL) || (lPrev != params.L)){
+      free(ham_out);
+      ham_out = malloc(params.L*sizeof(double complex));
+      lPrev = params.L;
+    }
 
     // Calculate H(psi)
     hamiltonian(ham_out, out, params);
@@ -29,8 +35,6 @@ void step_euler(double complex *out, double complex *in, parameters params) {
     for(long int i=0; i<params.L; i++){
         out[i] = in[i] - 1I * params.tauhat * ham_out[i];
     }
-
-    free(ham_out);
 }
 
 /*These are the functions required to run the crank-nicolson integration: */
