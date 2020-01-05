@@ -34,6 +34,13 @@ void scalar_vec(double complex *out, double complex *vec, double complex s, long
   }
 }
 
+void mul_compl_vec_real_scal(double complex *out, double complex *vec, double s, long int L) {
+/*same as previous function but with real scalar*/
+  for(long int i=0; i<L; i++){
+    out[i] = s*vec[i];
+  }
+}
+
 void mul_element(double complex *out, double complex *w, double complex *v, long int L) {
 /*returns the elementwise multiplication of two complex vectors v, w*/
   for(long int i=0; i<L; i++) {
