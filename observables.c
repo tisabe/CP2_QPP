@@ -49,15 +49,15 @@ double complex obs_x(double complex *in, unsigned int d, parameters params) {
 }
 
 double complex obs_p(double complex *in, unsigned int d, parameters params) {
-  double complex norm= obs_norm(in, params)
+  double complex norm= obs_norm(in, params);
   double complex var_p = 0.0;
   double complex *psi_k = malloc(params.L*sizeof(double complex));
-  long int *coordinate = malloc(D* sizeof(long int));
+  long int *coordinate = malloc(params.D* sizeof(long int));
   nfft(psi_k, in, params.N, params.D);
 
   for(long int i=0; i<params.L; i++) {
-    index2coord(coordinate, i, N, D);
-    var_p += (~(psi_k[i])) * cexp(1I * M_PI/N * coordinate[d]) * 2 * sin(M_PI/N*coordinate[d]) * psi_k[i];
+    index2coord(coordinate, i, params.N, params.D);
+    var_p += (~(psi_k[i])) * cexp(1I * M_PI/params.N * coordinate[d]) * 2 * sin(M_PI/params.N*coordinate[d]) * psi_k[i];
   }
 
   free(psi_k);
