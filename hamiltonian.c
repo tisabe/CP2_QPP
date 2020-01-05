@@ -10,7 +10,7 @@
 
 void kinetic(double complex *out, double complex *in, parameters params) {
   laplacian(out, in, params.N, params.D); // calculate the D-dimensional laplacian of in and store it in out
-  scalar_vec(out, out, (double complex)(-1 / (2*params.mhat)), params.L); // multiply by the factor -1/(2*mhat)
+  mul_compl_vec_real_scal(out, out, -1 / (2*params.mhat), params.L); // multiply by the factor -1/(2*mhat)
 }
 
 void gen_pot_harmonic(parameters *params){
@@ -77,7 +77,14 @@ void gen_pot_well(parameters *params, double height){
 
 void hamiltonian(double complex *out, double complex *in, parameters params){
   /*calculate T*phi and store it in phi_kinetic*/
-  double complex *phi_kinetic= malloc(params.L*sizeof(double complex));
+  static double complex *phi_kinetic = NULL;
+  static long int lPrev;
+  if((phi_kinetic == NULL) || (lPrev != params.L)){
+    free(phi_kinetic);
+    phi_kinetic =  malloc(params.L*sizeof(double complex));
+    lPrev = params.L;
+  }
+
   kinetic(phi_kinetic,in,params);
 
   /*Calculate V*phi and store it in out*/
@@ -85,6 +92,4 @@ void hamiltonian(double complex *out, double complex *in, parameters params){
 
   /*add both parts of the hamiltonian and save it in out */
   add_vec(out, out, phi_kinetic, params.L);
-
-  free(phi_kinetic);
 }
