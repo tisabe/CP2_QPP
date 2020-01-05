@@ -4,10 +4,15 @@
 #include "structs.h"
 #include "vmath.h"
 
-long int coord2index(long int *coord, long int N, unsigned int D){
+long int coord2index(long int *coord, long int N, unsigned int D) {
+  /* Calculates the single-dimensional index from a touble of coordinates *coord
+  in lexicographic order. Each of the D axis is assumed to have length N.
+  The calculated index is returned as a long int. */
   long int index = 0;
   long int shift = (N-1)/2; // coordinate shift amount to have coordinate origin at middle of axis
 
+  /* The center of the coordinate system is assumed to be the 0 point on all
+  axis. To have a point at 0 and still be symmetric, N needs to be uneven. */
   if (((N+1)%2) != 0) {
     printf("Error: Length of axis N should be uneven");
     return -1;
@@ -21,8 +26,9 @@ long int coord2index(long int *coord, long int N, unsigned int D){
 }
 
 void index2coord(long int *coord, long int index, long int N, unsigned int D){
-  /*coordinate vector needs to be returned as pointer in C*/
-  //static int coord[D];
+  /* Calculates the coordinate tupel *coord with D dimensions from the one-
+  dimensional index. Each of the D axis is assumed to have length N.
+  The coordinate tupel is stored in the passed pointer *coord. */
   if (((N+1)%2) != 0) {
     printf("Error: Length of axis N should be uneven");
   }
@@ -85,4 +91,3 @@ void nneighbour_init(long int *out, long int N, unsigned int D){
     }
   }
 }
-

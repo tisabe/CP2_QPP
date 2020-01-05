@@ -16,6 +16,7 @@
 are defined. not finished, not tested*/
 
 double complex obs_norm(double complex *in, parameters params) {
+  /* Calculates and returns the norm of a complex vector as norm = sum_i=0^L-1 cc(v[i])*v[i] */
   double complex var_norm = 0.0;
 
   var_norm = dot_product(in, in, params.L);
@@ -24,16 +25,19 @@ double complex obs_norm(double complex *in, parameters params) {
 }
 
 double complex obs_E(double complex *in, parameters params) {
+  /* Returns the energy-observable as given by E = <psi|H|psi>/<psi|psi> */
   double complex var_E = 0.0;
   double complex *in_H = malloc(params.L*sizeof(double complex));
   hamiltonian(in_H, in, params);
   var_E = dot_product(in, in_H, params.L)/obs_norm(in, params);
 
   free(in_H);
-  return var_E/params.N;
+  return var_E;
 }
 
 double complex obs_x(double complex *in, unsigned int d, parameters params) {
+  /* Returns the position-observable as given by o(x_d) = <psi|x_d|psi>/<psi|psi>
+  of coordinate d. */
   double complex var_x = 0.0;
   long int *coord = malloc(params.D*sizeof(double complex));
   double complex *in_x = malloc(params.L*sizeof(double complex));
@@ -45,10 +49,12 @@ double complex obs_x(double complex *in, unsigned int d, parameters params) {
 
   free(coord);
   free(in_x);
-  return var_x/params.N;
+  return var_x;
 }
 
 double complex obs_p(double complex *in, unsigned int d, parameters params) {
+  /* Returns the momentum observable as given by equation 89 in the assignment.
+  The observable is calculated for axis d. */
   double complex norm= obs_norm(in, params)
   double complex var_p = 0.0;
   double complex *psi_k = malloc(params.L*sizeof(double complex));

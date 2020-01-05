@@ -14,6 +14,7 @@ void ran_vec(double complex *vec, long int L) {
     vec[i] = (double)rand()/RAND_MAX; // sets to random value between 0.0 and 1.0
   }
 }
+
 void check_add_ran(long int N, unsigned int D) {
   /* This function checks the additivity of the hamiltonian with a random
   wavefunction and potential given axis length N and number of dimenions D.
@@ -30,6 +31,8 @@ void check_add_ran(long int N, unsigned int D) {
   ran_vec(v, L);
   ran_vec(w, L);
   double err = 0;
+  /* The absolute error will be calculated as err = H(v) + H(w) - H(v + w)
+  and the relative error is err_relative = err/H(v + w) */
 
   parameters params;
   params.N = N;
@@ -162,8 +165,10 @@ void check_eigen(long int N, unsigned int D) {
 }
 
 int main() {
+  /* These parameters for dimensions and axis lengths will be tested: */
   unsigned int arr_D[5] = {1, 1, 1, 2, 3};
   long int arr_N[5] = {101, 10001, 1000001, 1001, 101};
+
   printf("Testing the additivity of the Hamiltonian with random vectors...\n");
   for (int i=0; i<5; i++) {
     check_add_ran(arr_N[i], arr_D[i]);
