@@ -21,7 +21,7 @@ void gen_pot_harmonic(parameters *params){
     index2coord(coordinates, i, params->N, params->D);
     potential = 0.0;
     for (int j=0; j<params->D; j++) {
-      potential += pow(coordinates[j], 2);
+      potential += pow(coordinates[j]-params->N/2, 2);
     }
     potential=0.5*(params->khat)*potential;
 
@@ -37,7 +37,7 @@ void gen_pot_box(parameters *params, double height){
       long int *coordinates = malloc(params->D* sizeof(long int));
       index2coord(coordinates, i, params->N, params->D);
       for (int j=0; j<params->D; j++) {
-          if(fabs(coordinates[j])<params->N/4){
+          if(fabs(coordinates[j]-params->N/2)<params->N/4){
               boxy=0;
           }
           else{
@@ -46,7 +46,7 @@ void gen_pot_box(parameters *params, double height){
           }
       }
 
-      params->pot[i]=(double complex)boxy;
+      params->pot[i]=(double complex) boxy;
 
       free(coordinates);
     }
@@ -56,23 +56,18 @@ void gen_pot_box(parameters *params, double height){
 void gen_pot_well(parameters *params, double height){
   double boxy = 0;
   for (long int i=0; i<params->L; i++) {
-    long int *coordinates = malloc(params->D* sizeof(long int));
-    index2coord(coordinates, i, params->N, params->D);
-    for (int j=0; j<params->D; j++) {
-        if(coordinates[j]>params->N/4+params->N * (int) (coordinates[j]/params->N) && coordinates[j]< 3/4*params->N+params->N * (int) (coordinates[j]/params->N)){
+        if(i>params->N/4+params->N * (int) (i/params->N) && i< 3/4*params->N+params->N * (int) (i/params->N)){
             boxy=0;
         }
         else{
             boxy=height;
             break;
         }
-    }
-
-    params->pot[i];
-
-    free(coordinates);
-    }
-    scalar_vec(params->pot, params->pot, 1/params->epsilon, params->L);
+   
+		params->pot[i]=(double complex) boxy;
+		
+	}
+  scalar_vec(params->pot, params->pot, 1/params->epsilon, params->L);
 }
 
 void hamiltonian(double complex *out, double complex *in, parameters params){
