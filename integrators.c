@@ -86,7 +86,7 @@ void step_strang(double complex *out, double complex *in, parameters params) {
   }
 
 	/* calculate eta_dft according to equation (76) */
-  nfft(in,in,N,D)
+  nfft(in,in,N,D);
 
 	/* calculate chi tilde (chi_dft) according to equation (77) */
 	for (int i=0; i<L; i++) {

@@ -1,3 +1,7 @@
+/* ********** This program solves the time-dependent Schroedinger equation for a particle with a certain wave function in a harmonic potential ********** */
+/* ********** The parameters of the program are set according to the harmonic approximation of two hydrogen atoms in a vibrating mode ********** */
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <complex.h>
@@ -10,67 +14,83 @@
 #include "geometry.h"
 #include "integrators.h"
 #include "observables.h"
+#include "phi.h"
 
 #define _USE_MATH_DEFINES
 
 int main(){
-
+    // Set simulation parameters
     parameters params;
 
+    //Set external parameters which the simulation depends upon
     double omega = 8.3e14; //Hz
     double mass_H = 1.67e-27; //kg
     double hbar = 1.054571817e-34; //Js
 
+    //Set parameters for discretising space
     params.N = 1000;
     params.D = 1;
     params.L = ipow(params.N, params.D);
+
+    //Set tolerance/ aim parameters for CG algorithm
     params.tol = DBL_EPSILON;
     params.max_iter = params.L;
 
-    params.tauhat = 1e-3;
+    //Set energy scale
     params.epsilon = hbar * omega;
+
+    //Set dimensionless simulation parameters
+    params.tauhat = 1e-3; // = omega * tau (with epsilon = hbar*omega)
     params.a = 2e-13;
-    params.mhat = pow(params.a/hbar,2)*mass_H*params.epsilon;     //=mass_H*omega*a^2/(2*hbar)
-    params.khat = params.mhat * pow(hbar*omega/params.epsilon,2); //=params.mhat
+    params.mhat = pow(params.a/hbar,2)*mass_H*params.epsilon;
+    params.khat = params.mhat * pow(hbar*omega/params.epsilon,2);
 
-    double simulation_duration = 3e1;
-    int number_time_steps = 100;
-    double offset[3] = {50,50,50};
+    double simulation_duration = 1e1; //Set simulation duration as a multiple of omega
+    int number_timesteps_to_record = 100; //Set the number of evenly spaced time steps that are to be recorded
 
-    double complex *out_wf = malloc(params.L * sizeof(double complex));
+    //Initialise arrays to store the start wave function, the wave function at the current iteration and the potential
     double complex *start_wf = malloc(params.L * sizeof(double complex));
-    long int *coords = malloc(params.D * sizeof(long int));
+    double complex *out_wf = malloc(params.L * sizeof(double complex));
     params.pot = malloc(params.L * sizeof(double complex));
 
+    //Initialise txt files to store the potential, observables, real part of the wave functions, imaginary part of the wave functions
     FILE *potential_file;
     FILE *obs_file;
     FILE *output_file_real;
     FILE *output_file_imag;
 
-    set_zero(start_wf, params.L);
+    //Initialise an array to store coordinates
+    long int *coords = malloc(params.D * sizeof(long int));
 
+    //Set start wave function to be the ground state of the solution of the quantum harmonic oscillator
+    double offset = 0;
     for(long int i=0; i<(params.L); i++){
         index2coord(coords, i, params.N, params.D);
-        for(int j=0; j<params.D; j++){
-            start_wf[i] += pow(sqrt(params.a),params.D) * sqrt(sqrt(params.mhat/M_PI)/params.a) * exp(-.5*params.mhat*pow((coords[j]-params.N/2+100),2));
-        }
+        start_wf[i] = pow(sqrt(params.a),params.D) * sqrt(sqrt(params.mhat/M_PI)/params.a) * exp(-.5*params.mhat*pow((coords[0]-params.N/2+offset),2));
+        //start_wf[i] = 2*sqrt(params.mhat/2)*(coords[0]-params.N/2+offset)*pow(sqrt(params.a),params.D) * sqrt(sqrt(params.mhat/M_PI)/params.a) * exp(-.5*params.mhat*pow((coords[0]-params.N/2+offset),2));
     }
 
+    //Set the potential to be the harmonic potential with eigenfrequency omega
     parameters *p = &params;
     gen_pot_harmonic(p, omega);
 
+    //Open the txt files to store the observables, real part of the wave functions, imaginary part of the wave functions
     obs_file = fopen("hydr_observables_output.txt","w");
     output_file_real = fopen("hydr_wavefunction_output_real.txt","w");
     output_file_imag = fopen("hydr_wavefunction_output_imag.txt","w");
-    double norm_obs;
 
-    printf("\nElapsed time\tNorm - 1\t<H>\t\t<x>\t\t<p>\n\n");
+    printf("\nElapsed time\tNorm - 1\t<E>\t\t<x>\t\t<p>\n\n");
 
+    //Iterate over t and have the for loop running until t*tauhat is greater or equal to simulation_duration
     for(long int t=0; (t * params.tauhat) < simulation_duration; t++){
-        if(t % (long)(simulation_duration/(number_time_steps*params.tauhat)) == 0){
-            norm_obs = cabs(obs_norm(start_wf, params));
-            printf("%e\t%e\t%e\t%e\t%e\n", t*params.tauhat, norm_obs - 1, creal(obs_E(start_wf,params)), creal(obs_x(start_wf, 0, params)), creal(obs_p(start_wf, 0, params)));
-            fprintf(obs_file, "%e\t%e\t%e\t%e\t%e\n", t*params.tauhat, norm_obs - 1, creal(obs_E(start_wf,params)), creal(obs_x(start_wf, 0, params)), creal(obs_p(start_wf, 0, params)));
+
+        //If the condition below holds, the wave function as well as the observables normalisation - 1, energy, x expectation value and p expectation value are recorded in the output files
+        if(t % (long)(simulation_duration/(number_timesteps_to_record*params.tauhat)) == 0){
+            //Print all the observables to the console...
+            printf("%e\t%e\t%e\t%e\t%e\n", t*params.tauhat, cabs(obs_norm(start_wf, params)) - 1, creal(obs_E(start_wf,params)), creal(obs_x(start_wf, 0, params)), creal(obs_p(start_wf, 0, params)));
+            //... and save them to the obs_file as well
+            fprintf(obs_file, "%e\t%e\t%e\t%e\t%e\n", t*params.tauhat, cabs(obs_norm(start_wf, params)) - 1, creal(obs_E(start_wf,params)), creal(obs_x(start_wf, 0, params)), creal(obs_p(start_wf, 0, params)));
+            //Save the wave functions
             for(long int i=0; i < params.L; i++){
                 fprintf(output_file_real,"%e\t",creal(start_wf[i]));
                 fprintf(output_file_imag,"%e\t",cimag(start_wf[i]));
@@ -78,24 +98,32 @@ int main(){
             fprintf(output_file_real,"\n");
             fprintf(output_file_imag,"\n");
         }
-        step_strang(out_wf, start_wf, params);
+
+        //Execute one step of the chosen integrator
+        //step_euler(out_wf, start_wf, params);
+        step_cn(out_wf, start_wf, params);
+        //step_strang(out_wf, start_wf, params);
+
+        //Assign the vector to the old out_vector to prepare for the next step
         assign_vec(start_wf, out_wf, params.L);
     }
 
+    //Close output files
     fclose(obs_file);
     fclose(output_file_real);
     fclose(output_file_imag);
 
+    //Save potential into a file
     potential_file = fopen("hydr_potential.txt","w");
 
-    fprintf(potential_file, "a=\t%e\teps=\t%e\n", params.a, params.epsilon);
+    fprintf(potential_file, "a=\t%e\teps=\t%e\ttauhat=\t%e\n", params.a, params.epsilon, params.tauhat);
     for(long int i=0; i<params.L; i++){
         fprintf(potential_file, "%e\n", creal(params.pot[i]));
     }
 
-    printf("Simulation finished!\nPlease find the generated data in the output files\nand use the IPython script to generate an animation");
-
     fclose(potential_file);
+
+    printf("Simulation finished!\nPlease find the generated data in the output files\nand use the IPython script 'animation-1d' to generate an animation");
 
     free(coords);
     free(start_wf);
