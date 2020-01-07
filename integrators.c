@@ -109,5 +109,8 @@ void step_strang(double complex *out, double complex *in, parameters params) {
   }
 
   free(coordinate);
+  free(in1);
+  free(in2);
+  free(in3);
 
 }

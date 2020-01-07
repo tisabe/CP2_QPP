@@ -6,6 +6,10 @@ laplacian_test: laplacian_test.c vmath.c laplacian.c indices.c nneighbour.c
 	gcc laplacian_test.c vmath.c laplacian.c indices.c nneighbour.c -o laplacian_test.exe -O2
 	./laplacian_test.exe
 	
+nneighbour_test: nneighbour_test.c geometry.c vmath.c
+	gcc nneighbour_test.c geometry.c vmath.c -lm -o nneighbour_test.exe -O2
+	./nneighbour_test.exe
+	
 cg_test: cg_test.c vmath.c
 	gcc -lm cg_test.c vmath.c -o cg_test.exe -O2
 	./cg_test.exe
