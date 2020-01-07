@@ -8,7 +8,7 @@
 #include "vmath.h"
 
 void phi(double complex *out, parameters params, int type){
-	long int *phi_coords;
+  long int *phi_coords;
   phi_coords = malloc(params.D*sizeof(long int));
 
 	if (type==0){
@@ -20,7 +20,7 @@ void phi(double complex *out, parameters params, int type){
 		for (i=0;i<params.L;i++) {
 			index2coord(phi_coords, i, params.N, params.D);
 			for (j=0;j<params.D;j++) {
-				out[i]*=cosines(phi_coords[j]);
+				out[i]*=cosines(phi_coords[j]-params.N/2);
 			}
 		}
 	}
@@ -30,7 +30,7 @@ void phi(double complex *out, parameters params, int type){
 		for (i=0;i<params.L;i++) {
 			index2coord(phi_coords, i, params.N, params.D);
 			for (j=0;j<params.D;j++) {
-				out[i]+=phi_coords[j]*phi_coords[j]*pow(I,j);
+				out[i]+=(phi_coords[j]-params.N/2)*(phi_coords[j]-params.N/2)*pow(I,j);
 			}
 		}
 	}
@@ -39,6 +39,9 @@ void phi(double complex *out, parameters params, int type){
 		/* wave function as 1/abs(phi_coords) with fixed imaginary parts*/
 		for (i=0;i<params.L;i++) {
 			index2coord(phi_coords, i, params.N, params.D);
+			for (j=0,j<params.D,j++){
+				phi_coords[j]=(phi_coords[j]-params.N/2);
+			}
 			out[i]+=1/abs_vec(phi_coords,params.D)*pow(I,j);
 		}
 	}
@@ -48,6 +51,9 @@ void phi(double complex *out, parameters params, int type){
 		for (i=0;i<params.L;i++) {
 			index2coord(phi_coords, i, params.N, params.D);
 			long int *exponent = malloc(params.D*sizeof(long int));
+			for (j=0,j<params.D,j++){
+				phi_coords[j]=(phi_coords[j]-params.N/2);
+			}
 			sub_vec(exponent, phi_coords, params.phi0, params.L);
 			gaussian_exp=dot_product(exponent, exponent, params.L)*(-1)/(params.sigma*params.sigma*2);
 
@@ -56,7 +62,7 @@ void phi(double complex *out, parameters params, int type){
 		}
 	}
 
-	double normalization_factor=abs_vec(out,params.L);
+  double normalization_factor=abs_vec(out,params.L);
   for (i=0;i<params.L;i++) {
 		/* normalization of the wave function */
 		out[i]=out[i]/normalization_factor;
