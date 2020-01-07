@@ -6,7 +6,6 @@
 
 long int coord2index(long int *coord, long int N, unsigned int D){
   long int index = 0;
-  long int shift = (N-1)/2; // coordinate shift amount to have coordinate origin at middle of axis
 
   if (((N+1)%2) != 0) {
     printf("Error: Length of axis N should be uneven");
@@ -14,7 +13,7 @@ long int coord2index(long int *coord, long int N, unsigned int D){
   }
 
   for (int i=0; i<D; i++){
-    index += (coord[i]+shift)*ipow(N,i);
+    index += (coord[i])*ipow(N,i);
   }
 
   return index;
@@ -23,16 +22,12 @@ long int coord2index(long int *coord, long int N, unsigned int D){
 void index2coord(long int *coord, long int index, long int N, unsigned int D){
   /*coordinate vector needs to be returned as pointer in C*/
   //static int coord[D];
-  if (((N+1)%2) != 0) {
-    printf("Error: Length of axis N should be uneven");
-  }
 
   long int b = 0;
-  long int shift = (N-1)/2; // coordinate shift amount to have coordinate origin at middle of axis
 
   for (int i=0; i<D; i++) {
     b = ipow(N, D-1-i);
-    coord[D-1-i] = index/b - shift;
+    coord[D-1-i] = index/b;
     index %= b;
   }
 }
@@ -61,10 +56,10 @@ long int nneighbour(long int index, unsigned int axis, int dir, long int N, unsi
     nneighbour_coords[axis] += dir;
 
     //Check for boundary conditions
-    if(nneighbour_coords[axis] > (N-1)/2)               //Edits because of change of coordinate origin
-        nneighbour_coords[axis] = -(N-1)/2;
-    if(nneighbour_coords[axis] < -(N-1)/2)
-        nneighbour_coords[axis] = (N-1)/2;
+    if(nneighbour_coords[axis] > N-1)               //Edits because of change of coordinate origin
+        nneighbour_coords[axis] = 0;
+    if(nneighbour_coords[axis] < 0)
+        nneighbour_coords[axis] = N-1;
 
     nneighbour_index = coord2index(nneighbour_coords, N, D);
 
@@ -85,4 +80,3 @@ void nneighbour_init(long int *out, long int N, unsigned int D){
     }
   }
 }
-
