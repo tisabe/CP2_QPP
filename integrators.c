@@ -71,9 +71,6 @@ void step_cn(double complex *out, double complex *in, parameters params) {
 void step_strang(double complex *out, double complex *in, parameters params) {
   /* Computes a time step of the wavefunction according to the
   Strang-Splitting-method, with the parameters stored in params. */
-  double complex *in1=malloc(params.L* sizeof(double complex));
-  double complex *in2=malloc(params.L* sizeof(double complex));
-  double complex *in3=malloc(params.L* sizeof(double complex));
   long int N = params.N;
   unsigned int D = params.D;
   long int L = params.L;
@@ -89,7 +86,7 @@ void step_strang(double complex *out, double complex *in, parameters params) {
   }
 
 	/* calculate eta_dft according to equation (76) */
-  nfft(in1, in, N, D);
+  nfft(in, in, N, D);
 
 	/* calculate chi tilde (chi_dft) according to equation (77) */
 	for (int i=0; i<L; i++) {
@@ -97,15 +94,15 @@ void step_strang(double complex *out, double complex *in, parameters params) {
       index2coord(coordinate, i, N, D);
       sin_sum += pow(sin(M_PI/N*coordinate[j]),2);
     }
-    in2[i]=cexp(- 1I * 2 * params.tauhat/params.mhat * sin_sum) * in1[i];
+    in[i]=cexp(- 1I * 2 * params.tauhat/params.mhat * sin_sum) * in[i];
   }
 
 	/* calculate chi according to equation (78) */
-	nfft_inverse(in3, in2, N, D);
+	nfft_inverse(in, in, N, D);
 
   /* calculate psi(q+1) according to equation (79) */
   for (int i=0; i<L; i++) {
-    out[i]=cexp(- 1I/2 * params.tauhat * params.pot[i]) * in3[i];
+    out[i]=cexp(- 1I/2 * params.tauhat * params.pot[i]) * in[i];
   }
 
   free(coordinate);
