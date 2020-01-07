@@ -21,7 +21,7 @@ int main(){
     double mass_H = 1.67e-27; //kg
     double hbar = 1.054571817e-34; //Js
 
-    params.N = 2001;
+    params.N = 1001;
     params.D = 1;
     params.L = ipow(params.N, params.D);
     params.tol = DBL_EPSILON;
@@ -42,9 +42,8 @@ int main(){
     long int *coords = malloc(params.D * sizeof(long int));
     params.pot = malloc(params.L * sizeof(double complex));
 
-    FILE *startwf_file;
     FILE *potential_file;
-    FILE *norm_file;
+    FILE *obs_file;
     FILE *output_file;
 
     set_zero(start_wf, params.L);
@@ -59,21 +58,17 @@ int main(){
     parameters *p = &params;
     gen_pot_harmonic(p, omega);
 
-    startwf_file = fopen("hydr_input.txt","w");
-    for(long int i=0; i<params.L; i++){
-        fprintf(startwf_file, "%e\n", creal(start_wf[i]));
-    }
-    fclose(startwf_file);
-
-    norm_file = fopen("hydr_norm_output.txt","w");
-    output_file = fopen("hydr_output.txt","w");
+    obs_file = fopen("hydr_observables_output.txt","w");
+    output_file = fopen("hydr_wavefunction_output.txt","w");
     double norm_obs;
+
+    printf("\nElapsed time\tNorm - 1\t<H>\t\t<x>\t\t<p>\n\n");
 
     for(long int t=0; (t * params.tauhat) < simulation_duration; t++){
         if(t % (long)(simulation_duration/(number_time_steps*params.tauhat)) == 0){
             norm_obs = cabs(obs_norm(start_wf, params));
-            printf("%e\t%e\n", t*params.tauhat, norm_obs - 1);
-            fprintf(norm_file, "%li\t%e\n", t, norm_obs - 1);
+            printf("%e\t%e\t%e\t%e\t%e\n", t*params.tauhat, norm_obs - 1, creal(obs_E(start_wf,params)), creal(obs_x(start_wf, 0, params)), creal(obs_p(start_wf, 0, params)));
+            fprintf(obs_file, "%e\t%e\t%e\t%e\t%e\n", t*params.tauhat, norm_obs - 1, creal(obs_E(start_wf,params)), creal(obs_x(start_wf, 0, params)), creal(obs_p(start_wf, 0, params)));
             for(long int i=0; i < params.L; i++){
                 fprintf(output_file,"%e\t",cabs(start_wf[i]));
             }
@@ -83,7 +78,7 @@ int main(){
         assign_vec(start_wf, out_wf, params.L);
     }
 
-    fclose(norm_file);
+    fclose(obs_file);
     fclose(output_file);
 
     potential_file = fopen("hydr_potential.txt","w");
