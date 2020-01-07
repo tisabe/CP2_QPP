@@ -8,7 +8,7 @@
 
 long int setN(){
   long int N;
-  printf("Set array length. Must be uneven. (Recommended N < 1000, 0 for random value up to 999): ");
+  printf("Set array length. (Recommended N < 1000, 0 for random value up to 999): ");
   scanf("%li",&N);
   // Set N to a random uneven number if 0 is selected. Then print the random value.
   if(N==0){
@@ -24,7 +24,7 @@ long int setN(){
 void check_index2coord_inc_sum(long int N){
     int not_passed = 0;
 
-    printf("\n\n*******Testing if coordinates increment and if checksum is ((N-1)/2+1)*(N-1)/2*N**(D-1)*******\n");
+    printf("\n\n*******Testing if coordinates increment and if checksum is (N-1)/2*N**D*******\n");
 
     for(unsigned int D=1; D<=3; D++){
         printf("\nTesting %u dimension(s)...",D);
@@ -40,7 +40,7 @@ void check_index2coord_inc_sum(long int N){
         for(int i=0; i<ipow(N,D); i++){
             index2coord(coords_cur,i,N,D);
             for(int j=0; j<D; j++){
-                if(!((coords_cur[j] == coords_old[j]+1) || (coords_cur[j] == coords_old[j]) || (coords_cur[j] == -(N-1)/2))){
+                if(!((coords_cur[j] == coords_old[j]+1) || (coords_cur[j] == coords_old[j]) || (coords_cur[j] == 0))){
                     not_passed = 1;
                     printf("Error coordinate: %li",coords_cur[j]);
                 }
@@ -50,9 +50,9 @@ void check_index2coord_inc_sum(long int N){
         }
 
         for(int j=0; j<D; j++){
-            if(sum[j] != (((N-1)/2+1) * (N-1)/2 * ipow(N,D-1))){
+            if(sum[j] != (ipow(N,D)*(N-1)/2)){
                 not_passed = 1;
-                printf("Error sum: (%li, %li)\n",sum[j],0);
+                printf("Error sum: (%li, %li)\n",sum[j],ipow(N,D)*(N-1)/2);
             }
         }
 

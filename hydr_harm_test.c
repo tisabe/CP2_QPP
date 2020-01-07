@@ -33,9 +33,9 @@ int main(){
     params.mhat = pow(params.a/hbar,2)*mass_H*params.epsilon;     //=mass_H*omega*a^2/(2*hbar)
     params.khat = params.mhat * pow(hbar*omega/params.epsilon,2); //=params.mhat
 
-    double simulation_duration = 1e1;
+    double simulation_duration = 3e1;
     int number_time_steps = 100;
-    double offset[3] = {200,50,50};
+    double offset[3] = {50,50,50};
 
     double complex *out_wf = malloc(params.L * sizeof(double complex));
     double complex *start_wf = malloc(params.L * sizeof(double complex));
