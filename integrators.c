@@ -79,10 +79,6 @@ void step_strang(double complex *out, double complex *in, parameters params) {
   long int *coordinate = malloc(D* sizeof(long int));
 
   // https://www.gnu.org/software/gsl/doc/html/fft.html#c.gsl_fft_complex_forward
-   gsl_fft_complex_wavetable * wavetable;
-   gsl_fft_complex_workspace * workspace;
-   wavetable = gsl_fft_complex_wavetable_alloc (L);
-   workspace = gsl_fft_complex_workspace_alloc (L);
 
   /* calculate eta according to equation (75) */
   for (int i=0; i<L; i++) {
@@ -90,7 +86,7 @@ void step_strang(double complex *out, double complex *in, parameters params) {
   }
 
 	/* calculate eta_dft according to equation (76) */
-  gsl_fft_complex_forward (in, 1, L, wavetable, workspace);
+  nfft(in,in,N,D)
 
 	/* calculate chi tilde (chi_dft) according to equation (77) */
 	for (int i=0; i<L; i++) {
@@ -102,15 +98,12 @@ void step_strang(double complex *out, double complex *in, parameters params) {
   }
 
 	/* calculate chi according to equation (78) */
-	gsl_fft_complex_inverse (in, 1, L, wavetable, workspace);
-
+	nfft_inverse(in,in,N,D);
   /* calculate psi(q+1) according to equation (79) */
   for (int i=0; i<L; i++) {
     out[i]=cexp(- 1I/2 * params.tauhat * params.pot[i]) * in[i];
   }
 
   free(coordinate);
- gsl_fft_complex_wavetable_free (wavetable);
- gsl_fft_complex_workspace_free (workspace);
 
 }
