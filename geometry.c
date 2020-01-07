@@ -7,11 +7,6 @@
 long int coord2index(long int *coord, long int N, unsigned int D){
   long int index = 0;
 
-  if (((N+1)%2) != 0) {
-    printf("Error: Length of axis N should be uneven");
-    return -1;
-  }
-
   for (int i=0; i<D; i++){
     index += (coord[i])*ipow(N,i);
   }
