@@ -49,9 +49,13 @@ double complex obs_x(double complex *in, unsigned int d, parameters params) {
 double complex obs_delta_x(double complex *in, parameters params) {
   double complex var_x = 0.0;
   long int *coord = malloc(params.D*sizeof(double complex));
+  double abs_coord = 0.0; // squared absolute of coordinate vector
   for(long int i=0; i<params.L; i++) {
     index2coord(coord, i, params.N, params.D);
-    var_x += (~(in[i]))*pow(coord[d], 2)*in[i]; // calculated relative to origin
+    for(unsigned int d=0; d<params.D; d++){
+      abs_coord += pow((double)coord[d], 2);
+    }
+    var_x += (~(in[i]))*abs_coord*in[i]; // calculated relative to origin
   }
   var_x *= 1/obs_norm(in, params);
   for(unsigned int d=0; d<params.D; d++) {
