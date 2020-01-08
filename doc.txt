@@ -38,9 +38,7 @@ nneighbour_init (Lennart, tested)
 		D: number of dimensions						unsigned int
 	output:
 		void
-	Test: ??
-
-LAPLACIAN (Lennart, wip)
+laplacian (Lennart, wip)
 	input:
 		*out: vector with laplacian of wave function			complex double array of size N**D
 		*in: vector of discretized wavefunction				complex double array of size N**D
@@ -48,9 +46,9 @@ LAPLACIAN (Lennart, wip)
 		D: number of dimensions						unsigned int
 	output:
 		void
-	Test: Tim wip
+	Test: Tim - success
 
-PHI (Birkan, wip)
+phi (Birkan, wip)
 	input:
 		N: length of all axis						long int
 		D: number of dimensions						unsigned int
@@ -58,42 +56,37 @@ PHI (Birkan, wip)
 	output:
 		*out: vector with wave function					complex double array of size N**D
 
-KINETIC (Birkan, wip)
+kinetic (Birkan)
 	input:
 		N: length of all axis						long int
 		D: number of dimensions						unsigned int
 		*in: vector of discretized wavefunction				complex double array of size N**D
 	output:
 		*out: vector with laplacian of wave function			complex double array of size N**D
-	Test: ? wip
 
-HARMONIC (Mahni, wip)
+harmonic (Mahni)
 	input: index, omega, N, D						long int, int, int, int
 	output: potential							double
 	Test: ? wip
-BOX (Mahni, wip)
+box (Mahni)
 	input: index, height, N, D						long int, int, int, int
 	output: potential of a box						double
 	Test: ? wip
-POTENTIALWELL (Mahni,w wip)
+potentialwell (Mahni)
 	input:  height, N, D							int, int, int
 	output: potential of a box in an array with the size of N**D		double
 	Test: ? wip
 
-euler_method (Lennart, to be tested)
+step_euler (Lennart)
 	input:
-		*out: psi after (total_time/tauhat) time steps			double complex array of size L
+		*out: psi after one time step					double complex array of size L
 		*in: input vector psi						double complex array of size L
-		N: length of each axis						long int
-		D: number of dimensions						unsigned int
-		L: N**D								long int
-		tauhat: time step (dimensionless), tauhat = eps*tau/hbar	double
-		total_time: total time that the simulation should run for	double
+		params: parameters struct
 	output:
 		void
-	Test:	???
+	Moved to integrators.c
 
-cg (Conjugate Gradient in vmath, Tim)
+cg (Conjugate Gradient, Tim)
 	input:
 		*out: x to solve Ax=b						double complex of size L
 		(*f): function A to call					function pointer
@@ -103,15 +96,30 @@ cg (Conjugate Gradient in vmath, Tim)
 	output:
 		void
 	Test: Lennart, successfully tested with solving for x with random herm. str. pos. def. matrix A and random vector b in Ax=b
+	Moved to vmath.c
+
+step_cn (Tim)
+	input:
+		*out: psi after one time step					double complex array of size L
+		*in: input vector psi						double complex array of size L
+		params: parameters struct
+	output:
+		void
+	Not running yet!
+	Moved to integrators.c
+
+step_strang (Mahni)
+	input:
+		*out: psi after one time step					double complex array of size L
+		*in: input vector psi						double complex array of size L
+		params: parameters struct
+	output:
+		void
+	Moved to integrators.c
 
 vmath (Tim, to be tested)
 	many different functions
 	Test: nope
-
-euler_method (time step with euler integration, Lennart)
-    input:
-    output:
-    Test: Tim? together with other integrators?, wip
 
 Vorschläge Tim für Funktionen:
 gen_pot_harmonic (Birkan, tbt)
