@@ -10,7 +10,9 @@
 
 
 void check_constant() {
-	printf("Checking constant vector\n");
+	/* This functions checks that the laplacian of a flattened array is 0
+	as can be easily calculated analytically. */
+	printf("Checking constant vector...\n");
 	long int N = 1001;
 	unsigned int D = 1;
 	long int L = ipow(N, D);
@@ -32,7 +34,9 @@ void check_constant() {
 }
 
 void check_sine() {
-	printf("Checking sum of sines\n");
+	/* In this function the analytical and discrete laplacians of a sum od sines
+	are calculated and the relative error will be printed. */
+	printf("Checking sum of sines...\n");
 	long int N = 10001;
 	unsigned int D = 1;
 	long int L = ipow(N, D);
@@ -47,7 +51,7 @@ void check_sine() {
 	double omega = 2*M_PI/(N/2.0);
 	double err;
 
-	// calculate values of function
+	// calculate values of function f(n) = sin(w*n_1) + sin(w*n_2)+...+sin(w*n_(D-1))
 	for(long int i=0; i<L; i++) {
 		index2coord(coord, i, N, D);
 		arr[i] = 0.0;
@@ -65,10 +69,11 @@ void check_sine() {
 		}
 	}
 
+	// next the discrete laplacian is calculated
 	laplacian(res, arr, N, D);
 	sub_vec(res, ref, res, L);
-	err = abs_vec(res, L);
-	printf("Absolute error magnitude of Laplacian of sine sum array: %.2e\n", err);
+	err = abs_vec(res, L)/abs_vec(ref, L);
+	printf("Relative error magnitude of Laplacian of sine sum array: %.2e\n", err);
 
 	free(arr);
 	free(res);
@@ -126,7 +131,8 @@ void check_exp() {
 	free(coord_c);;
 }
 
-int main(){
+int main() {
+	// here all the tests of the laplacian are called
   printf("Starting test of Laplacians\n");
 	check_constant();
 	check_sine();

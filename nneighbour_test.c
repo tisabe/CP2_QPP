@@ -6,7 +6,13 @@
 #include "vmath.h"
 
 void test_inverse_nn() {
-	printf("Testing inversion of next neighbour function\n");
+	/* This function tests the invertibility of the next neighbour function,
+	by taking the neighbour in one direction and the neighbour of that neighbour
+	in the opposite direction, which should result in the index we started with.
+	This is tested for a couple of dimensions and axis lengths and every time
+	for all directions that are possible (D times).
+	The result of the test will be printed out. */
+	printf("Testing inversion of next neighbour function...\n");
 
 	unsigned int arrD[4] = {1,2,3,4};
 	long int arrN[2] = {5,11};
@@ -40,15 +46,16 @@ void test_inverse_nn() {
 }
 
 int main() {
-
-	printf("Testing the nneighbour function\n");
-	printf("i:, \t coord: \t nni: \t nnii: \n");
-
 	long int N = 11;
 	unsigned int D = 2;
 	long int nni = 0;
 	long int nnii = 0;
 	long int coord[D];
+
+	/* For one specific example the indices and coordinates are printed out
+	to check for inconsistencies. */
+	printf("Testing the nneighbour function with N=%ld, D=%d\n", N, D);
+	printf("i:, \t coord: \t nni: \t nnii: \n");
 
 	for (int i=0; i<20; i++){
 		nni = nneighbour(i, 0, 1, N, D);
@@ -56,6 +63,7 @@ int main() {
 		index2coord(coord, i, N, D);
 		printf("%d \t (%d,%d) \t \t %d \t %d \n", i, coord[0], coord[1], nni, nnii);
 	}
+	
 	test_inverse_nn();
 	return 0;
 }
