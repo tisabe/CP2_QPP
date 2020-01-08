@@ -41,7 +41,7 @@ int main(){
     params.epsilon = hbar * omega;
 
     //Set dimensionless simulation parameters
-    printf("\n Please set tauhat (recommended 1e-7): tauhat = ");
+    printf("\n Please set tauhat (recommended 1e-3): tauhat = ");
     scanf("%lf",&params.tauhat); // = omega * tau (with epsilon = hbar*omega)
     printf("\n Please set the distance between two lattice points a (recommended 2e-13): a = ");
     scanf("%lf", &params.a);
@@ -72,6 +72,7 @@ int main(){
     //Set start wave function to be the ground state of the solution of the quantum harmonic oscillator
     int excitation;
     double offset, scaling;
+
     printf("\n Please set the parameters for the start wave function.\nPlease choose if you want the solution of the ground state or the first excited state (0 or 1): excitation = ");
     scanf("%i", &excitation);
     printf("\n Please set a scaling factor for the wave function (set 1 for eigenfunctions): scaling = ");
@@ -81,9 +82,9 @@ int main(){
     for(long int i=0; i<(params.L); i++){
         index2coord(coords, i, params.N, params.D);
         if(excitation == 0){
-            start_wf[i] = sqrt(sqrt(scaling))*pow(sqrt(params.a),params.D) * sqrt(sqrt(params.mhat/M_PI)/params.a) * exp(-.5*scaling*params.mhat*pow((coords[0]-params.N/2+offset),2));
+            start_wf[i] = sqrt(sqrt(scaling))*pow(sqrt(params.a),params.D) * sqrt(sqrt(params.mhat/M_PI)/params.a)* exp(-.5*scaling*params.mhat*pow((coords[0]-params.N/2+offset),2));
         }else if(excitation == 1){
-            start_wf[i] = sqrt(sqrt(scaling))*2*sqrt(scaling)*sqrt(params.mhat/2)*(coords[0]-params.N/2+offset)*pow(sqrt(params.a),params.D) * sqrt(sqrt(params.mhat/M_PI)/params.a) * exp(-.5*scaling*params.mhat*pow((coords[0]-params.N/2+offset),2));
+            start_wf[i] = 2*sqrt(scaling)*sqrt(params.mhat/2)*(coords[0]-params.N/2+offset)* sqrt(sqrt(scaling))*pow(sqrt(params.a),params.D) * sqrt(sqrt(params.mhat/M_PI)/params.a) * exp(-.5*scaling*params.mhat*pow((coords[0]-params.N/2+offset),2));
         }
     }
 
@@ -117,9 +118,9 @@ int main(){
         }
 
         //Execute one step of the chosen integrator
-        step_euler(out_wf, start_wf, params);
+        //step_euler(out_wf, start_wf, params);
         //step_cn(out_wf, start_wf, params);
-        //step_strang(out_wf, start_wf, params);
+        step_strang(out_wf, start_wf, params);
 
         //Assign the vector to the old out_vector to prepare for the next step
         assign_vec(start_wf, out_wf, params.L);
