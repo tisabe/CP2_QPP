@@ -76,6 +76,8 @@ void step_strang(double complex *out, double complex *in, parameters params) {
 
   double sin_sum= 0;
   long int *coordinate = malloc(D* sizeof(long int));
+  double complex *in1 = malloc(L* sizeof(double complex));
+  double complex *in2 = malloc(L* sizeof(double complex));
 
   // https://www.gnu.org/software/gsl/doc/html/fft.html#c.gsl_fft_complex_forward
 
@@ -85,7 +87,7 @@ void step_strang(double complex *out, double complex *in, parameters params) {
   }
 
 	/* calculate eta_dft according to equation (76) */
-  nfft(in,in,N,D);
+  nfft(in1,in,N,D);
 
 	/* calculate chi tilde (chi_dft) according to equation (77) */
 	for (int i=0; i<L; i++) {
@@ -94,16 +96,18 @@ void step_strang(double complex *out, double complex *in, parameters params) {
             index2coord(coordinate, i, N, D);
             sin_sum += pow(sin(M_PI/N*coordinate[j]),2);
         }
-        in[i]=cexp(- 1I * 2 * params.tauhat/params.mhat * sin_sum) * in[i];
+        in1[i]=cexp(- 1I * 2 * params.tauhat/params.mhat * sin_sum) * in1[i];
     }
 
 	/* calculate chi according to equation (78) */
-	nfft_inverse(in,in,N,D);
+	nfft_inverse(in2,in1,N,D);
   /* calculate psi(q+1) according to equation (79) */
   for (int i=0; i<L; i++) {
-    out[i]=cexp(- 1I/2 * params.tauhat * params.pot[i]) * in[i];
+    out[i]=cexp(- 1I/2 * params.tauhat * params.pot[i]) * in2[i];
   }
 
   free(coordinate);
+  free(in1);
+  free(in2);
 
 }
