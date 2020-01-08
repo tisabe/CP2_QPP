@@ -9,6 +9,7 @@
 #include "nfft.h"
 #include "laplacian.h"
 
+//bin mir nicht sicher, ob die auch hier gebraucht werden für nfft (Mahni)
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_fft_complex.h>
 
