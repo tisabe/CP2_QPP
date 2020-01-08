@@ -7,6 +7,7 @@
 #include "geometry.h"
 #include "hamiltonian.h"
 #include "nfft.h"
+#include "laplacian.h"
 
 //bin mir nicht sicher, ob die auch hier gebraucht werden für nfft (Mahni)
 #include <gsl/gsl_errno.h>
@@ -30,23 +31,39 @@ double complex obs_E(double complex *in, parameters params) {
   var_E = dot_product(in, in_H, params.L)/obs_norm(in, params);
 
   free(in_H);
-  return var_E/params.N;
+  return var_E;
 }
 
 double complex obs_x(double complex *in, unsigned int d, parameters params) {
   double complex var_x = 0.0;
   long int *coord = malloc(params.D*sizeof(double complex));
-  double complex *in_x = malloc(params.L*sizeof(double complex));
   for(long int i=0; i<params.L; i++) {
     index2coord(coord, i, params.N, params.D);
-    in_x[i] = coord[d]*in[i];
+    var_x += (~(in[i]))*coord[d]*in[i]; // calculated relative to origin
   }
-  var_x = dot_product(in, in_x, params.L)/obs_norm(in, params);
 
   free(coord);
-  free(in_x);
-  return var_x/params.N;
+  return var_x/obs_norm(in, params);
 }
+
+double complex obs_delta_x(double complex *in, unsigned int d, parameters params) {
+  double complex var_x = 0.0;
+  long int *coord = malloc(params.D*sizeof(double complex));
+  for(long int i=0; i<params.L; i++) {
+    index2coord(coord, i, params.N, params.D);
+    var_x += (~(in[i]))*pow(coord[d], 2)*in[i]; // calculated relative to origin
+  }
+  var_x *= 1/obs_norm(in, params);
+  for(unsigned int d=0; d<params.D, d++) {
+    var_x -= pow(obs_x(in, d, params), 2);
+  }
+  var_x = sqrt(var_x);
+
+  free(coord);
+  return var_x;
+}
+
+
 
 double complex obs_p(double complex *in, unsigned int d, parameters params) {
   double complex norm= obs_norm(in, params);
@@ -61,5 +78,25 @@ double complex obs_p(double complex *in, unsigned int d, parameters params) {
   }
 
   free(psi_k);
+  return var_p/norm;
+}
+
+double complex obs_delta_p(double complex *in, unsigned int d, parameters params) {
+  double complex norm= obs_norm(in, params);
+  double complex var_p = 0.0;
+  double complex *psi_lap = malloc(params.L*sizeof(double complex));
+  long int *coordinate = malloc(params.D* sizeof(long int));
+
+  laplacian(psi_lap, in, params.N, params.D);
+
+  var_p = dot_product(in, psi_lap, params.L);
+  var_p *= -1/obs_norm(in, params);
+  for(unsigned int d=0; d<params.D, d++) {
+    var_p -= pow(obs_p(in, d, params), 2);
+  }
+  var_p = sqrt(var_p);
+
+  free(psi_lap);
+  free(coordinate);
   return var_p/norm;
 }
