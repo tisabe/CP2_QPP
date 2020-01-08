@@ -9,6 +9,7 @@ long int coord2index(long int *coord, long int N, unsigned int D) {
   in lexicographic order. Each of the D axis is assumed to have length N.
   The calculated index is returned as a long int. */
   long int index = 0;
+<<<<<<< HEAD
   long int shift = (N-1)/2; // coordinate shift amount to have coordinate origin at middle of axis
 
   /* The center of the coordinate system is assumed to be the 0 point on all
@@ -17,28 +18,34 @@ long int coord2index(long int *coord, long int N, unsigned int D) {
     printf("Error: Length of axis N should be uneven");
     return -1;
   }
+=======
+>>>>>>> 97e6761b9c3dc6ff862abd40c392d9e16add69b0
 
   for (int i=0; i<D; i++){
-    index += (coord[i]+shift)*ipow(N,i);
+    index += (coord[i])*ipow(N,i);
   }
 
   return index;
 }
 
 void index2coord(long int *coord, long int index, long int N, unsigned int D){
+<<<<<<< HEAD
   /* Calculates the coordinate tupel *coord with D dimensions from the one-
   dimensional index. Each of the D axis is assumed to have length N.
   The coordinate tupel is stored in the passed pointer *coord. */
   if (((N+1)%2) != 0) {
     printf("Error: Length of axis N should be uneven");
   }
+=======
+  /*coordinate vector needs to be returned as pointer in C*/
+  //static int coord[D];
+>>>>>>> 97e6761b9c3dc6ff862abd40c392d9e16add69b0
 
   long int b = 0;
-  long int shift = (N-1)/2; // coordinate shift amount to have coordinate origin at middle of axis
 
   for (int i=0; i<D; i++) {
     b = ipow(N, D-1-i);
-    coord[D-1-i] = index/b - shift;
+    coord[D-1-i] = index/b;
     index %= b;
   }
 }
@@ -67,10 +74,10 @@ long int nneighbour(long int index, unsigned int axis, int dir, long int N, unsi
     nneighbour_coords[axis] += dir;
 
     //Check for boundary conditions
-    if(nneighbour_coords[axis] > (N-1)/2)               //Edits because of change of coordinate origin
-        nneighbour_coords[axis] = -(N-1)/2;
-    if(nneighbour_coords[axis] < -(N-1)/2)
-        nneighbour_coords[axis] = (N-1)/2;
+    if(nneighbour_coords[axis] > N-1)               //Edits because of change of coordinate origin
+        nneighbour_coords[axis] = 0;
+    if(nneighbour_coords[axis] < 0)
+        nneighbour_coords[axis] = N-1;
 
     nneighbour_index = coord2index(nneighbour_coords, N, D);
 

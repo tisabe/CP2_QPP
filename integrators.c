@@ -5,10 +5,9 @@
 
 #include "structs.h"
 #include "vmath.h"
-#include "potentials.h"
-#include "geometry.h"
 #include "nfft.h"
 #include "hamiltonian.h"
+#include "geometry.h"
 
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_fft_complex.h>
@@ -20,7 +19,13 @@ void step_euler(double complex *out, double complex *in, parameters params) {
       Note: Normalisation of the wave function is not conserved!! */
 
     // Allocate memory for a temporary array of length L
-    double complex *ham_out = malloc(params.L*sizeof(double complex));
+    static double complex *ham_out = NULL;
+    static long int lPrev;
+    if((ham_out == NULL) || (lPrev != params.L)){
+      free(ham_out);
+      ham_out = malloc(params.L*sizeof(double complex));
+      lPrev = params.L;
+    }
 
     // Calculate H(psi)
     hamiltonian(ham_out, out, params);
@@ -29,8 +34,6 @@ void step_euler(double complex *out, double complex *in, parameters params) {
     for(long int i=0; i<params.L; i++){
         out[i] = in[i] - 1I * params.tauhat * ham_out[i];
     }
-
-    free(ham_out);
 }
 
 /*These are the functions required to run the crank-nicolson integration: */
@@ -82,20 +85,20 @@ void step_strang(double complex *out, double complex *in, parameters params) {
   }
 
 	/* calculate eta_dft according to equation (76) */
-  nfft(in, in, N, D);
+  nfft(in,in,N,D);
 
 	/* calculate chi tilde (chi_dft) according to equation (77) */
 	for (int i=0; i<L; i++) {
-    for (int j=0; j<D; j++) {  /* calculating the sum in the exponential function */
-      index2coord(coordinate, i, N, D);
-      sin_sum += pow(sin(M_PI/N*coordinate[j]),2);
+        sin_sum = 0.0;
+        for (int j=0; j<D; j++) {  /* calculating the sum in the exponential function */
+            index2coord(coordinate, i, N, D);
+            sin_sum += pow(sin(M_PI/N*coordinate[j]),2);
+        }
+        in[i]=cexp(- 1I * 4 * params.tauhat/params.mhat * sin_sum) * in[i];
     }
-    in[i]=cexp(- 1I * 2 * params.tauhat/params.mhat * sin_sum) * in[i];
-  }
 
 	/* calculate chi according to equation (78) */
-	nfft_inverse(in, in, N, D);
-
+	nfft_inverse(in,in,N,D);
   /* calculate psi(q+1) according to equation (79) */
   for (int i=0; i<L; i++) {
     out[i]=cexp(- 1I/2 * params.tauhat * params.pot[i]) * in[i];

@@ -6,6 +6,7 @@
 long int ipow(long int base, unsigned int exp);
 double complex dot_product(double complex *v, double complex *w, long int L);
 void scalar_vec(double complex *out, double complex *vec, double complex s, long int L);
+void mul_compl_vec_real_scal(double complex *out, double complex *vec, double s, long int L);
 void mul_element(double complex *out, double complex *w, double complex *v, long int L);
 void add_vec(double complex *out, double complex *w, double complex *v, long int L);
 void sub_vec(double complex *out, double complex *w, double complex *v, long int L);

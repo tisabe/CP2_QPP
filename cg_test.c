@@ -56,7 +56,7 @@ void random_matrix(double complex *out, double complex *in, parameters params){
             matrix[i*params.N+i] += params.N;
         }
 
-        printf("N * Unit matrix added\n\nCG starting\n");
+        printf("N * Unit matrix added\n\nCG started\n");
 
         free(transp);
         Nprev = params.N;
@@ -74,7 +74,7 @@ void random_matrix_test(){
   printf("Please specify the length of the array to run the test with (memory scales with N**2). N = ");
   scanf("%li",&params.N);               //Choose array length
   params.D = 1;                         //Set number of dimensions to 1. Only meaningful for interpretation of the flat output array as a matrix.
-  params.max_iter = 100;                //Set the maximum number of iterations of the cg algorithm
+  params.max_iter = params.N;                //Set the maximum number of iterations of the cg algorithm
   params.tol = DBL_EPSILON;             //Set the tolerance level to quit the cg algorithm. Best possible: DBL_PRECISION (macro from float.h)
   params.L = ipow(params.N,params.D);
 
@@ -82,6 +82,7 @@ void random_matrix_test(){
   double complex *result_cg = malloc(params.N*sizeof(double complex));
   double complex *start_vec = malloc(params.N*sizeof(double complex));
   double complex *check_res = malloc(params.N*sizeof(double complex));
+
   //Variable to store maximum relative error of the result. See below
   double max_error = 0.0;
 
@@ -103,7 +104,7 @@ void random_matrix_test(){
         max_error = cabs(check_res[i]/start_vec[i]-1);
     }
   }
-  printf("\nMaximum Relative Error: max(((Ax)_i-b_i)/b_i) = %e\n",max_error);
+  printf("\nMaximum Relative Error: max(((Ax)_i-b_i)/b_i]) = %e\n",max_error);
 
   free(result_cg);
   free(start_vec);
