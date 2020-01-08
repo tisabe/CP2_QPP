@@ -1,7 +1,7 @@
 Hier die Liste für Arbeitsteilung:
 einzelne Funktionen und Tests werden genau beschrieben und wer dafür zuständig ist
 
-COORD2INDEX (Tim, working, needs documentation)
+COORD2INDEX (Tim)
 	input:
 		coord: coordinates of a point					long int array of size D
  		N: length of all axis						long int
@@ -10,7 +10,7 @@ COORD2INDEX (Tim, working, needs documentation)
 		i: raveled index depending on coordinates			long int
 	Tested by: Lennart - successful
 
-INDEX2COORD (Tim, working, needs documentation)
+INDEX2COORD (Tim)
 	input:
 		*coord: array in which to store coordinates			long int array of size D
 	  	index: index of array						long int
@@ -117,11 +117,10 @@ step_strang (Mahni)
 		void
 	Moved to integrators.c
 
-vmath (Tim, to be tested)
+vmath (Tim)
 	many different functions
-	Test: nope
+	Test: none
 
-Vorschläge Tim für Funktionen:
 gen_pot_harmonic (Birkan, tbt)
 	input:
 		*params,			parameters structs (benutze wie in https://stackoverflow.com/questions/4316314/pass-struct-by-reference-in-c/13077250, 1. Antwort,
@@ -133,3 +132,51 @@ gen_pot_well (Birkan, tbt)
 	wie die vorherige, mit höhe und breite des potentials als parameter, ebenso
 
 gen_pot_box (Birkan, tbt)
+
+Observables:
+
+obs_norm (Tim)
+	input:
+		*in,		wavefunction as array with parameters from params, mainly N and D, double complex
+		params,	parameter struct
+	output:
+		normalization of the wave function, double complex
+
+obs_norm (Tim)
+	input:
+		*in,		wavefunction as array with parameters from params, double complex
+		params,	parameter struct
+	output:
+		energy expectation value of the wave function, double complex
+
+obs_x (Tim)
+	input:
+		*in,		wavefunction as array with parameters from params, mainly N and D, double complex
+		d,			axis in which to calculate the average position, unsigned int
+		params,	parameter struct
+	output:
+		average position in axis d, double complex
+
+obs_delta_x (Tim)
+	input:
+		*in,		wavefunction as array with parameters from params, mainly N and D, double complex
+		params,	parameter struct
+	output:
+		position width, double complex
+
+obs_p (Tim, Mahni)
+	input:
+		*in,		wavefunction as array with parameters from params, mainly N and D, double complex
+		d,			axis in which to calculate the average momentum, unsigned int
+		params,	parameter struct
+	output:
+		average position in axis d, double complex
+
+obs_delta_x (Tim)
+	input:
+		*in,		wavefunction as array with parameters from params, mainly N and D, double complex
+		params,	parameter struct
+	output:
+		momentum width, double complex
+
+(all observables outputs should be real, but imaginary part can be checked for consistency)
