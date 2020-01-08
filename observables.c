@@ -17,11 +17,7 @@
 are defined. not finished, not tested*/
 
 double complex obs_norm(double complex *in, parameters params) {
-<<<<<<< HEAD
-  /* Calculates and returns the norm of a complex vector as norm = sum_i=0^L-1 cc(v[i])*v[i] */
-=======
   /* Computes the normalization of a wavefunction. */
->>>>>>> 97e6761b9c3dc6ff862abd40c392d9e16add69b0
   double complex var_norm = 0.0;
 
   var_norm = dot_product(in, in, params.L);
@@ -30,11 +26,7 @@ double complex obs_norm(double complex *in, parameters params) {
 }
 
 double complex obs_E(double complex *in, parameters params) {
-<<<<<<< HEAD
-  /* Returns the energy-observable as given by E = <psi|H|psi>/<psi|psi> */
-=======
   /* Computes the energy expectation value for a given wavefunction and hamiltonian. */
->>>>>>> 97e6761b9c3dc6ff862abd40c392d9e16add69b0
   double complex var_E = 0.0;
   double complex *in_H = malloc(params.L*sizeof(double complex));
   hamiltonian(in_H, in, params);
@@ -45,14 +37,9 @@ double complex obs_E(double complex *in, parameters params) {
 }
 
 double complex obs_x(double complex *in, unsigned int d, parameters params) {
-<<<<<<< HEAD
-  /* Returns the position-observable as given by o(x_d) = <psi|x_d|psi>/<psi|psi>
-  of coordinate d. */
-=======
   /* Computes the average position of a wavefunction in dimension d given the
   number of dimensions D and length of axis N using the struct params.
   According to eq. 84.*/
->>>>>>> 97e6761b9c3dc6ff862abd40c392d9e16add69b0
   double complex var_x = 0.0;
   long int *coord = malloc(params.D*sizeof(double complex));
   for(long int i=0; i<params.L; i++) {
@@ -61,12 +48,7 @@ double complex obs_x(double complex *in, unsigned int d, parameters params) {
   }
 
   free(coord);
-<<<<<<< HEAD
-  free(in_x);
-  return var_x;
-=======
   return var_x/obs_norm(in, params);
->>>>>>> 97e6761b9c3dc6ff862abd40c392d9e16add69b0
 }
 
 double complex obs_delta_x(double complex *in, parameters params) {
@@ -96,16 +78,10 @@ double complex obs_delta_x(double complex *in, parameters params) {
 
 
 double complex obs_p(double complex *in, unsigned int d, parameters params) {
-<<<<<<< HEAD
-  /* Returns the momentum observable as given by equation 89 in the assignment.
-  The observable is calculated for axis d. */
-  double complex norm= obs_norm(in, params)
-=======
   /* Computes the average momentum of a wavefunction in dimension d given the
   number of dimensions D and length of axis N using the struct params.
   According to eq. 89.*/
   double complex norm= obs_norm(in, params);
->>>>>>> 97e6761b9c3dc6ff862abd40c392d9e16add69b0
   double complex var_p = 0.0;
   double complex *psi_k = malloc(params.L*sizeof(double complex));
   long int *coordinate = malloc(params.D* sizeof(long int));
