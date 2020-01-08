@@ -119,7 +119,68 @@ step_strang (Mahni)
 
 vmath (Tim, to be tested)
 	many different functions
-	Test: nope
+	
+
+//the following functions are included in observables.c
+{
+obs_norm		(Computes the normalization of a wavefunction)
+	input:
+		*in: input vector						double complex
+		params: parameters struct
+	output:
+		var_norm: normalization factor					double complex
+
+obs_E			(Computes the energy expectation value for a given wavefunction and hamiltonian)
+	input:
+		*in: input vector						double complex
+		params: parameters struct
+
+	output:
+		var_E: average energy						double complex
+
+obs_x			(Computes the average position of a wavefunction in dimension d given the
+  			number of dimensions D and length of axis N using the struct params.
+  			According to eq. 84.)
+	input:
+		*in: input vector						double complex
+		d: component (or dimension) of average position			unsigned int
+		params: parameters struct
+
+	output:
+		var_x: average position						double complex
+
+obs_delta_x			(Computes the position width of a wavefunction given the number of
+  				dimensions D and length of axis N using the struct params.
+  				According to eq. 85.)
+	input:
+		*in: input vector						double complex
+		params: parameters struct
+
+	output:
+		var_x: position	width						double complex
+
+obs_p			(Computes the average momentum of a wavefunction in dimension d given the
+  			number of dimensions D and length of axis N using the struct params.
+  			According to eq. 89.)
+	input:
+		*in: input vector						double complex
+		d: component (or dimension) of average momentum			unsigned int
+		params: parameters struct
+
+	output:
+		var_x: average momentum						double complex
+
+obs_delta_p		(Computes the momentum width of a wavefunction given the number of
+  			dimensions D and length of axis N using the struct params.
+  			According to eq. 90.)
+		input:
+		*in: input vector						double complex
+		params: parameters struct
+
+	output:
+		var_x: momentum	width						double complex
+}
+
 
 Vorschläge Tim für Funktionen:
 gen_pot_harmonic (Birkan, tbt)
