@@ -1,3 +1,11 @@
+/* **** This function calculates the discrete symmetric laplacian of the input wave function ****
+Valid inputs:
+        *out: output vector with laplacian of wave function		complex double array of size N**D
+		*in: input vector of discretized wavefunction		    complex double array of size N**D
+		N: length of each axis						            long int
+		D: number of dimensions						            unsigned int
+
+*/
 #include <complex.h>
 #include <stdlib.h>
 #include <stdio.h>

@@ -6,7 +6,6 @@
 #include "structs.h"
 #include "vmath.h"
 #include "potentials.h"
-#include "geometry.h"
 #include "nfft.h"
 #include "hamiltonian.h"
 
