@@ -10,7 +10,7 @@ and as a demonstration how to use it.*/
 void func(parameters f_params) {
   printf("Testing parameters passed to function...\n");
   f_params.pot[1]++;
-  printf("params.pot[0] = %.2e\n", f_params.pot[1]);
+  printf("params.pot[0] = %.2e\n", creal(f_params.pot[1]));
 }
 
 int main() {
@@ -22,10 +22,9 @@ int main() {
   printf("params.N = %d\n", N);
   params.D = D;
   printf("params.D = %d\n", D);
-  //params.pot = malloc(ipow(N,D)*sizeof(double complex));
-  params.pot = malloc(ipow(N,D)*sizeof(double));
+  params.pot = malloc(ipow(N,D)*sizeof(double complex));
   params.pot[0] = 10.0;
-  printf("params.pot[0] = %.2e\n", params.pot[0]);
+  printf("params.pot[0] = %.2e\n", creal(params.pot[0]));
   func(params);
   return 0;
 }

@@ -5,9 +5,9 @@
 
 #include "structs.h"
 #include "vmath.h"
-#include "potentials.h"
 #include "nfft.h"
 #include "hamiltonian.h"
+#include "geometry.h"
 
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_fft_complex.h>
