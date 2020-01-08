@@ -94,7 +94,7 @@ void step_strang(double complex *out, double complex *in, parameters params) {
             index2coord(coordinate, i, N, D);
             sin_sum += pow(sin(M_PI/N*coordinate[j]),2);
         }
-        in[i]=cexp(- 1I * 2 * params.tauhat/params.mhat * sin_sum) * in[i];
+        in[i]=cexp(- 1I * 4 * params.tauhat/params.mhat * sin_sum) * in[i];
     }
 
 	/* calculate chi according to equation (78) */

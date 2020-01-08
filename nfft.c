@@ -56,7 +56,6 @@ void nfft(double complex *out, double complex *in, int N, int D)
    for(int j=0;j<D;j++) VOLUME*=N;
 
 
-
    memcpy(out,in,sizeof(double complex)*VOLUME);
 
 
@@ -75,6 +74,7 @@ void nfft(double complex *out, double complex *in, int N, int D)
          VOLUME/N of such points.
          **********************************************************************/
          int index=n%Nj+N*Nj*(n/Nj);
+
          gsl_complex_packed_array data=(double*)(out+index);
 
          gsl_fft_complex_forward(data,Nj,N, wavetable, workspace);
@@ -118,6 +118,7 @@ void nfft_inverse(double complex *out, double complex *in, int N, int D)
          VOLUME/N of such points.
          **********************************************************************/
          int index=n%Nj+N*Nj*(n/Nj);
+
          gsl_complex_packed_array data=(double*)(out+index);
 
          gsl_fft_complex_inverse(data,Nj,N, wavetable, workspace);

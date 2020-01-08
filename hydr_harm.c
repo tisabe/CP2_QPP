@@ -97,7 +97,7 @@ int main(){
     output_file_real = fopen("hydr_wavefunction_output_real.txt","w");
     output_file_imag = fopen("hydr_wavefunction_output_imag.txt","w");
 
-    printf("\nElapsed time\tNorm - 1\t<E>\t\t<x>\t\t<p>\n\n");
+    printf("\nElapsed time\tNorm - 1\t<E>\t\t<x>\t\t<p>\t\t<Delta-x>\t<Delta-p>\n\n");
 
     //Iterate over t and have the for loop running until t*tauhat is greater or equal to simulation_duration
     for(long int t=0; (t * params.tauhat) < simulation_duration; t++){
@@ -105,9 +105,9 @@ int main(){
         //If the condition below holds, the wave function as well as the observables normalisation - 1, energy, x expectation value and p expectation value are recorded in the output files
         if(t % (long)(simulation_duration/(number_timesteps_to_record*params.tauhat)) == 0){
             //Print all the observables to the console...
-            printf("%e\t%e\t%e\t%e\t%e\n", t*params.tauhat, cabs(obs_norm(start_wf, params)) - 1, creal(obs_E(start_wf,params)), creal(obs_x(start_wf, 0, params)), creal(obs_p(start_wf, 0, params)));
+            printf("%e\t%e\t%e\t%e\t%e\t%e\t%e\n", t*params.tauhat, cabs(obs_norm(start_wf, params)) - 1, creal(obs_E(start_wf,params)), creal(obs_x(start_wf, 0, params)), creal(obs_p(start_wf, 0, params)), creal(obs_delta_x(start_wf, params)),creal(obs_delta_p(start_wf, params)));
             //... and save them to the obs_file as well
-            fprintf(obs_file, "%e\t%e\t%e\t%e\t%e\n", t*params.tauhat, cabs(obs_norm(start_wf, params)) - 1, creal(obs_E(start_wf,params)), creal(obs_x(start_wf, 0, params)), creal(obs_p(start_wf, 0, params)));
+            fprintf(obs_file, "%e\t%e\t%e\t%e\t%e\t%e\t%e\n", t*params.tauhat, cabs(obs_norm(start_wf, params)) - 1, creal(obs_E(start_wf,params)), creal(obs_x(start_wf, 0, params)), creal(obs_p(start_wf, 0, params)), creal(obs_delta_x(start_wf, params)),creal(obs_delta_p(start_wf, params)));
             //Save the wave functions
             for(long int i=0; i < params.L; i++){
                 fprintf(output_file_real,"%e\t",creal(start_wf[i]));
@@ -119,8 +119,8 @@ int main(){
 
         //Execute one step of the chosen integrator
         //step_euler(out_wf, start_wf, params);
-        //step_cn(out_wf, start_wf, params);
-        step_strang(out_wf, start_wf, params);
+        step_cn(out_wf, start_wf, params);
+        //step_strang(out_wf, start_wf, params);
 
         //Assign the vector to the old out_vector to prepare for the next step
         assign_vec(start_wf, out_wf, params.L);
