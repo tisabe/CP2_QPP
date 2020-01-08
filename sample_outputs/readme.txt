@@ -9,4 +9,4 @@ excitation = 1
 scaling = 4
 offset = 250
 
-Use the animate-1d.ipynb with the default settings in the filepaths to generate an animation.
+Use the 'animate-1d.ipynb' in the main folder with the default settings in the filepaths to generate an animation.

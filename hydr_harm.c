@@ -134,7 +134,7 @@ int main(){
     //Save potential into a file
     potential_file = fopen("hydr_potential.txt","w");
 
-    fprintf(potential_file, "a=\t%e\teps=\t%e\ttauhat=\t%e\n", params.a, params.epsilon, params.tauhat);
+    fprintf(potential_file, "a=\t%e\teps=\t%e\ttauhat=\t%e\tomega=\t%e\n", params.a, params.epsilon, params.tauhat, omega);
     for(long int i=0; i<params.L; i++){
         fprintf(potential_file, "%e\n", creal(params.pot[i]));
     }
