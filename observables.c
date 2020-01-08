@@ -46,7 +46,7 @@ double complex obs_x(double complex *in, unsigned int d, parameters params) {
   return var_x/obs_norm(in, params);
 }
 
-double complex obs_delta_x(double complex *in, unsigned int d, parameters params) {
+double complex obs_delta_x(double complex *in, parameters params) {
   double complex var_x = 0.0;
   long int *coord = malloc(params.D*sizeof(double complex));
   for(long int i=0; i<params.L; i++) {
@@ -54,7 +54,7 @@ double complex obs_delta_x(double complex *in, unsigned int d, parameters params
     var_x += (~(in[i]))*pow(coord[d], 2)*in[i]; // calculated relative to origin
   }
   var_x *= 1/obs_norm(in, params);
-  for(unsigned int d=0; d<params.D, d++) {
+  for(unsigned int d=0; d<params.D; d++) {
     var_x -= pow(obs_x(in, d, params), 2);
   }
   var_x = sqrt(var_x);
@@ -81,7 +81,7 @@ double complex obs_p(double complex *in, unsigned int d, parameters params) {
   return var_p/norm;
 }
 
-double complex obs_delta_p(double complex *in, unsigned int d, parameters params) {
+double complex obs_delta_p(double complex *in, parameters params) {
   double complex norm= obs_norm(in, params);
   double complex var_p = 0.0;
   double complex *psi_lap = malloc(params.L*sizeof(double complex));
@@ -91,7 +91,7 @@ double complex obs_delta_p(double complex *in, unsigned int d, parameters params
 
   var_p = dot_product(in, psi_lap, params.L);
   var_p *= -1/obs_norm(in, params);
-  for(unsigned int d=0; d<params.D, d++) {
+  for(unsigned int d=0; d<params.D; d++) {
     var_p -= pow(obs_p(in, d, params), 2);
   }
   var_p = sqrt(var_p);
