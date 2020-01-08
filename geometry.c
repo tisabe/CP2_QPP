@@ -5,21 +5,12 @@
 #include "vmath.h"
 
 long int coord2index(long int *coord, long int N, unsigned int D) {
-  /* Calculates the single-dimensional index from a touble of coordinates *coord
+  /* Calculates the single-dimensional index from a tuple of coordinates *coord
   in lexicographic order. Each of the D axis is assumed to have length N.
   The calculated index is returned as a long int. */
-  long int index = 0;
-<<<<<<< HEAD
-  long int shift = (N-1)/2; // coordinate shift amount to have coordinate origin at middle of axis
 
-  /* The center of the coordinate system is assumed to be the 0 point on all
-  axis. To have a point at 0 and still be symmetric, N needs to be uneven. */
-  if (((N+1)%2) != 0) {
-    printf("Error: Length of axis N should be uneven");
-    return -1;
-  }
-=======
->>>>>>> 97e6761b9c3dc6ff862abd40c392d9e16add69b0
+  long int index = 0;
+
 
   for (int i=0; i<D; i++){
     index += (coord[i])*ipow(N,i);
@@ -29,17 +20,10 @@ long int coord2index(long int *coord, long int N, unsigned int D) {
 }
 
 void index2coord(long int *coord, long int index, long int N, unsigned int D){
-<<<<<<< HEAD
-  /* Calculates the coordinate tupel *coord with D dimensions from the one-
+
+  /* Calculates the coordinate tuple *coord with D dimensions from the one-
   dimensional index. Each of the D axis is assumed to have length N.
-  The coordinate tupel is stored in the passed pointer *coord. */
-  if (((N+1)%2) != 0) {
-    printf("Error: Length of axis N should be uneven");
-  }
-=======
-  /*coordinate vector needs to be returned as pointer in C*/
-  //static int coord[D];
->>>>>>> 97e6761b9c3dc6ff862abd40c392d9e16add69b0
+  The coordinate tuple is stored in the passed pointer *coord. */
 
   long int b = 0;
 

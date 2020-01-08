@@ -14,14 +14,10 @@ cg_test: cg_test.c vmath.c
 	gcc -lm cg_test.c vmath.c -o cg_test.exe -O2
 	./cg_test.exe
 
-mainfile: main.c integrators.c vmath.c hermite_polynomial.c geometry.c hamiltonian.c laplacian.c
-	gcc -lm main.c integrators.c vmath.c hermite_polynomial.c geometry.c hamiltonian.c laplacian.c -o main.exe -O2
-	./main.exe
-
 hydr_harm: hydr_harm.c hamiltonian.c vmath.c geometry.c laplacian.c integrators.c observables.c nfft.c
 	gcc hydr_harm.c -lm hamiltonian.c vmath.c geometry.c laplacian.c integrators.c observables.c nfft.c -L/usr/local/lib -lgsl -o hydr_harm.exe -O2
 	./hydr_harm.exe
 
-structs_test: structs_test.c vmath.c
-	gcc structs_test.c vmath.c -lm -o structs_test.exe -O2
-	./structs_test.exe
+nfft_test: nfft_test.c nfft.c
+	gcc nfft_test.c -lm nfft.c -L/usr/local/lib -lgsl -o nfft_test.exe -O2
+	./nfft_test.exe

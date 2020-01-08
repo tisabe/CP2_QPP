@@ -1,0 +1,17 @@
+The Euler integrator takes the longest time to compute, as the tauhat has to be chosen as small as
+1e-7 in order to maintain the normalisation of the wave function down to 5e-5 for more than 10 dimensionless time unit.
+
+
+For the Crank Nicolson integrator values of tauhat up to 1e-3 or even bigger produce results with a much higher
+conservation of the normalisation down to a precision of 1e-13. The integrator conserves normalisation by construction.
+Sources for a deviation from 1 lie in numerical errors and the precision of the conjugate gradient algorithm.
+The calculation is faster than the Euler method by a factor of roughly 100 with the much better conservation of normalisation.
+
+
+The Strang splitting does not work properly in our implementation. The wave functions do not behave as expected.
+For example is the absolute value of the eigen function of the harmonic potential not time-independent, as it should be.
+However the Euler integrator and the Crank Nicolson integrator show the time-independence of the eigen functions.
+Even after thorough investigation of the problem, we could not find the error in our implementation. We suspect that the
+casting from the double complex array containing the complex wave function into the gsl_complex_packed_array containing only
+doubles (where two subsequent entries of the vector represent the real and imaginary parts from the complex vector)
+might discard the imaginary part of the wave function.

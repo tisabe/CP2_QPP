@@ -40,8 +40,13 @@ int main(){
     //Set energy scale
     params.epsilon = hbar * omega;
 
+    //Choose an integrator
+    int integrator;
+    printf("\n Please set the integrator which you would like to use (1 = Euler, 2 = Crank-Nicolson, 3 = Strang splitting): integrator = ");
+    scanf("%i", &integrator);
+
     //Set dimensionless simulation parameters
-    printf("\n Please set tauhat (recommended 1e-3): tauhat = ");
+    printf("\n Please set tauhat (recommended 1e-7 for Euler, 1e-3 for CN + Strang): tauhat = ");
     scanf("%lf",&params.tauhat); // = omega * tau (with epsilon = hbar*omega)
     printf("\n Please set the distance between two lattice points a (recommended 2e-13): a = ");
     scanf("%lf", &params.a);
@@ -118,9 +123,13 @@ int main(){
         }
 
         //Execute one step of the chosen integrator
-        //step_euler(out_wf, start_wf, params);
-        step_cn(out_wf, start_wf, params);
-        //step_strang(out_wf, start_wf, params);
+        if(integrator == 1){
+            step_euler(out_wf, start_wf, params);
+        }else if(integrator == 2){
+            step_cn(out_wf, start_wf, params);
+        }else if(integrator == 3){
+            step_strang(out_wf, start_wf, params);
+        }
 
         //Assign the vector to the old out_vector to prepare for the next step
         assign_vec(start_wf, out_wf, params.L);

@@ -1,6 +1,10 @@
 SOLVER FOR THE TIME-DEPENDENT SCHROEDINGER EQUATION
 
-The set of functions in this folder are designed to solve the time-dependent Schroedinger equation in 1, 2 and 3 dimensions.
+
+Please use the file 'hydr_harm.c' to generate executables that simulate the time evolution of a wave function in the harmonic potential between two hydrogen atoms.
+Precompiled executables can be found in the folder 'executables'. For compiling new executables please use the 'Makefile'.
+In the folder 'sample_outputs' you can find outputs which were generated using the hydr_harm_crank_nicolson with the parameters as shown in the readme in that folder.
+
 
 The functions are structured the following way:
 
@@ -37,7 +41,3 @@ observables.c:
 	obs_p			calculates the momentum expectation value of a wave function in a specified dimension
 	obs_delta_x		calculates the spacial width of a wave function
 	obs_delta_p		calculates the momentum width of a wave function
-
-Please use the file 'hydr_harm.c' to generate executables that simulate the time evolution of a wave function in the harmonic potential between two hydrogen atoms.
-Precompiled executables can be found in the folder 'executables'. For compiling new executables please use the 'Makefile'.
-In the folder 'sample_outputs' you can find outputs which were generated using the hydr_harm_crank_nicolson with the parameters as shown in the readme in the folder.
