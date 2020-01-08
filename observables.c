@@ -17,6 +17,7 @@
 are defined. not finished, not tested*/
 
 double complex obs_norm(double complex *in, parameters params) {
+  /* Computes the normalization of a wavefunction. */
   double complex var_norm = 0.0;
 
   var_norm = dot_product(in, in, params.L);
@@ -25,6 +26,7 @@ double complex obs_norm(double complex *in, parameters params) {
 }
 
 double complex obs_E(double complex *in, parameters params) {
+  /* Computes the energy expectation value for a given wavefunction and hamiltonian. */
   double complex var_E = 0.0;
   double complex *in_H = malloc(params.L*sizeof(double complex));
   hamiltonian(in_H, in, params);
@@ -35,6 +37,9 @@ double complex obs_E(double complex *in, parameters params) {
 }
 
 double complex obs_x(double complex *in, unsigned int d, parameters params) {
+  /* Computes the average position of a wavefunction in dimension d given the
+  number of dimensions D and length of axis N using the struct params.
+  According to eq. 84.*/
   double complex var_x = 0.0;
   long int *coord = malloc(params.D*sizeof(double complex));
   for(long int i=0; i<params.L; i++) {
@@ -47,6 +52,9 @@ double complex obs_x(double complex *in, unsigned int d, parameters params) {
 }
 
 double complex obs_delta_x(double complex *in, parameters params) {
+  /* Computes the position width of a wavefunction given the number of
+  dimensions D and length of axis N using the struct params.
+  According to eq. 85.*/
   double complex var_x = 0.0;
   long int *coord = malloc(params.D*sizeof(double complex));
   double abs_coord = 0.0; // squared absolute of coordinate vector
@@ -70,6 +78,9 @@ double complex obs_delta_x(double complex *in, parameters params) {
 
 
 double complex obs_p(double complex *in, unsigned int d, parameters params) {
+  /* Computes the average momentum of a wavefunction in dimension d given the
+  number of dimensions D and length of axis N using the struct params.
+  According to eq. 89.*/
   double complex norm= obs_norm(in, params);
   double complex var_p = 0.0;
   double complex *psi_k = malloc(params.L*sizeof(double complex));
@@ -86,6 +97,9 @@ double complex obs_p(double complex *in, unsigned int d, parameters params) {
 }
 
 double complex obs_delta_p(double complex *in, parameters params) {
+  /* Computes the momentum width of a wavefunction given the number of
+  dimensions D and length of axis N using the struct params.
+  According to eq. 90. */
   double complex norm= obs_norm(in, params);
   double complex var_p = 0.0;
   double complex *psi_lap = malloc(params.L*sizeof(double complex));

@@ -9,7 +9,7 @@
 void ran_vec(double complex *vec, long int L) {
   /*Generates a random vector of size L and saves it in *vec.*/
   for (long int i=0; i<L; i++) {
-    vec[i] = (double)rand()/RAND_MAX; // sets to random value between 0.0 and 1.0
+    vec[i] = (double)rand()/RAND_MAX+1I*(double)rand()/RAND_MAX; // sets to random value between 0.0 and 1.0
   }
 }
   int main(){
@@ -36,7 +36,7 @@ void ran_vec(double complex *vec, long int L) {
  f=fopen("nfft_testfile.txt","w");
  for(int i=0; i<L; i++) {
 		difference[i] = vec[i]-vec_fft[i];
-        fprintf(f,"%e \n", difference[i] );
+        fprintf(f,"%e, %e \n", creal(difference[i]),cimag(difference[i]) );
 	}
 fclose(f);
 	
