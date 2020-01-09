@@ -7,6 +7,7 @@
 #include <complex.h>
 #include <float.h>
 #include <math.h>
+#include <time.h>
 
 #include "structs.h"
 #include "hamiltonian.h"
@@ -104,6 +105,10 @@ int main(){
 
     printf("\nElapsed time\tNorm - 1\t<E>\t\t<x>\t\t<p>\t\t<Delta-x>\t<Delta-p>\n\n");
 
+    clock_t tic, toc;
+    double time_used;
+    tic = clock();
+
     //Iterate over t and have the for loop running until t*tauhat is greater or equal to simulation_duration
     for(long int t=0; (t * params.tauhat) < simulation_duration; t++){
 
@@ -134,6 +139,10 @@ int main(){
         //Assign the vector to the old out_vector to prepare for the next step
         assign_vec(start_wf, out_wf, params.L);
     }
+
+    toc = clock();
+    time_used = ((double)(toc-tic))/CLOCKS_PER_SEC;
+    printf("time used = %e s\n",time_used);
 
     //Close output files
     fclose(obs_file);
