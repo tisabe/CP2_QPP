@@ -168,6 +168,7 @@ void hamiltonian_parallel(double complex *out, double complex *in, parameters pa
   long int i;
 
   // the next line is a directive for the compiler to spread the loop over all available cores
+  omp_set_num_threads(6);
   #pragma omp parallel for
   for(i=0; i<params.L; i++){
       out[i] = params.pot[i]*in[i]; //first initialize element with potential part

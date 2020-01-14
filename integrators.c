@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <omp.h>
 
 #include "structs.h"
 #include "vmath.h"
@@ -14,6 +15,35 @@
 
 #define _USE_MATH_DEFINES
 
+double time_ham_total = 0.0;
+
+void step_euler_timed(double complex *out, double complex *in, parameters params) {
+    /*  Compute the time propagation according to the Euler method.
+      Note: Normalisation of the wave function is not conserved!! */
+
+    // Allocate memory for a temporary array of length L
+    static double complex *ham_out = NULL;
+    static long int lPrev;
+    static double time_elapsed;
+
+    if((ham_out == NULL) || (lPrev != params.L)){
+      free(ham_out);
+      ham_out = malloc(params.L*sizeof(double complex));
+      lPrev = params.L;
+    }
+
+    time_elapsed = omp_get_wtime();
+    // Calculate H(psi)
+    hamiltonian(ham_out, out, params);
+    time_elapsed = omp_get_wtime() - time_elapsed;
+    time_ham_total += time_elapsed;
+
+    // psi^{q+1} = psi^q - i tau H(psi^q)
+    for(long int i=0; i<params.L; i++){
+        out[i] = in[i] - 1I * params.tauhat * ham_out[i];
+    }
+}
+
 void step_euler(double complex *out, double complex *in, parameters params) {
     /*  Compute the time propagation according to the Euler method.
       Note: Normalisation of the wave function is not conserved!! */
@@ -21,6 +51,8 @@ void step_euler(double complex *out, double complex *in, parameters params) {
     // Allocate memory for a temporary array of length L
     static double complex *ham_out = NULL;
     static long int lPrev;
+    static double time_elapsed;
+
     if((ham_out == NULL) || (lPrev != params.L)){
       free(ham_out);
       ham_out = malloc(params.L*sizeof(double complex));

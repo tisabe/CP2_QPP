@@ -24,9 +24,9 @@ int main() {
 
   FILE *perf_output_file;
   perf_output_file = fopen("perf_test_output.txt","w");
-  fprintf(perf_output_file, "N\tRegular\tSlow\tSingle loop\tParallel\n");
+  fprintf(perf_output_file, "N\tStatic nn array\tCalc nn every time\tSingle loop\tParallel\n");
 
-  for(double N = 128; N <= pow(2,21); N *= sqrt(2)){
+  for(double N = 8; N <= pow(2,21); N *= sqrt(2)){
     params.N = (long int)N;
     params.D = 1;
     params.L = ipow(params.N, params.D);
@@ -80,7 +80,7 @@ int main() {
     }
 
     printf("Minimum time:\n");
-    printf("Regular\t\tSlow\t\tSingle loop\tParallel\n");
+    printf("Static nn array\tCalc nn every time\tSingle loop\tParallel\n");
     printf("%e\t%e\t%e\t%e\n\n\n",reg_min,slow_min,single_loop_min,parallel_min);
     fprintf(perf_output_file, "%li\t%e\t%e\t%e\t%e\n",params.N,reg_min,slow_min,single_loop_min,parallel_min);
 
