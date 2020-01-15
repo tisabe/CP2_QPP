@@ -26,7 +26,7 @@ int main() {
   perf_output_file = fopen("perf_test_output.txt","w");
   fprintf(perf_output_file, "N\tStatic nn array\tCalc nn every time\tSingle loop\tParallel\n");
 
-  for(double N = 8; N <= pow(2,21); N *= sqrt(2)){
+  for(double N = 8; N <= pow(2,22); N *= sqrt(2)){
     params.N = (long int)N;
     params.D = 1;
     params.L = ipow(params.N, params.D);
