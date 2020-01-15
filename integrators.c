@@ -162,3 +162,48 @@ void step_strang(double complex *out, double complex *in, parameters params) {
   free(coordinate);
 
 }
+
+void step_strang_parallel(double complex *out, double complex *in, parameters params) {
+  /* Computes a time step of the wavefunction according to the
+  Strang-Splitting-method, with the parameters stored in params. */
+  long int N = params.N;
+  unsigned int D = params.D;
+  long int L = params.L;
+
+  double sin_sum= 0;
+  long int *coordinate = malloc(D* sizeof(long int));
+
+  // https://www.gnu.org/software/gsl/doc/html/fft.html#c.gsl_fft_complex_forward
+
+  /* calculate eta according to equation (75) */
+  omp_set_num_threads(6);
+  #pragma omp parallel for
+  for (int i=0; i<L; i++) {
+    in[i]=cexp(- 1I/2 * params.tauhat * params.pot[i]) * in[i];
+  }
+
+	/* calculate eta_dft according to equation (76) */
+  nfft(in,in,N,D);
+
+	/* calculate chi tilde (chi_dft) according to equation (77) */
+  #pragma omp parallel for
+  for (int i=0; i<L; i++) {
+        sin_sum = 0.0;
+        for (int j=0; j<D; j++) {  /* calculating the sum in the exponential function */
+            index2coord(coordinate, i, N, D);
+            sin_sum += pow(sin(M_PI/N*coordinate[j]),2);
+        }
+        in[i]=cexp(- 1I * 4 * params.tauhat/params.mhat * sin_sum) * in[i];
+    }
+
+	/* calculate chi according to equation (78) */
+	nfft_inverse(in,in,N,D);
+  /* calculate psi(q+1) according to equation (79) */
+  #pragma omp parallel for
+  for (int i=0; i<L; i++) {
+    out[i]=cexp(- 1I/2 * params.tauhat * params.pot[i]) * in[i];
+  }
+
+  free(coordinate);
+
+}
