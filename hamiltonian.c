@@ -101,6 +101,33 @@ void hamiltonian(double complex *out, double complex *in, parameters params){
   add_vec(out, out, phi_kinetic, params.L);
 }
 
+double time_ham_total;
+
+void hamiltonian_timed(double complex *out, double complex *in, parameters params){
+
+  static double time_start;
+  time_start = omp_get_wtime();
+
+  /*calculate T*phi and store it in phi_kinetic*/
+  static double complex *phi_kinetic = NULL;
+  static long int lPrev;
+  if((phi_kinetic == NULL) || (lPrev != params.L)){
+    free(phi_kinetic);
+    phi_kinetic =  malloc(params.L*sizeof(double complex));
+    lPrev = params.L;
+  }
+
+  kinetic(phi_kinetic,in,params);
+
+  /*Calculate V*phi and store it in out*/
+  mul_element(out, params.pot, in, params.L);
+
+  /*add both parts of the hamiltonian and save it in out */
+  add_vec(out, out, phi_kinetic, params.L);
+
+  time_ham_total += omp_get_wtime() - time_start;
+}
+
 void hamiltonian_slow(double complex *out, double complex *in, parameters params){
   /*calculate T*phi and store it in phi_kinetic*/
   static double complex *phi_kinetic = NULL;

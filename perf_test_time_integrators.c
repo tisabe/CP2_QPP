@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <omp.h>
 #include <math.h>
+#include <float.h>
 
 #include "structs.h"
 #include "geometry.h"
@@ -9,6 +10,8 @@
 #include "vmath.h"
 #include "integrators.h"
 #include "observables.h"
+
+#define _USE_MATH_DEFINES
 
 extern double time_ham_total;
 
@@ -38,6 +41,9 @@ int main() {
   params.N = 2000;
   params.D = 1;
   params.L = ipow(params.N, params.D);
+
+  params.tol = DBL_EPSILON;
+  params.max_iter = params.L;
 
   double complex *start_wf = malloc(params.L * sizeof(double complex));
   double complex *out_wf = malloc(params.L * sizeof(double complex));

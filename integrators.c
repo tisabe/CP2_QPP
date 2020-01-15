@@ -15,8 +15,6 @@
 
 #define _USE_MATH_DEFINES
 
-double time_ham_total = 0.0;
-
 void step_euler_timed(double complex *out, double complex *in, parameters params) {
     /*  Compute the time propagation according to the Euler method.
       Note: Normalisation of the wave function is not conserved!! */
@@ -24,7 +22,6 @@ void step_euler_timed(double complex *out, double complex *in, parameters params
     // Allocate memory for a temporary array of length L
     static double complex *ham_out = NULL;
     static long int lPrev;
-    static double time_elapsed;
 
     if((ham_out == NULL) || (lPrev != params.L)){
       free(ham_out);
@@ -32,11 +29,8 @@ void step_euler_timed(double complex *out, double complex *in, parameters params
       lPrev = params.L;
     }
 
-    time_elapsed = omp_get_wtime();
     // Calculate H(psi)
-    hamiltonian(ham_out, out, params);
-    time_elapsed = omp_get_wtime() - time_elapsed;
-    time_ham_total += time_elapsed;
+    hamiltonian_timed(ham_out, out, params);
 
     // psi^{q+1} = psi^q - i tau H(psi^q)
     for(long int i=0; i<params.L; i++){
@@ -96,6 +90,35 @@ void step_cn(double complex *out, double complex *in, parameters params) {
   double complex *temp = malloc(params.L * sizeof(double complex));
   cg(temp, f_eta, in, params);
   f_psi(out, temp, params);
+  free(temp);
+}
+
+static void f_eta_timed(double complex *out_eta, double complex *in_eta, parameters params) {
+  double complex *temp = malloc(params.L * sizeof(double complex));
+  hamiltonian_timed(temp, in_eta, params);
+  hamiltonian_timed(out_eta, temp, params);
+  scalar_vec(out_eta, out_eta, (double complex) params.tauhat*params.tauhat/4, params.L);
+  add_vec(out_eta, out_eta, in_eta, params.L);
+  free(temp);
+}
+
+static void f_psi_timed(double complex *out_psi, double complex *in_psi, parameters params) {
+  double complex *temp = malloc(params.L * sizeof(double complex));
+  double complex *temp2 = malloc(params.L * sizeof(double complex));
+  hamiltonian_timed(temp, in_psi, params);
+  hamiltonian_timed(out_psi, temp, params);
+  scalar_vec(out_psi, out_psi, (-1)*params.tauhat*params.tauhat/4, params.L);
+  scalar_vec(temp2, temp, -1I*params.tauhat, params.L);
+  add_vec(out_psi, out_psi, in_psi, params.L);
+  add_vec(out_psi, out_psi, temp2, params.L);
+  free(temp);
+  free(temp2);
+}
+
+void step_cn_timed(double complex *out, double complex *in, parameters params) {
+  double complex *temp = malloc(params.L * sizeof(double complex));
+  cg(temp, f_eta_timed, in, params);
+  f_psi_timed(out, temp, params);
   free(temp);
 }
 
