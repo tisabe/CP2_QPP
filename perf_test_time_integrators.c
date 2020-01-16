@@ -31,8 +31,8 @@ int main() {
   params.a = 2e-13;
   params.mhat = pow(params.a/hbar,2)*mass_H*params.epsilon;
   params.khat = params.mhat * pow(hbar*omega/params.epsilon,2);
-  params.tauhat = 1e-7;
-  double simulation_duration = 1e-1;
+  params.tauhat = 1e-3;
+  double simulation_duration = 1e1;
 
   FILE *perf_output_file;
   perf_output_file = fopen("perf_test_output.txt","w");
@@ -59,14 +59,14 @@ int main() {
   }
 
   for(long int t=0; (t * params.tauhat) < simulation_duration; t++){
-    if(t % (long)(1e5) == 0){
+    if(t % (long)(1e4) == 0){
         printf("%e\t%e\t%e\t%e\t%e\t%e\t%e\n", t*params.tauhat, cabs(obs_norm(start_wf, params)) - 1, creal(obs_E(start_wf,params)), creal(obs_x(start_wf, 0, params)), creal(obs_p(start_wf, 0, params)), creal(obs_delta_x(start_wf, params)),creal(obs_delta_p(start_wf, params)));
     }
-    step_euler_timed(out_wf, start_wf, params);
+    step_cn_timed(out_wf, start_wf, params);
     assign_vec(start_wf, out_wf, params.L);
   }
 
-  printf("\nTime Hamiltonian = %lf s\n", time_ham_total);
+  printf("\nTime in Hamiltonian = %lf s\n", time_ham_total);
 
   free(start_wf);
   free(out_wf);

@@ -21,3 +21,11 @@ hydr_harm: hydr_harm.c hamiltonian.c vmath.c geometry.c laplacian.c integrators.
 nfft_test: nfft_test.c nfft.c
 	gcc nfft_test.c -lm nfft.c -L/usr/local/lib -lgsl -o nfft_test.exe -O2
 	./nfft_test.exe
+
+make timed_perf_test: perf_test_time_integrators.c geometry.c hamiltonian.c vmath.c integrators.c observables.c nfft.c laplacian.c
+	gcc perf_test_time_integrators.c -lm geometry.c hamiltonian.c vmath.c integrators.c observables.c nfft.c laplacian.c -fopenmp -L/usr/local/lib -lgsl -o perf_test_time_integrators.exe -O2
+	./perf_test_time_integrators.exe
+
+make strang_perf_test: perf_test_strang.c geometry.c hamiltonian.c vmath.c integrators.c observables.c nfft.c laplacian.c
+	gcc perf_test_strang.c -lm geometry.c hamiltonian.c vmath.c integrators.c observables.c nfft.c laplacian.c -fopenmp -L/usr/local/lib -lgsl -o perf_test_strang.exe -O2
+	./perf_test_strang.exe
