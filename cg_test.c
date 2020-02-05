@@ -74,7 +74,7 @@ void random_matrix_test(){
   printf("Please specify the length of the array to run the test with (memory scales with N**2). N = ");
   scanf("%li",&params.N);               //Choose array length
   params.D = 1;                         //Set number of dimensions to 1. Only meaningful for interpretation of the flat output array as a matrix.
-  params.max_iter = params.N;                //Set the maximum number of iterations of the cg algorithm
+  params.max_iter = 1000;                //Set the maximum number of iterations of the cg algorithm
   params.tol = DBL_EPSILON;             //Set the tolerance level to quit the cg algorithm. Best possible: DBL_PRECISION (macro from float.h)
   params.L = ipow(params.N,params.D);
 
@@ -88,7 +88,7 @@ void random_matrix_test(){
 
   //Generate a random vector b
   for(int i=0; i<params.N; i++){
-    start_vec[i] = (double complex)(rand()-0.5*RAND_MAX + (rand()-0.5*RAND_MAX) * I);
+    start_vec[i] = (double complex)((rand()-0.5*RAND_MAX) + (rand()-0.5*RAND_MAX) * I);
   }
 
   //Call the conjugate gradient algorithm to calculate x in Ax=b. Store the result in result_cg
